@@ -1,0 +1,34 @@
+[
+  {
+    "id": "a",
+    "date": "2021-02-01",
+    "lecture": "111. Cool lecture with some title",
+    "note": "note",
+    "speaker": "John Smith",
+    "congregation": "Mordor South"
+  },
+  {
+    "id": "b",
+    "date": "2021-02-02",
+    "lecture": null,
+    "note": "only note",
+    "speaker": null,
+    "congregation": null
+  },
+  {
+    "id": "c",
+    "date": "2021-02-03",
+    "lecture": "11. Cool lecture with some even longer title",
+    "note": null,
+    "speaker": "John Smith",
+    "congregation": "Shire"
+  },
+  {
+    "id": "d",
+    "date": "2021-02-04",
+    "lecture": "76. Cool lecture with some more title",
+    "note": null,
+    "speaker": "Tom Brzęczyszczyński",
+    "congregation": "North Center of South"
+  }
+]

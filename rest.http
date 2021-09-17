@@ -1,0 +1,25 @@
+http://localhost:3000/api/lectures/
+
+###
+
+POST http://localhost:3000/api/lectures/ HTTP/1.1
+content-type: application/json
+
+{
+    "number": 1,
+    "title": "Test title"
+}
+
+###
+
+PUT http://localhost:3000/api/lectures/613d1402a36efa2f56c552ca HTTP/1.1
+content-type: application/json
+
+{
+    "number": 1,
+    "title": "Test title 2"
+}
+
+###
+
+DELETE http://localhost:3000/api/lectures/613d1402a36efa2f56c552ca HTTP/1.1

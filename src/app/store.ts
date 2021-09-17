@@ -1,14 +1,18 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
-import counterReducer from '../features/counter/counterSlice'
+import lecturesReducer from '../features/lectures/lecturesSlice'
 
 export function makeStore() {
   return configureStore({
-    reducer: { counter: counterReducer },
+    reducer: {
+      lectures: lecturesReducer,
+    },
   })
 }
 
 const store = makeStore()
+
+export type AppStore = typeof store
 
 export type AppState = ReturnType<typeof store.getState>
 

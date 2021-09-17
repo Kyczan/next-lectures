@@ -1,0 +1,34 @@
+[
+  {
+    "_id": "a",
+    "number": 1,
+    "title": "Super cool lecture with nice title",
+    "lastDate": "2021-02-03",
+    "note": "note",
+    "lastSpeaker": "John Smith"
+  },
+  {
+    "_id": "b",
+    "number": 2,
+    "title": "Super cool lecture with nice title 2",
+    "lastDate": "2021-02-04",
+    "note": null,
+    "lastSpeaker": "John Smith"
+  },
+  {
+    "_id": "c",
+    "number": 3,
+    "title": "Super cool lecture with nice title 3",
+    "lastDate": "2021-02-05",
+    "note": null,
+    "lastSpeaker": "John Smith"
+  },
+  {
+    "_id": "d",
+    "number": 195,
+    "title": "Super cool lecture with nice title 4",
+    "lastDate": null,
+    "note": "note",
+    "lastSpeaker": null
+  }
+]
