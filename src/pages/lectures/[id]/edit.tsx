@@ -1,15 +1,18 @@
 import type { NextPage } from 'next'
+import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-import Lectures from '../../../features/lectures/Lectures'
+import LectureEdit from '../../../features/lectures/LectureEdit'
 
 const LecturesPage: NextPage = () => {
+  const router = useRouter()
+  const { id } = router.query
   return (
     <>
       <Head>
-        <title>Wykłady</title>
+        <title>Wykłady | Edycja</title>
       </Head>
-      <Lectures />
+      {typeof id === 'string' && <LectureEdit id={id} />}
     </>
   )
 }

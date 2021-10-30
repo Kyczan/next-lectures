@@ -6,7 +6,7 @@ import authMiddleware from '../../../utils/middleware/auth'
 
 const lecturesHandler: NextApiHandler = async (req, res) => {
   const { method } = req
-  // await authMiddleware(req, res)
+  await authMiddleware(req, res)
   await dbConnect()
 
   switch (method) {

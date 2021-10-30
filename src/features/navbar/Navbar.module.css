@@ -1,0 +1,9 @@
+nav.nav {
+  position: fixed;
+  background-color: var(--background-color);
+  z-index: 1;
+}
+
+nav.nav ~ * {
+  padding-top: 100px;
+}

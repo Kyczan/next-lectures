@@ -1,0 +1,41 @@
+.modal {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  max-width: 500px;
+  height: 200px;
+  border: none;
+  background: var(--background-color);
+  border-radius: 4px;
+  outline: none;
+}
+
+@media (max-width: 767px) {
+  .modal {
+    width: 95%;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--contrast-focus);
+  z-index: 2;
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+}
+
+.content footer button {
+  margin: 0;
+}

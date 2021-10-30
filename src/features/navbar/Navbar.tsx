@@ -2,6 +2,8 @@ import cn from 'classnames'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
+import styles from './Navbar.module.css'
+
 interface IRoutes {
   link: string
   name: string
@@ -9,7 +11,7 @@ interface IRoutes {
 
 const routes: IRoutes[] = [
   {
-    link: '/',
+    link: '/plan',
     name: 'Plan',
   },
   {
@@ -24,21 +26,19 @@ const routes: IRoutes[] = [
 
 const Navbar = (): JSX.Element => {
   const { pathname } = useRouter()
-  const currentRouteName =
-    routes.find((route) => route.link === pathname)?.name || '404'
+  const isRouteMatching = (link) => {
+    return pathname.startsWith(link)
+  }
 
   return (
-    <nav className="container">
+    <nav className={`container-fluid ${styles.nav}`}>
       <ul>
         <li>
           <Link href="/">
             <a className="contrast">
-              <strong>Planer</strong>&nbsp;&nbsp;|&nbsp;&nbsp;{currentRouteName}
+              <strong>Planer</strong>
             </a>
           </Link>
-        </li>
-        <li>
-          <input type="text" id="search" name="search" placeholder="Search" />
         </li>
       </ul>
       <ul>
@@ -47,8 +47,8 @@ const Navbar = (): JSX.Element => {
             <Link href={link}>
               <a
                 className={cn({
-                  secondary: pathname !== link,
-                  contrast: pathname === link,
+                  secondary: !isRouteMatching(link),
+                  contrast: isRouteMatching(link),
                 })}
               >
                 {name}

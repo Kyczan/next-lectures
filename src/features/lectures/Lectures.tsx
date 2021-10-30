@@ -1,13 +1,18 @@
 import { useEffect } from 'react'
 import Head from 'next/head'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { ApiCallStatuses } from '../../app/types'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { fetchLectures, selectLectures } from './lecturesSlice'
 import Col from '../../components/col/Col'
+import AddButton from '../../components/addButton/AddButton'
+import Search from '../../components/search/Search'
 
 const Lectures = (): JSX.Element => {
+  const router = useRouter()
   const {
     fetch: { data, status },
   } = useAppSelector(selectLectures)
@@ -19,6 +24,10 @@ const Lectures = (): JSX.Element => {
     }
   }, [status, dispatch])
 
+  const handleRowClick = (id) => {
+    router.push(`/lectures/${id}`)
+  }
+
   return (
     <>
       <Head>
@@ -26,10 +35,16 @@ const Lectures = (): JSX.Element => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section>
-        <dialog>test</dialog>
-        {status === ApiCallStatuses.LOADING && 'Loading'}
+        <div className="inline-wrapper">
+          <h1>Wykłady</h1>
+          <Search />
+        </div>
 
-        <div className="row">
+        {status === ApiCallStatuses.LOADING && 'Loading'}
+        <AddButton href="/lectures/add">
+          <FontAwesomeIcon icon={faPlus} /> Dodaj
+        </AddButton>
+        <div className="row heading-row">
           <Col flex="0 0 60px" className="right">
             #
           </Col>
@@ -43,12 +58,17 @@ const Lectures = (): JSX.Element => {
           </Col>
         </div>
 
+        <hr />
+
         {data.map((item) => (
-          <div className="row" key={item._id} data-testid="lectures-row">
+          <div
+            className="row"
+            key={item._id}
+            data-testid="lectures-row"
+            onClick={() => handleRowClick(item._id)}
+          >
             <Col flex="0 0 60px" className="right">
-              <Link href={`/lectures/${item._id}/edit`}>
-                <a className="contrast">{item.number}</a>
-              </Link>
+              {item.number}
             </Col>
 
             <Col flex="2 1">

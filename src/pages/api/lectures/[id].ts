@@ -9,7 +9,7 @@ const lecturesHandler: NextApiHandler = async (req, res) => {
     query: { id },
     method,
   } = req
-  // await authMiddleware(req, res)
+  await authMiddleware(req, res)
   await dbConnect()
 
   switch (method) {

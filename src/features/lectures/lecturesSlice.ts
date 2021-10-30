@@ -4,7 +4,7 @@ import { ApiCallStatuses, IState } from '../../app/types'
 
 export interface ILecturesDataItem {
   _id: string
-  number: number
+  number: string
   title: string
   note?: string
   lastDate?: string
@@ -160,5 +160,10 @@ export const slice = createSlice({
 
 export const selectLectures = (state: AppState): IState<ILecturesDataItem> =>
   state.lectures
+
+export const selectLectureById =
+  (id?: string) =>
+  (state: AppState): ILecturesDataItem =>
+    id ? state.lectures.fetch.data.find((item) => item._id === id) : undefined
 
 export default slice.reducer
