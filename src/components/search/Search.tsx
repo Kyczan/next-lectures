@@ -1,36 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes } from '@fortawesome/free-solid-svg-icons'
-
-import { useAppDispatch } from '../../app/hooks'
-import { filterData } from './searchSlice'
 
 import styles from './Search.module.css'
 
 interface ISearchProps {
-  data: object[]
-  keys: string[]
+  onChange: (value: string) => void
 }
 
-const Search = ({ data, keys }: ISearchProps): JSX.Element => {
+const Search = ({ onChange }: ISearchProps): JSX.Element => {
   const [value, setValue] = useState('')
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    const filterParams = {
-      data,
-      keys,
-      value,
-    }
-    dispatch(filterData(filterParams))
-  }, [value])
 
   const handleChange = (e) => {
     setValue(e.target.value)
+    onChange(e.target.value)
   }
 
   const resetSearch = () => {
     setValue('')
+    onChange('')
   }
 
   return (

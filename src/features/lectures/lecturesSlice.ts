@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppState } from '../../app/store'
-import { ApiCallStatuses, IState } from '../../app/types'
+import { ApiCallStatuses, SortOrder, IState } from '../../app/types'
 
 export interface ILecturesDataItem {
   _id: string
@@ -71,7 +71,37 @@ export const deleteLecture = createAsyncThunk(
   }
 )
 
+const applyFilter = (data, filter) => {
+  const { search, sort } = filter
+
+  const filtered = data.filter((item) =>
+    search.keys.some((key) =>
+      item[key].toLowerCase().includes(search.value.toLowerCase())
+    )
+  )
+
+  const asc = sort.order === SortOrder.ASC ? 1 : -1
+  filtered.sort((a, b) => {
+    if (!a[sort.key]) return -asc
+    if (!b[sort.key]) return asc
+    return a[sort.key].localeCompare(b[sort.key], 'pl', { numeric: true }) * asc
+  })
+
+  return filtered
+}
+
 export const initialState: IState<ILecturesDataItem> = {
+  filtered: [],
+  filter: {
+    search: {
+      keys: ['number', 'title'],
+      value: '',
+    },
+    sort: {
+      key: 'number',
+      order: SortOrder.ASC,
+    },
+  },
   fetch: {
     data: [],
     status: ApiCallStatuses.IDLE,
@@ -94,7 +124,17 @@ export const initialState: IState<ILecturesDataItem> = {
 export const slice = createSlice({
   name: 'lectures',
   initialState,
-  reducers: {},
+  reducers: {
+    setSearch(state, action) {
+      state.filter.search.value = action.payload
+      state.filtered = applyFilter(state.fetch.data, state.filter)
+    },
+    setSort(state, action) {
+      state.filter.sort.key = action.payload.key
+      state.filter.sort.order = action.payload.order
+      state.filtered = applyFilter(state.fetch.data, state.filter)
+    },
+  },
   extraReducers: (builder) => {
     builder
       // fetch
@@ -104,6 +144,7 @@ export const slice = createSlice({
       .addCase(fetchLectures.fulfilled, (state, action) => {
         state.fetch.status = ApiCallStatuses.SUCCEEDED
         state.fetch.data = action.payload
+        state.filtered = applyFilter(state.fetch.data, state.filter)
       })
       .addCase(fetchLectures.rejected, (state, action) => {
         state.fetch.status = ApiCallStatuses.FAILED
@@ -117,7 +158,7 @@ export const slice = createSlice({
       .addCase(addLecture.fulfilled, (state, action) => {
         state.add.status = ApiCallStatuses.IDLE
         state.fetch.data.push(action.payload)
-        // how to sort this? what if filter/sorter is already applied?
+        state.filtered = applyFilter(state.fetch.data, state.filter)
       })
       .addCase(addLecture.rejected, (state, action) => {
         state.add.status = ApiCallStatuses.FAILED
@@ -133,8 +174,7 @@ export const slice = createSlice({
         const id = action.payload._id
         const index = state.fetch.data.findIndex((item) => item._id === id)
         if (index !== -1) state.fetch.data[index] = action.payload
-        // how to sort this?
-        // what if filter/sorter is already applied and order should change?
+        state.filtered = applyFilter(state.fetch.data, state.filter)
       })
       .addCase(updateLecture.rejected, (state, action) => {
         state.update.status = ApiCallStatuses.FAILED
@@ -150,6 +190,7 @@ export const slice = createSlice({
         const id = action.payload
         const index = state.fetch.data.findIndex((item) => item._id === id)
         if (index !== -1) state.fetch.data.splice(index, 1)
+        state.filtered = applyFilter(state.fetch.data, state.filter)
       })
       .addCase(deleteLecture.rejected, (state, action) => {
         state.delete.status = ApiCallStatuses.FAILED
@@ -166,4 +207,8 @@ export const selectLectureById =
   (state: AppState): ILecturesDataItem =>
     id ? state.lectures.fetch.data.find((item) => item._id === id) : undefined
 
-export default slice.reducer
+const { actions, reducer } = slice
+
+export const { setSearch, setSort } = actions
+
+export default reducer
