@@ -2,7 +2,7 @@ import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import { makeStore } from '../../app/store'
-import IndexPage from '../../pages/index'
+import IndexPage from '../../pages/plan/index'
 
 describe('IndexPage', () => {
   let store

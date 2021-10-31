@@ -7,7 +7,7 @@ const LecturesPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Wykłady</title>
+        <title>Wykłady | Nowy</title>
       </Head>
       <LectureEdit />
     </>

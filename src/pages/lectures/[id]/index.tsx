@@ -10,7 +10,7 @@ const LecturePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Wykład</title>
+        <title>Wykłady | Szczegóły</title>
       </Head>
       {typeof id === 'string' && <LectureView id={id} />}
     </>
