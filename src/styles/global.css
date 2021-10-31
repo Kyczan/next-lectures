@@ -13,6 +13,7 @@
 }
 
 .inline-wrapper button {
+  height: fit-content;
   width: auto;
   margin-bottom: 0;
 }

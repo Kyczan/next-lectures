@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,15 +7,18 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { ApiCallStatuses } from '../../app/types'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import { fetchLectures, selectLectures } from './lecturesSlice'
+import { selectFilteredData } from '../../components/search/searchSlice'
 import Col from '../../components/col/Col'
 import AddButton from '../../components/addButton/AddButton'
 import Search from '../../components/search/Search'
 
 const Lectures = (): JSX.Element => {
+  const [lectures, setLectures] = useState([])
   const router = useRouter()
   const {
     fetch: { data, status },
   } = useAppSelector(selectLectures)
+  const filtered = useAppSelector(selectFilteredData)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -23,6 +26,14 @@ const Lectures = (): JSX.Element => {
       dispatch(fetchLectures())
     }
   }, [status, dispatch])
+
+  useEffect(() => {
+    setLectures(data)
+  }, [data])
+
+  useEffect(() => {
+    setLectures(filtered)
+  }, [filtered])
 
   const handleRowClick = (id) => {
     router.push(`/lectures/${id}`)
@@ -37,7 +48,7 @@ const Lectures = (): JSX.Element => {
       <section>
         <div className="inline-wrapper">
           <h1>Wykłady</h1>
-          <Search />
+          <Search data={data} keys={['number', 'title']} />
         </div>
 
         {status === ApiCallStatuses.LOADING && 'Loading'}
@@ -60,7 +71,7 @@ const Lectures = (): JSX.Element => {
 
         <hr />
 
-        {data.map((item) => (
+        {lectures.map((item) => (
           <div
             className="row"
             key={item._id}

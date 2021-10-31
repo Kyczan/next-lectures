@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 
 import lecturesReducer from '../features/lectures/lecturesSlice'
+import searchReducer from '../components/search/searchSlice'
 
 export function makeStore() {
   return configureStore({
     reducer: {
       lectures: lecturesReducer,
+      search: searchReducer,
     },
   })
 }
