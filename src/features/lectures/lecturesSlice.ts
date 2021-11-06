@@ -12,6 +12,9 @@ export interface ILecturesDataItem {
   lastSpeaker?: string
 }
 
+export type ILecturesSearchKeys = 'number' | 'title' | 'note'
+export type ILecturesSortKeys = 'number' | 'title' | 'lastDate'
+
 export const fetchLectures = createAsyncThunk('lectures/fetch', async () => {
   const response = await fetch('/api/lectures')
   if (!response.ok) {
@@ -72,12 +75,16 @@ export const deleteLecture = createAsyncThunk(
   }
 )
 
-export const initialState: IState<ILecturesDataItem> = {
+export const initialState: IState<
+  ILecturesDataItem,
+  ILecturesSearchKeys,
+  ILecturesSortKeys
+> = {
   data: [],
   filtered: [],
   filter: {
     search: {
-      keys: ['number', 'title'],
+      keys: ['number', 'title', 'note'],
       value: '',
     },
     sort: {
@@ -193,7 +200,9 @@ export const slice = createSlice({
   },
 })
 
-export const selectLectures = (state: AppState): IState<ILecturesDataItem> =>
+export const selectLectures = (
+  state: AppState
+): IState<ILecturesDataItem, ILecturesSearchKeys, ILecturesSortKeys> =>
   state.lectures
 
 export const selectLectureById =

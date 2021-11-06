@@ -15,24 +15,24 @@ interface IMethodState {
   error: string | null
 }
 
-interface ISearch {
-  keys: string[]
+interface ISearch<SearchType> {
+  keys: SearchType[]
   value: string
 }
 
-interface ISort {
-  key: string
+export interface ISort<SortType> {
+  key: SortType
   order: SortOrder
 }
-export interface IFilter {
-  search: ISearch
-  sort: ISort
+export interface IFilter<SearchType, SortType> {
+  search: ISearch<SearchType>
+  sort: ISort<SortType>
 }
 
-export interface IState<T> {
-  data: T[]
-  filtered: T[]
-  filter: IFilter
+export interface IState<DataType, SearchType, SortType> {
+  data: DataType[]
+  filtered: DataType[]
+  filter: IFilter<SearchType, SortType>
   fetch: IMethodState
   add: IMethodState
   update: IMethodState

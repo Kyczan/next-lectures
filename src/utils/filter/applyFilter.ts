@@ -1,6 +1,9 @@
 import { SortOrder, IFilter } from '../../app/types'
 
-export const applyFilter = <T>(data: T[], filter: IFilter): T[] => {
+export const applyFilter = <DataType>(
+  data: DataType[],
+  filter: IFilter<string, string>
+): DataType[] => {
   const { search, sort } = filter
 
   const filtered = data.filter((item) =>

@@ -11,10 +11,12 @@ import {
   selectLectures,
   setSearch,
   setSort,
+  ILecturesSortKeys,
 } from './lecturesSlice'
 import Col from '../../components/col/Col'
 import AddButton from '../../components/addButton/AddButton'
 import Search from '../../components/search/Search'
+import SortButton from '../../components/sortButton/sortButton'
 
 const Lectures = (): JSX.Element => {
   const [lectures, setLectures] = useState([])
@@ -22,6 +24,7 @@ const Lectures = (): JSX.Element => {
   const {
     filtered,
     filter: {
+      sort,
       sort: { order },
     },
     fetch: { status },
@@ -42,8 +45,7 @@ const Lectures = (): JSX.Element => {
     router.push(`/lectures/${id}`)
   }
 
-  const handleSort = (e, key) => {
-    e.preventDefault()
+  const handleSort = (key) => {
     dispatch(setSort({ key, order: order === 'asc' ? 'desc' : 'asc' }))
   }
 
@@ -69,23 +71,31 @@ const Lectures = (): JSX.Element => {
         </AddButton>
         <div className="row heading-row">
           <Col flex="0 0 60px" className="right">
-            <a href="" onClick={(e) => handleSort(e, 'number')}>
+            <SortButton<ILecturesSortKeys>
+              onClick={handleSort}
+              sortKey="number"
+              sortState={sort}
+            >
               #
-            </a>
+            </SortButton>
           </Col>
           <Col flex="2 1">
-            <div>
-              <a href="" onClick={(e) => handleSort(e, 'title')}>
-                <strong>Tytuł</strong>
-              </a>
-            </div>
+            <SortButton<ILecturesSortKeys>
+              onClick={handleSort}
+              sortKey="title"
+              sortState={sort}
+            >
+              <strong>Tytuł</strong>
+            </SortButton>
           </Col>
           <Col flex="1 1">
-            <div>
-              <a href="" onClick={(e) => handleSort(e, 'lastDate')}>
-                Ostatnie wygłoszenie
-              </a>
-            </div>
+            <SortButton<ILecturesSortKeys>
+              onClick={handleSort}
+              sortKey="lastDate"
+              sortState={sort}
+            >
+              Ostatnie wygłoszenie
+            </SortButton>
           </Col>
         </div>
 
