@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppState } from '../../app/store'
 import { ApiCallStatuses, SortOrder, IState } from '../../app/types'
+import { applyFilter } from '../../utils/filter/applyFilter'
 
 export interface ILecturesDataItem {
   _id: string
@@ -71,26 +72,8 @@ export const deleteLecture = createAsyncThunk(
   }
 )
 
-const applyFilter = (data, filter) => {
-  const { search, sort } = filter
-
-  const filtered = data.filter((item) =>
-    search.keys.some((key) =>
-      item[key].toLowerCase().includes(search.value.toLowerCase())
-    )
-  )
-
-  const asc = sort.order === SortOrder.ASC ? 1 : -1
-  filtered.sort((a, b) => {
-    if (!a[sort.key]) return -asc
-    if (!b[sort.key]) return asc
-    return a[sort.key].localeCompare(b[sort.key], 'pl', { numeric: true }) * asc
-  })
-
-  return filtered
-}
-
 export const initialState: IState<ILecturesDataItem> = {
+  data: [],
   filtered: [],
   filter: {
     search: {
@@ -103,7 +86,6 @@ export const initialState: IState<ILecturesDataItem> = {
     },
   },
   fetch: {
-    data: [],
     status: ApiCallStatuses.IDLE,
     error: null,
   },
@@ -127,12 +109,12 @@ export const slice = createSlice({
   reducers: {
     setSearch(state, action) {
       state.filter.search.value = action.payload
-      state.filtered = applyFilter(state.fetch.data, state.filter)
+      state.filtered = applyFilter<ILecturesDataItem>(state.data, state.filter)
     },
     setSort(state, action) {
       state.filter.sort.key = action.payload.key
       state.filter.sort.order = action.payload.order
-      state.filtered = applyFilter(state.fetch.data, state.filter)
+      state.filtered = applyFilter<ILecturesDataItem>(state.data, state.filter)
     },
   },
   extraReducers: (builder) => {
@@ -143,8 +125,11 @@ export const slice = createSlice({
       })
       .addCase(fetchLectures.fulfilled, (state, action) => {
         state.fetch.status = ApiCallStatuses.SUCCEEDED
-        state.fetch.data = action.payload
-        state.filtered = applyFilter(state.fetch.data, state.filter)
+        state.data = action.payload
+        state.filtered = applyFilter<ILecturesDataItem>(
+          state.data,
+          state.filter
+        )
       })
       .addCase(fetchLectures.rejected, (state, action) => {
         state.fetch.status = ApiCallStatuses.FAILED
@@ -157,8 +142,11 @@ export const slice = createSlice({
       })
       .addCase(addLecture.fulfilled, (state, action) => {
         state.add.status = ApiCallStatuses.IDLE
-        state.fetch.data.push(action.payload)
-        state.filtered = applyFilter(state.fetch.data, state.filter)
+        state.data.push(action.payload)
+        state.filtered = applyFilter<ILecturesDataItem>(
+          state.data,
+          state.filter
+        )
       })
       .addCase(addLecture.rejected, (state, action) => {
         state.add.status = ApiCallStatuses.FAILED
@@ -172,9 +160,12 @@ export const slice = createSlice({
       .addCase(updateLecture.fulfilled, (state, action) => {
         state.update.status = ApiCallStatuses.IDLE
         const id = action.payload._id
-        const index = state.fetch.data.findIndex((item) => item._id === id)
-        if (index !== -1) state.fetch.data[index] = action.payload
-        state.filtered = applyFilter(state.fetch.data, state.filter)
+        const index = state.data.findIndex((item) => item._id === id)
+        if (index !== -1) state.data[index] = action.payload
+        state.filtered = applyFilter<ILecturesDataItem>(
+          state.data,
+          state.filter
+        )
       })
       .addCase(updateLecture.rejected, (state, action) => {
         state.update.status = ApiCallStatuses.FAILED
@@ -188,9 +179,12 @@ export const slice = createSlice({
       .addCase(deleteLecture.fulfilled, (state, action) => {
         state.delete.status = ApiCallStatuses.IDLE
         const id = action.payload
-        const index = state.fetch.data.findIndex((item) => item._id === id)
-        if (index !== -1) state.fetch.data.splice(index, 1)
-        state.filtered = applyFilter(state.fetch.data, state.filter)
+        const index = state.data.findIndex((item) => item._id === id)
+        if (index !== -1) state.data.splice(index, 1)
+        state.filtered = applyFilter<ILecturesDataItem>(
+          state.data,
+          state.filter
+        )
       })
       .addCase(deleteLecture.rejected, (state, action) => {
         state.delete.status = ApiCallStatuses.FAILED
@@ -205,7 +199,7 @@ export const selectLectures = (state: AppState): IState<ILecturesDataItem> =>
 export const selectLectureById =
   (id?: string) =>
   (state: AppState): ILecturesDataItem =>
-    id ? state.lectures.fetch.data.find((item) => item._id === id) : undefined
+    id ? state.lectures.data.find((item) => item._id === id) : undefined
 
 const { actions, reducer } = slice
 

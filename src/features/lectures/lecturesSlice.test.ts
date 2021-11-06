@@ -24,7 +24,7 @@ describe('lecturesSlice', () => {
       const appState = store.getState()
 
       expect(fetchMock).toHaveBeenCalledTimes(1)
-      expect(appState.lectures.fetch.data).toEqual(lecturesData)
+      expect(appState.lectures.data).toEqual(lecturesData)
     })
 
     it('handles bad status response', async () => {
@@ -44,7 +44,7 @@ describe('lecturesSlice', () => {
       const appState = store.getState()
 
       expect(fetchMock).toHaveBeenCalledTimes(1)
-      expect(appState.lectures.fetch.data).toEqual([lecture])
+      expect(appState.lectures.data).toEqual([lecture])
     })
 
     it('handles bad status response', async () => {
@@ -71,7 +71,7 @@ describe('lecturesSlice', () => {
       const appState = store.getState()
 
       expect(fetchMock).toHaveBeenCalledTimes(2)
-      expect(appState.lectures.fetch.data).toEqual([modifiedLecture])
+      expect(appState.lectures.data).toEqual([modifiedLecture])
     })
 
     it('handles bad _id', async () => {
@@ -88,7 +88,7 @@ describe('lecturesSlice', () => {
       const appState = store.getState()
 
       expect(fetchMock).toHaveBeenCalledTimes(2)
-      expect(appState.lectures.fetch.data).toEqual([lecture])
+      expect(appState.lectures.data).toEqual([lecture])
     })
 
     it('handles bad status response', async () => {
@@ -111,7 +111,7 @@ describe('lecturesSlice', () => {
       const appState = store.getState()
 
       expect(fetchMock).toHaveBeenCalledTimes(2)
-      expect(appState.lectures.fetch.data).toEqual([])
+      expect(appState.lectures.data).toEqual([])
     })
 
     it('handles bad _id', async () => {
@@ -128,7 +128,7 @@ describe('lecturesSlice', () => {
       const appState = store.getState()
 
       expect(fetchMock).toHaveBeenCalledTimes(2)
-      expect(appState.lectures.fetch.data).toEqual([lecture])
+      expect(appState.lectures.data).toEqual([lecture])
     })
 
     it('handles bad status response', async () => {

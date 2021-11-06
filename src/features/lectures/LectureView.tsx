@@ -6,14 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTrashAlt, faBan } from '@fortawesome/free-solid-svg-icons'
 
 import { ApiCallStatuses } from '../../app/types'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import { useAppSelector, useAppDispatch, useToggle } from '../../app/hooks'
 import {
   fetchLectures,
   selectLectures,
   selectLectureById,
   deleteLecture,
 } from './lecturesSlice'
-import useToggle from '../../utils/hooks/useToggle'
 import BackButton from '../../components/backButton/BackButton'
 
 interface ILecture {

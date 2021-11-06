@@ -15,10 +15,6 @@ interface IMethodState {
   error: string | null
 }
 
-interface IFetchMethodState<T> extends IMethodState {
-  data: T[]
-}
-
 interface ISearch {
   keys: string[]
   value: string
@@ -28,15 +24,16 @@ interface ISort {
   key: string
   order: SortOrder
 }
-interface IFilter {
+export interface IFilter {
   search: ISearch
   sort: ISort
 }
 
 export interface IState<T> {
+  data: T[]
   filtered: T[]
   filter: IFilter
-  fetch: IFetchMethodState<T>
+  fetch: IMethodState
   add: IMethodState
   update: IMethodState
   delete: IMethodState
