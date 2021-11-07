@@ -1,11 +1,9 @@
 import { ReactNode } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faLongArrowAltUp,
-  faLongArrowAltDown,
-} from '@fortawesome/free-solid-svg-icons'
+import { FaLongArrowAltUp, FaLongArrowAltDown } from 'react-icons/fa'
 
 import { ISort, SortOrder } from '../../app/types'
+
+import styles from './sortButton.module.css'
 
 interface ISortButtonProps<T> {
   onClick: (key: T) => void
@@ -23,9 +21,9 @@ const SortButton = <T,>({
   const showIndicator = sortKey === sortState.key
   const indicatorType =
     sortState.order === SortOrder.ASC ? (
-      <FontAwesomeIcon icon={faLongArrowAltUp} />
+      <FaLongArrowAltUp />
     ) : (
-      <FontAwesomeIcon icon={faLongArrowAltDown} />
+      <FaLongArrowAltDown />
     )
 
   const handleClick = (e) => {
@@ -34,7 +32,7 @@ const SortButton = <T,>({
   }
 
   return (
-    <a href="" onClick={handleClick}>
+    <a href="" onClick={handleClick} className={styles['sort-button']}>
       {children} {showIndicator && indicatorType}
     </a>
   )

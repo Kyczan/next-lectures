@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTimes } from '@fortawesome/free-solid-svg-icons'
+import { FiDelete } from 'react-icons/fi'
 
 import styles from './Search.module.css'
 
@@ -34,7 +33,7 @@ const Search = ({ onChange }: ISearchProps): JSX.Element => {
       />
       {value && (
         <button className="outline secondary" onClick={resetSearch}>
-          <FontAwesomeIcon icon={faTimes} />
+          <FiDelete />
         </button>
       )}
     </>

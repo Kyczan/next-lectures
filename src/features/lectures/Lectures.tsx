@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { ApiCallStatuses } from '../../app/types'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
@@ -66,9 +64,7 @@ const Lectures = (): JSX.Element => {
         </div>
 
         {status === ApiCallStatuses.LOADING && 'Loading'}
-        <AddButton href="/lectures/add">
-          <FontAwesomeIcon icon={faPlus} /> Dodaj
-        </AddButton>
+        <AddButton href="/lectures/add" />
         <div className="row heading-row">
           <Col flex="0 0 60px" className="right">
             <SortButton<ILecturesSortKeys>

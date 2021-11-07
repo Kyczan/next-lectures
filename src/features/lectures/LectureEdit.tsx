@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { Formik, Form } from 'formik'
 import { useRouter } from 'next/router'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave } from '@fortawesome/free-solid-svg-icons'
+import { FiSave } from 'react-icons/fi'
 
 import Input from '../../components/input/Input'
 import BackButton from '../../components/backButton/BackButton'
@@ -89,8 +88,10 @@ const LectureEdit = ({ id }: ILectureEdit): JSX.Element => {
                   type="submit"
                   disabled={formik.isSubmitting || !formik.isValid}
                   aria-busy={formik.isSubmitting}
+                  className="with-icon"
                 >
-                  <FontAwesomeIcon icon={faSave} /> Zapisz
+                  <FiSave />
+                  Zapisz
                 </button>
               </div>
             </Form>

@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Modal from '../../components/modal/Modal'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPen, faTrashAlt, faBan } from '@fortawesome/free-solid-svg-icons'
+import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
 
 import { ApiCallStatuses } from '../../app/types'
 import { useAppSelector, useAppDispatch, useToggle } from '../../app/hooks'
@@ -78,14 +77,16 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
           <a
             href="#"
             role="button"
-            className="secondary"
+            className="secondary with-icon"
             onClick={() => toggleModal()}
           >
-            <FontAwesomeIcon icon={faTrashAlt} /> Usuń
+            <FiTrash />
+            Usuń
           </a>
           <Link href={`/lectures/${id}/edit`}>
-            <a role="button">
-              <FontAwesomeIcon icon={faPen} /> Edytuj
+            <a role="button" className="with-icon">
+              <FiEdit />
+              Edytuj
             </a>
           </Link>
         </div>
@@ -95,11 +96,13 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
         <>
           <header>Usunąć ten wykład?</header>
           <footer className="inline-wrapper inline-wrapper--end">
-            <button className="secondary" onClick={handleDelete}>
-              <FontAwesomeIcon icon={faTrashAlt} /> Usuń
+            <button className="secondary with-icon" onClick={handleDelete}>
+              <FiTrash />
+              Usuń
             </button>
-            <button onClick={() => toggleModal()}>
-              <FontAwesomeIcon icon={faBan} /> Anuluj
+            <button onClick={() => toggleModal()} className="with-icon">
+              <FiSlash />
+              Anuluj
             </button>
           </footer>
         </>
