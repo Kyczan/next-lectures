@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { FaLongArrowAltUp, FaLongArrowAltDown } from 'react-icons/fa'
 
-import { ISort, SortOrder } from '../../app/types'
+import { ISort, SortOrder } from '../../../app/types'
 
 import styles from './sortButton.module.css'
 
@@ -21,9 +21,9 @@ const SortButton = <T,>({
   const showIndicator = sortKey === sortState.key
   const indicatorType =
     sortState.order === SortOrder.ASC ? (
-      <FaLongArrowAltUp />
+      <FaLongArrowAltUp data-testid="icon-up" />
     ) : (
-      <FaLongArrowAltDown />
+      <FaLongArrowAltDown data-testid="icon-down" />
     )
 
   const handleClick = (e) => {

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { FiSave } from 'react-icons/fi'
 
 import Input from '../../components/input/Input'
-import BackButton from '../../components/backButton/BackButton'
+import BackButton from '../../components/buttons/backButton/BackButton'
 import { ApiCallStatuses } from '../../app/types'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import {

@@ -12,9 +12,9 @@ import {
   ILecturesSortKeys,
 } from './lecturesSlice'
 import Col from '../../components/col/Col'
-import AddButton from '../../components/addButton/AddButton'
+import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
-import SortButton from '../../components/sortButton/sortButton'
+import SortButton from '../../components/buttons/sortButton/SortButton'
 
 const Lectures = (): JSX.Element => {
   const [lectures, setLectures] = useState([])

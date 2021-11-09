@@ -12,7 +12,7 @@ import {
   selectLectureById,
   deleteLecture,
 } from './lecturesSlice'
-import BackButton from '../../components/backButton/BackButton'
+import BackButton from '../../components/buttons/backButton/BackButton'
 
 interface ILecture {
   id: string
