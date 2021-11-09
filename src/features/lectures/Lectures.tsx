@@ -66,7 +66,7 @@ const Lectures = (): JSX.Element => {
         {status === ApiCallStatuses.LOADING && 'Loading'}
         <AddButton href="/lectures/add" />
         <div className="row heading-row">
-          <Col flex="0 0 60px" className="right">
+          <Col flex="0 0 60px">
             <SortButton<ILecturesSortKeys>
               onClick={handleSort}
               sortKey="number"
@@ -104,9 +104,7 @@ const Lectures = (): JSX.Element => {
             data-testid="lectures-row"
             onClick={() => handleRowClick(item._id)}
           >
-            <Col flex="0 0 60px" className="right">
-              {item.number}
-            </Col>
+            <Col flex="0 0 60px">{item.number}</Col>
 
             <Col flex="2 1">
               <div>

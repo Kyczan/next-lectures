@@ -1,7 +1,3 @@
-.right {
-  text-align: right;
-}
-
 .inline-wrapper {
   display: flex;
   gap: 1rem;
