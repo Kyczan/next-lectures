@@ -14,7 +14,7 @@ const Input = (props: IInputProps): JSX.Element => {
   return (
     <div>
       <label htmlFor={props.name}>{props.label}</label>
-      <input {...field} {...props} {...aria} />
+      <input {...field} {...props} {...aria} data-testid="input" />
       {meta.touched && meta.error ? (
         <small className={styles.error}>{meta.error}</small>
       ) : null}

@@ -30,9 +30,14 @@ const Search = ({ onChange }: ISearchProps): JSX.Element => {
         placeholder="Szukaj"
         value={value}
         onChange={handleChange}
+        data-testid="search-input"
       />
       {value && (
-        <button className="outline secondary" onClick={resetSearch}>
+        <button
+          className="outline secondary"
+          onClick={resetSearch}
+          data-testid="search-delete-btn"
+        >
           <FiDelete />
         </button>
       )}

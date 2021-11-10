@@ -8,7 +8,7 @@ export const applyFilter = <DataType>(
 
   const filtered = data.filter((item) =>
     search.keys.some((key) =>
-      item[key].toLowerCase().includes(search.value.toLowerCase())
+      item[key]?.toLowerCase()?.includes(search.value.toLowerCase())
     )
   )
 

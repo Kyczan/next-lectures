@@ -1,10 +1,13 @@
 import { makeStore, AppStore } from '../../app/store'
+import { useAppSelector } from '../../app/hooks'
 import {
   fetchLectures,
   addLecture,
   updateLecture,
   deleteLecture,
   ILecturesDataItem,
+  selectLectures,
+  selectLectureById,
 } from './lecturesSlice'
 import lecturesDataImport from '../../../__mocks__/data/lectures.json'
 
@@ -138,6 +141,35 @@ describe('lecturesSlice', () => {
 
       expect(fetchMock).toHaveBeenCalledTimes(1)
       expect(appState.lectures.delete.error).toEqual('Bad Request')
+    })
+  })
+
+  describe('selectors', () => {
+    it('handle selectLectures', async () => {
+      fetchMock.once(JSON.stringify(lecturesData))
+      await store.dispatch(fetchLectures())
+      const appState = store.getState()
+
+      const { data } = selectLectures(appState)
+      expect(data).toEqual(lecturesData)
+    })
+
+    it('handle selectLectureById with id', async () => {
+      fetchMock.once(JSON.stringify(lecturesData))
+      await store.dispatch(fetchLectures())
+      const appState = store.getState()
+
+      const lecture = selectLectureById('a')(appState)
+      expect(lecture).toEqual(lecturesData[0])
+    })
+
+    it('handle selectLectureById without id', async () => {
+      fetchMock.once(JSON.stringify(lecturesData))
+      await store.dispatch(fetchLectures())
+      const appState = store.getState()
+
+      const lecture = selectLectureById()(appState)
+      expect(lecture).toEqual(undefined)
     })
   })
 })

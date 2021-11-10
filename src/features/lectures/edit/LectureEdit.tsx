@@ -3,17 +3,17 @@ import { Formik, Form } from 'formik'
 import { useRouter } from 'next/router'
 import { FiSave } from 'react-icons/fi'
 
-import Input from '../../components/input/Input'
-import BackButton from '../../components/buttons/backButton/BackButton'
-import { ApiCallStatuses } from '../../app/types'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import Input from '../../../components/input/Input'
+import BackButton from '../../../components/buttons/backButton/BackButton'
+import { ApiCallStatuses } from '../../../app/types'
+import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import {
   fetchLectures,
   updateLecture,
   addLecture,
   selectLectures,
   selectLectureById,
-} from './lecturesSlice'
+} from '../lecturesSlice'
 
 interface ILectureEdit {
   id?: string

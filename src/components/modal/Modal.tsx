@@ -1,9 +1,7 @@
 import { ReactNode } from 'react'
-import * as ReactModal from 'react-modal'
+import ReactModal from 'react-modal'
 
 import styles from './Modal.module.css'
-
-ReactModal.setAppElement('#__next')
 
 interface IModal {
   isOpen: boolean
@@ -18,6 +16,7 @@ const Modal = ({ isOpen, onRequestClose, children }: IModal): JSX.Element => {
       onRequestClose={onRequestClose}
       className={styles.modal}
       overlayClassName={styles.overlay}
+      appElement={document.getElementById('__next')}
     >
       <div className={styles.content}>{children}</div>
     </ReactModal>

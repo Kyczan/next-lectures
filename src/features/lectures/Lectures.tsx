@@ -108,7 +108,7 @@ const Lectures = (): JSX.Element => {
 
             <Col flex="2 1">
               <div>
-                <strong>{item.title}</strong>
+                <strong data-testid="title">{item.title}</strong>
               </div>
               <div>
                 <small>{item.note}</small>

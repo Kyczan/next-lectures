@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-import LectureEdit from '../../../features/lectures/LectureEdit'
+import LectureEdit from '../../../features/lectures/edit/LectureEdit'
 
 const LecturesPage: NextPage = () => {
   const router = useRouter()

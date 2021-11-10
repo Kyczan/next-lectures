@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Modal from '../../components/modal/Modal'
+import Modal from '../../../components/modal/Modal'
 import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
 
-import { ApiCallStatuses } from '../../app/types'
-import { useAppSelector, useAppDispatch, useToggle } from '../../app/hooks'
+import { ApiCallStatuses } from '../../../app/types'
+import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
 import {
   fetchLectures,
   selectLectures,
   selectLectureById,
   deleteLecture,
-} from './lecturesSlice'
-import BackButton from '../../components/buttons/backButton/BackButton'
+} from '../lecturesSlice'
+import BackButton from '../../../components/buttons/backButton/BackButton'
 
 interface ILecture {
   id: string
