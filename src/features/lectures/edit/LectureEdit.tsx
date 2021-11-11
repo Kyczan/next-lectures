@@ -89,6 +89,7 @@ const LectureEdit = ({ id }: ILectureEdit): JSX.Element => {
                   disabled={formik.isSubmitting || !formik.isValid}
                   aria-busy={formik.isSubmitting}
                   className="with-icon"
+                  data-testid="submit-form"
                 >
                   <FiSave />
                   Zapisz

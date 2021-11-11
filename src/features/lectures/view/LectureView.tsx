@@ -79,12 +79,13 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
             role="button"
             className="secondary with-icon"
             onClick={() => toggleModal()}
+            data-testid="delete-btn"
           >
             <FiTrash />
             Usuń
           </a>
           <Link href={`/lectures/${id}/edit`}>
-            <a role="button" className="with-icon">
+            <a role="button" className="with-icon" data-testid="edit-btn">
               <FiEdit />
               Edytuj
             </a>
@@ -96,11 +97,19 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
         <>
           <header>Usunąć ten wykład?</header>
           <footer className="inline-wrapper inline-wrapper--end">
-            <button className="secondary with-icon" onClick={handleDelete}>
+            <button
+              className="secondary with-icon"
+              onClick={handleDelete}
+              data-testid="modal-delete-btn"
+            >
               <FiTrash />
               Usuń
             </button>
-            <button onClick={() => toggleModal()} className="with-icon">
+            <button
+              onClick={() => toggleModal()}
+              className="with-icon"
+              data-testid="modal-cancel-btn"
+            >
               <FiSlash />
               Anuluj
             </button>

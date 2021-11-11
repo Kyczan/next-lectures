@@ -1,17 +1,13 @@
 import { Provider } from 'react-redux'
-import { useRouter } from 'next/router'
+import router from 'next/router'
 import { render, fireEvent, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { makeStore } from '../../app/store'
 import lecturesData from '../../../__mocks__/data/lectures.json'
-
 import Lectures from './Lectures'
 
-jest.mock('next/router', () => ({
-  __esModule: true,
-  useRouter: jest.fn(),
-}))
+jest.mock('next/dist/client/router', () => require('next-router-mock'))
 
 describe('<Lectures />', () => {
   let store
@@ -51,10 +47,6 @@ describe('<Lectures />', () => {
 
   it('redirects on row click', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
-    const mockRouter = {
-      push: jest.fn(),
-    }
-    ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
 
     const { findAllByTestId } = render(
       <Provider store={store}>
@@ -65,9 +57,7 @@ describe('<Lectures />', () => {
     const rows = await findAllByTestId('lectures-row')
     fireEvent.click(rows[0])
 
-    expect(mockRouter.push).toHaveBeenCalledWith(
-      `/lectures/${lecturesData[0]._id}`
-    )
+    expect(router).toMatchObject({ asPath: `/lectures/${lecturesData[0]._id}` })
   })
 
   it('handles sort', async () => {

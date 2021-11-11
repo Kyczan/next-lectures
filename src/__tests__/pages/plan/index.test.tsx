@@ -1,14 +1,13 @@
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { makeStore } from '../../app/store'
-import IndexPage from '../../pages/plan/index'
+import { makeStore } from '../../../app/store'
+import IndexPage from '../../../pages/plan/index'
 
-describe('IndexPage', () => {
+describe('/plan', () => {
   let store
   beforeEach(() => {
     store = makeStore()
-    fetchMock.resetMocks()
   })
 
   it('renders', () => {
