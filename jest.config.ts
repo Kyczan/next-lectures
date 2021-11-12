@@ -15,6 +15,7 @@ const config: InitialOptionsTsJest = {
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/pages/_app.tsx',
+    '!src/pages/_document.tsx',
     '!src/pages/api/auth/*',
     '!**/*.d.ts',
     '!**/node_modules/**',

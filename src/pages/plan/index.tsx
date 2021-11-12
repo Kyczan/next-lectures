@@ -5,8 +5,7 @@ const IndexPage: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Planer</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Plan</title>
       </Head>
     </div>
   )

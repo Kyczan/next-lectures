@@ -55,7 +55,6 @@ const Lectures = (): JSX.Element => {
     <>
       <Head>
         <title>Wykłady</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <section>
         <div className="inline-wrapper">
