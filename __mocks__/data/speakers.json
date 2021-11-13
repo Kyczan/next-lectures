@@ -1,32 +1,28 @@
 [
   {
-    "id": "a",
-    "firstName": "John",
-    "lastName": "Smith",
+    "_id": "a",
+    "name": "John Smith",
     "congregation": "Shire South",
     "note": null,
     "lastDate": "2021-01-01"
   },
   {
-    "id": "b",
-    "firstName": "John",
-    "lastName": "Smithowitz",
+    "_id": "b",
+    "name": "John Smithowitz",
     "congregation": "Gondor",
     "note": "some note",
     "lastDate": "2022-01-01"
   },
   {
-    "id": "c",
-    "firstName": "Karl",
-    "lastName": "Garmichpartenkirchen",
+    "_id": "c",
+    "name": "Karl Garmichpartenkirchen",
     "congregation": "Mordor",
     "note": null,
     "lastDate": "2021-01-01"
   },
   {
-    "id": "d",
-    "firstName": "Jonathan",
-    "lastName": "Cool",
+    "_id": "d",
+    "name": "Jonathan Cool",
     "congregation": "Rohan",
     "note": null,
     "lastDate": null

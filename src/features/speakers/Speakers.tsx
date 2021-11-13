@@ -5,20 +5,20 @@ import { useRouter } from 'next/router'
 import { ApiCallStatuses } from '../../app/types'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import {
-  fetchLectures,
-  selectLectures,
+  fetchSpeakers,
+  selectSpeakers,
   setSearch,
   setSort,
-  ILecturesSortKeys,
-  ILecturesDataItem,
-} from './lecturesSlice'
+  ISpeakersSortKeys,
+  ISpeakersDataItem,
+} from './speakersSlice'
 import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 import SortButton from '../../components/buttons/sortButton/SortButton'
 
-const Lectures = (): JSX.Element => {
-  const [lectures, setLectures] = useState<ILecturesDataItem[]>([])
+const Speakers = (): JSX.Element => {
+  const [speakers, setSpeakers] = useState<ISpeakersDataItem[]>([])
   const router = useRouter()
   const {
     filtered,
@@ -27,21 +27,21 @@ const Lectures = (): JSX.Element => {
       sort: { order },
     },
     fetch: { status },
-  } = useAppSelector(selectLectures)
+  } = useAppSelector(selectSpeakers)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (status === ApiCallStatuses.IDLE) {
-      dispatch(fetchLectures())
+      dispatch(fetchSpeakers())
     }
   }, [status, dispatch])
 
   useEffect(() => {
-    setLectures(filtered)
+    setSpeakers(filtered)
   }, [filtered])
 
   const handleRowClick = (id) => {
-    router.push(`/lectures/${id}`)
+    router.push(`/speakers/${id}`)
   }
 
   const handleSort = (key) => {
@@ -55,33 +55,33 @@ const Lectures = (): JSX.Element => {
   return (
     <section>
       <div className="inline-wrapper">
-        <h1>Wykłady</h1>
+        <h1>Mówcy</h1>
         <Search onChange={handleSearch} />
       </div>
 
       {status === ApiCallStatuses.LOADING && 'Loading'}
-      <AddButton href="/lectures/add" />
+      <AddButton href="/speakers/add" />
       <div className="row heading-row">
-        <Col flex="0 0 60px">
-          <SortButton<ILecturesSortKeys>
+        <Col flex="1 1">
+          <SortButton<ISpeakersSortKeys>
             onClick={handleSort}
-            sortKey="number"
+            sortKey="name"
             sortState={sort}
           >
-            #
-          </SortButton>
-        </Col>
-        <Col flex="2 1">
-          <SortButton<ILecturesSortKeys>
-            onClick={handleSort}
-            sortKey="title"
-            sortState={sort}
-          >
-            <strong>Tytuł</strong>
+            <strong>Imię i Nazwisko</strong>
           </SortButton>
         </Col>
         <Col flex="1 1">
-          <SortButton<ILecturesSortKeys>
+          <SortButton<ISpeakersSortKeys>
+            onClick={handleSort}
+            sortKey="congregation"
+            sortState={sort}
+          >
+            Zbór
+          </SortButton>
+        </Col>
+        <Col flex="1 1">
+          <SortButton<ISpeakersSortKeys>
             onClick={handleSort}
             sortKey="lastDate"
             sortState={sort}
@@ -93,18 +93,16 @@ const Lectures = (): JSX.Element => {
 
       <hr />
 
-      {lectures.map((item) => (
+      {speakers.map((item) => (
         <div
           className="row"
           key={item._id}
-          data-testid="lectures-row"
+          data-testid="speakers-row"
           onClick={() => handleRowClick(item._id)}
         >
-          <Col flex="0 0 60px">{item.number}</Col>
-
-          <Col flex="2 1">
+          <Col flex="1 1">
             <div>
-              <strong data-testid="title">{item.title}</strong>
+              <strong>{item.name}</strong>
             </div>
             <div>
               <small>{item.note}</small>
@@ -112,15 +110,14 @@ const Lectures = (): JSX.Element => {
           </Col>
 
           <Col flex="1 1">
-            <div>{item.lastDate}</div>
-            <div>
-              <small>{item.lastSpeaker}</small>
-            </div>
+            <span data-testid="congregation">{item.congregation}</span>
           </Col>
+
+          <Col flex="1 1">{item.lastDate}</Col>
         </div>
       ))}
     </section>
   )
 }
 
-export default Lectures
+export default Speakers

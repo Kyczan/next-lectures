@@ -1,5 +1,4 @@
 import { makeStore, AppStore } from '../../app/store'
-import { useAppSelector } from '../../app/hooks'
 import {
   fetchLectures,
   addLecture,
