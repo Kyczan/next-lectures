@@ -3,13 +3,13 @@ import router from 'next/router'
 import ReactModal from 'react-modal'
 import { render, fireEvent, waitFor } from '@testing-library/react'
 
-import SpeakerView from './SpeakerView'
+import PlanView from './PlanView'
 import { makeStore } from '../../../app/store'
-import speakersData from '../../../../__mocks__/data/speakers.json'
+import planData from '../../../../__mocks__/data/plan.json'
 
 jest.mock('next/dist/client/router', () => require('next-router-mock'))
 
-describe('<SpeakerView />', () => {
+describe('<PlanView />', () => {
   let store
   beforeEach(() => {
     store = makeStore()
@@ -17,21 +17,21 @@ describe('<SpeakerView />', () => {
   })
 
   it('renders without crash', async () => {
-    fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByText } = render(
       <Provider store={store}>
-        <SpeakerView id={speakersData[0]._id} />
+        <PlanView id={planData[0]._id} />
       </Provider>
     )
 
-    await findByText('Szczegóły mówcy')
+    await findByText('Szczegóły wydarzenia')
   })
 
   it('redirects to edit page on Edit btn click', async () => {
-    fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByTestId } = render(
       <Provider store={store}>
-        <SpeakerView id={speakersData[0]._id} />
+        <PlanView id={planData[0]._id} />
       </Provider>
     )
 
@@ -40,15 +40,15 @@ describe('<SpeakerView />', () => {
     fireEvent.click(btn)
 
     expect(router).toMatchObject({
-      asPath: `/speakers/${speakersData[0]._id}/edit`,
+      asPath: `/plan/${planData[0]._id}/edit`,
     })
   })
 
   it('opens dialog on click', async () => {
-    fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, getByText } = render(
       <Provider store={store}>
-        <SpeakerView id={speakersData[0]._id} />
+        <PlanView id={planData[0]._id} />
       </Provider>
     )
     ReactModal.setAppElement(container)
@@ -57,14 +57,14 @@ describe('<SpeakerView />', () => {
 
     fireEvent.click(showModalBtn)
 
-    expect(getByText('Usunąć tego mówcę?')).toBeInTheDocument()
+    expect(getByText('Usunąć to wydarzenie?')).toBeInTheDocument()
   })
 
   it('opens dialog and then Delete', async () => {
-    fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, queryByText } = render(
       <Provider store={store}>
-        <SpeakerView id={speakersData[0]._id} />
+        <PlanView id={planData[0]._id} />
       </Provider>
     )
     ReactModal.setAppElement(container)
@@ -76,18 +76,18 @@ describe('<SpeakerView />', () => {
     fireEvent.click(deleteBtn)
 
     await waitFor(() => {
-      expect(queryByText('Usunąć tego mówcę?')).not.toBeInTheDocument()
+      expect(queryByText('Usunąć to wydarzenie?')).not.toBeInTheDocument()
       expect(router).toMatchObject({
-        asPath: '/speakers',
+        asPath: '/plan',
       })
     })
   })
 
   it('opens dialog and then Cancel', async () => {
-    fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, queryByText } = render(
       <Provider store={store}>
-        <SpeakerView id={speakersData[0]._id} />
+        <PlanView id={planData[0]._id} />
       </Provider>
     )
     ReactModal.setAppElement(container)
@@ -98,6 +98,6 @@ describe('<SpeakerView />', () => {
     const cancelBtn = await findByTestId('modal-cancel-btn')
     fireEvent.click(cancelBtn)
 
-    expect(queryByText('Usunąć tego mówcę?')).not.toBeInTheDocument()
+    expect(queryByText('Usunąć to wydarzenie?')).not.toBeInTheDocument()
   })
 })

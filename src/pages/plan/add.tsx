@@ -1,15 +1,15 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-import Plan from '../../features/plan/Plan'
+import PlanEdit from '../../features/plan/edit/PlanEdit'
 
 const Page: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Plan</title>
+        <title>Plan | Nowy</title>
       </Head>
-      <Plan />
+      <PlanEdit />
     </>
   )
 }
