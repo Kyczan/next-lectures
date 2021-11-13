@@ -59,6 +59,10 @@
     padding-left: 16px;
   }
 
+  .row > div:first-child > div:not(:first-child) {
+    padding-left: 16px;
+  }
+
   .row > div:not(:last-child) {
     margin-right: 0;
   }
