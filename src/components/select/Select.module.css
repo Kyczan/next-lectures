@@ -20,10 +20,6 @@
   position: relative;
 }
 
-.container:hover {
-  border-color: #6779E1;
-}
-
 .select {
   position: absolute;
   z-index: 2;
