@@ -8,7 +8,7 @@ import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
 import { fetchPlan, selectPlan, selectPlanById, deletePlan } from '../planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
-import { getLecture } from '../Plan'
+import { getLecture, formatDate } from '../Plan'
 
 interface IPlan {
   id: string
@@ -49,7 +49,7 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
             <small>Data:</small>
           </dt>
           <dd>
-            <strong>{plan.date}</strong>
+            <strong>{formatDate(plan.date)}</strong>
           </dd>
           <dt>
             <small>Wykład:</small>
