@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Formik, Form } from 'formik'
 import { useRouter } from 'next/router'
 import { FiSave } from 'react-icons/fi'
 
 import Input from '../../../components/input/Input'
+import Select from '../../../components/select/Select'
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
@@ -14,6 +15,8 @@ import {
   selectPlan,
   selectPlanById,
 } from '../planSlice'
+import { fetchLectures, selectLectures } from '../../lectures/lecturesSlice'
+import { fetchSpeakers, selectSpeakers } from '../../speakers/speakersSlice'
 
 interface IPlanEdit {
   id?: string
@@ -25,19 +28,39 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
   const dispatch = useAppDispatch()
   const plan = useAppSelector(selectPlanById(id))
   const {
-    fetch: { status },
+    fetch: { status: planStatus },
   } = useAppSelector(selectPlan)
+  const {
+    data: lecturesData,
+    fetch: { status: lecturesStatus },
+  } = useAppSelector(selectLectures)
+  const {
+    data: speakersData,
+    fetch: { status: speakersStatus },
+  } = useAppSelector(selectSpeakers)
 
   useEffect(() => {
-    if (status === ApiCallStatuses.IDLE) {
+    if (planStatus === ApiCallStatuses.IDLE) {
       dispatch(fetchPlan())
     }
-  }, [status, dispatch])
+  }, [planStatus, dispatch])
+
+  useEffect(() => {
+    if (lecturesStatus === ApiCallStatuses.IDLE) {
+      dispatch(fetchLectures())
+    }
+  }, [lecturesStatus, dispatch])
+
+  useEffect(() => {
+    if (speakersStatus === ApiCallStatuses.IDLE) {
+      dispatch(fetchSpeakers())
+    }
+  }, [speakersStatus, dispatch])
 
   const initialValues = {
     date: plan?.date || '',
-    lecture: plan?.lecture || '',
-    speaker: plan?.speaker || '',
+    lecture: plan?.lecture || null,
+    speaker: plan?.speaker || null,
     note: plan?.note || '',
   }
 
@@ -62,6 +85,26 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
     }
   }
 
+  const lecturesOptions = useMemo(() => {
+    return lecturesData.map((item) => {
+      return {
+        name: `${item.number}. ${item.title}`,
+        value: item._id,
+        data: item,
+      }
+    })
+  }, [lecturesData])
+
+  const speakersOptions = useMemo(() => {
+    return speakersData.map((item) => {
+      return {
+        name: item.name,
+        value: item._id,
+        data: item,
+      }
+    })
+  }, [speakersData])
+
   return (
     <>
       <div className="inline-wrapper">
@@ -77,9 +120,19 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
         >
           {(formik) => (
             <Form>
-              <Input label="Data *" name="date" type="text" />
-              <Input label="Wykład" name="lecture" type="text" />
-              <Input label="Mówca" name="speaker" type="text" />
+              <Input label="Data *" name="date" type="date" />
+              <Select
+                label="Wykład"
+                name="lecture"
+                placeholder="Wybierz wykład"
+                options={lecturesOptions}
+              />
+              <Select
+                label="Mówca"
+                name="speaker"
+                placeholder="Wybierz mówcę"
+                options={speakersOptions}
+              />
               <Input label="Notatka" name="note" type="text" />
               <div className="inline-wrapper inline-wrapper--end">
                 <button

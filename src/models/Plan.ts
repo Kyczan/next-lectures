@@ -1,18 +1,23 @@
 import mongoose, { Schema, model } from 'mongoose'
 
+import { LectureSchema } from './Lecture'
+import { SpeakerSchema } from './Speaker'
+import { ILecturesDataItem } from '../features/lectures/lecturesSlice'
+import { ISpeakersDataItem } from '../features/speakers/speakersSlice'
+
 interface IPlan {
   date: string
-  lecture?: string
+  lecture?: ILecturesDataItem
+  speaker?: ISpeakersDataItem
   note?: string
-  speaker?: string
   congregation?: string
 }
 
 const PlanSchema = new Schema<IPlan>({
   date: { type: String, required: true },
-  lecture: String,
+  lecture: LectureSchema,
+  speaker: SpeakerSchema,
   note: String,
-  speaker: String,
   congregation: String,
 })
 

@@ -39,6 +39,12 @@ const Plan = (): JSX.Element => {
     dispatch(setSearch(value))
   }
 
+  const formatDate = (str) => {
+    const date = new Date(str)
+    const options = { year: 'numeric', month: 'long', day: 'numeric' } as const
+    return new Intl.DateTimeFormat('pl-PL', options).format(date)
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -49,10 +55,10 @@ const Plan = (): JSX.Element => {
       {status === ApiCallStatuses.LOADING && 'Loading'}
       <AddButton href="/plan/add" />
       <div className="row heading-row">
-        <Col flex="1 1">
+        <Col flex="1 2">
           <strong>Data</strong>
         </Col>
-        <Col flex="1 1">Wykład</Col>
+        <Col flex="2 1">Wykład</Col>
         <Col flex="1 1">Mówca</Col>
       </div>
 
@@ -65,13 +71,17 @@ const Plan = (): JSX.Element => {
           data-testid="plan-row"
           onClick={() => handleRowClick(item._id)}
         >
-          <Col flex="1 1">
-            <strong data-testid="date">{item.date}</strong>
+          <Col flex="1 2">
+            <strong data-testid="date">{formatDate(item.date)}</strong>
           </Col>
 
-          <Col flex="1 1">
+          <Col flex="2 1">
             <div>
-              <span>{item.lecture}</span>
+              <span>
+                {item.lecture?.number
+                  ? `${item.lecture?.number}. ${item.lecture?.title}`
+                  : ''}
+              </span>
             </div>
             <div>
               <small>{item.note}</small>
@@ -80,10 +90,10 @@ const Plan = (): JSX.Element => {
 
           <Col flex="1 1">
             <div>
-              <span>{item.speaker}</span>
+              <span>{item.speaker?.name}</span>
             </div>
             <div>
-              <small>{item.congregation}</small>
+              <small>{item.speaker?.congregation}</small>
             </div>
           </Col>
         </div>

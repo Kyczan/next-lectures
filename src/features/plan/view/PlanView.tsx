@@ -53,7 +53,9 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
           <dt>
             <small>Wykład:</small>
           </dt>
-          <dd>{plan.lecture}</dd>
+          <dd>
+            {plan.lecture?.number}. {plan.lecture?.title}
+          </dd>
           <dt>
             <small>Notatka:</small>
           </dt>
@@ -61,11 +63,11 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
           <dt>
             <small>Mówca:</small>
           </dt>
-          <dd>{plan.speaker}</dd>
+          <dd>{plan.speaker?.name}</dd>
           <dt>
             <small>Zbór:</small>
           </dt>
-          <dd>{plan.congregation}</dd>
+          <dd>{plan.speaker?.congregation}</dd>
         </dl>
 
         <div className="inline-wrapper inline-wrapper--end">

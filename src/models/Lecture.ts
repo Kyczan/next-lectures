@@ -8,7 +8,7 @@ interface ILecture {
   lastSpeaker?: string
 }
 
-const LectureSchema = new Schema<ILecture>({
+export const LectureSchema = new Schema<ILecture>({
   number: { type: String, required: true },
   title: { type: String, required: true },
   lastDate: String,

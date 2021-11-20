@@ -7,7 +7,7 @@ interface ISpeaker {
   lastDate?: string
 }
 
-const SpeakerSchema = new Schema<ISpeaker>({
+export const SpeakerSchema = new Schema<ISpeaker>({
   name: { type: String, required: true },
   congregation: String,
   note: String,

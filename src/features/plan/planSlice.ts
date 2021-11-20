@@ -1,23 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppState } from '../../app/store'
 import { ApiCallStatuses, SortOrder, IState } from '../../app/types'
+import { ILecturesDataItem } from '../lectures/lecturesSlice'
+import { ISpeakersDataItem } from '../speakers/speakersSlice'
 import { applyFilter } from '../../utils/filter/applyFilter'
 
 export interface IPlanDataItem {
   _id: string
   date: string
-  lecture?: string
+  lecture?: ILecturesDataItem
+  speaker?: ISpeakersDataItem
   note?: string
-  speaker?: string
-  congregation?: string
 }
 
-export type IPlanSearchKeys =
-  | 'date'
-  | 'lecture'
-  | 'note'
-  | 'speaker'
-  | 'congregation'
+export type IPlanSearchKeys = 'date' | 'lecture' | 'note' | 'speaker'
 export type IPlanSortKeys = 'date'
 
 export const fetchPlan = createAsyncThunk('plan/fetch', async () => {
@@ -89,7 +85,7 @@ export const initialState: IState<
   filtered: [],
   filter: {
     search: {
-      keys: ['date', 'lecture', 'note', 'speaker', 'congregation'],
+      keys: ['date', 'lecture', 'note', 'speaker'],
       value: '',
     },
     sort: {

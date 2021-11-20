@@ -1,0 +1,43 @@
+.container {
+  position: relative;
+}
+
+.container:hover {
+  border-color: #6779E1;
+}
+
+.select {
+  position: absolute;
+    z-index: 2;
+    top: 44px;
+    right: 0;
+    left: 0;
+    border-radius: 3px;
+    overflow: auto;
+    max-height: 360px;
+}
+
+.options {
+  list-style: none;
+}
+
+.row {
+  display: block;
+}
+
+.option {
+  display: block;
+  height: 36px;
+  width: 100%;
+  padding: 0 16px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.option.is-selected {
+  background: rgb(103, 121, 225);
+  color: #fff;
+}
