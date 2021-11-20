@@ -66,7 +66,6 @@ const Select = ({
           renderValue={(valueProps: any) => (
             <input {...valueProps} {...aria} data-testid="select" />
           )}
-          // printOptions="always"
         />
         {localValue && (
           <button

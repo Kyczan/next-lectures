@@ -26,36 +26,46 @@
 
 .select {
   position: absolute;
-    z-index: 2;
-    top: 44px;
-    right: 0;
-    left: 0;
-    border-radius: 3px;
-    overflow: auto;
-    max-height: 360px;
+  z-index: 2;
+  top: calc(1rem * var(--line-height) + var(--form-element-spacing-vertical) * 2 + var(--border-width) * 2 + 1rem);
+  right: 0;
+  left: 0;
+  border-radius: var(--border-radius);
+  overflow: auto;
+  max-height: 360px;
+  background-color: var(--form-element-background-color);
+  border: var(--border-width) solid var(--form-element-border-color);
 }
 
 .options {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .row {
   display: block;
+  margin: 0;
 }
 
 .option {
   display: block;
-  height: 36px;
   width: 100%;
-  padding: 0 16px;
   border: none;
   outline: none;
-  font-size: 14px;
   text-align: left;
   cursor: pointer;
+  margin: 0;
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--form-element-color);
+}
+
+.option:hover {
+  background-color: var(--contrast-focus);
 }
 
 .option.is-selected {
-  background: rgb(103, 121, 225);
-  color: #fff;
+  background: var(--primary);
+  color: var(--color);
 }
