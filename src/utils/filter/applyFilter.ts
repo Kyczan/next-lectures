@@ -9,13 +9,16 @@ export const applyFilter = <DataType>(
   const resolvePath = (object, path) =>
     path.split('.').reduce((o, p) => o?.[p], object)
 
-  const filtered = data.filter((item) =>
-    search.keys.some((key) =>
-      resolvePath(item, key)
-        ?.toLowerCase()
-        ?.includes(search.value.toLowerCase())
-    )
-  )
+  const filtered =
+    search && search.value
+      ? data.filter((item) =>
+          search.keys.some((key) =>
+            resolvePath(item, key)
+              ?.toLowerCase()
+              ?.includes(search.value.toLowerCase())
+          )
+        )
+      : [...data]
 
   const asc = sort.order === SortOrder.ASC ? 1 : -1
   filtered.sort((a, b) => {

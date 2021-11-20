@@ -25,7 +25,7 @@ export interface ISort<SortType> {
   order: SortOrder
 }
 export interface IFilter<SearchType, SortType> {
-  search: ISearch<SearchType>
+  search?: ISearch<SearchType>
   sort: ISort<SortType>
 }
 

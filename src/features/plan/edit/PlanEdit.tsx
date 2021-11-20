@@ -6,7 +6,7 @@ import { FiSave } from 'react-icons/fi'
 import Input from '../../../components/input/Input'
 import Select from '../../../components/select/Select'
 import BackButton from '../../../components/buttons/backButton/BackButton'
-import { ApiCallStatuses } from '../../../app/types'
+import { ApiCallStatuses, IFilter, SortOrder } from '../../../app/types'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import {
   fetchPlan,
@@ -15,8 +15,19 @@ import {
   selectPlan,
   selectPlanById,
 } from '../planSlice'
-import { fetchLectures, selectLectures } from '../../lectures/lecturesSlice'
-import { fetchSpeakers, selectSpeakers } from '../../speakers/speakersSlice'
+import {
+  fetchLectures,
+  selectLectures,
+  ILecturesSearchKeys,
+  ILecturesSortKeys,
+} from '../../lectures/lecturesSlice'
+import {
+  fetchSpeakers,
+  selectSpeakers,
+  ISpeakersSearchKeys,
+  ISpeakersSortKeys,
+} from '../../speakers/speakersSlice'
+import { applyFilter } from '../../../utils/filter/applyFilter'
 
 interface IPlanEdit {
   id?: string
@@ -86,7 +97,14 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
   }
 
   const lecturesOptions = useMemo(() => {
-    return lecturesData.map((item) => {
+    const filter: IFilter<ILecturesSearchKeys, ILecturesSortKeys> = {
+      sort: {
+        key: 'number',
+        order: SortOrder.ASC,
+      },
+    }
+    const filtered = applyFilter(lecturesData, filter)
+    return filtered.map((item) => {
       return {
         name: `${item.number}. ${item.title}`,
         value: item._id,
@@ -96,7 +114,14 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
   }, [lecturesData])
 
   const speakersOptions = useMemo(() => {
-    return speakersData.map((item) => {
+    const filter: IFilter<ISpeakersSearchKeys, ISpeakersSortKeys> = {
+      sort: {
+        key: 'name',
+        order: SortOrder.ASC,
+      },
+    }
+    const filtered = applyFilter(speakersData, filter)
+    return filtered.map((item) => {
       return {
         name: item.name,
         value: item._id,
