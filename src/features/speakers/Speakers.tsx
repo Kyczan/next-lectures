@@ -56,66 +56,73 @@ const Speakers = (): JSX.Element => {
     <section>
       <div className="inline-wrapper">
         <h1>Mówcy</h1>
-        <Search onChange={handleSearch} />
+        {status === ApiCallStatuses.SUCCEEDED && (
+          <Search onChange={handleSearch} />
+        )}
       </div>
 
-      {status === ApiCallStatuses.LOADING && 'Loading'}
-      <AddButton href="/speakers/add" />
-      <div className="row heading-row">
-        <Col flex="1 1">
-          <SortButton<ISpeakersSortKeys>
-            onClick={handleSort}
-            sortKey="name"
-            sortState={sort}
-          >
-            <strong>Imię i Nazwisko</strong>
-          </SortButton>
-        </Col>
-        <Col flex="1 1">
-          <SortButton<ISpeakersSortKeys>
-            onClick={handleSort}
-            sortKey="congregation"
-            sortState={sort}
-          >
-            Zbór
-          </SortButton>
-        </Col>
-        <Col flex="1 1">
-          <SortButton<ISpeakersSortKeys>
-            onClick={handleSort}
-            sortKey="lastDate"
-            sortState={sort}
-          >
-            Ostatnie wygłoszenie
-          </SortButton>
-        </Col>
-      </div>
+      {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
+      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.SUCCEEDED && (
+        <>
+          <AddButton href="/speakers/add" />
+          <div className="row heading-row">
+            <Col flex="1 1">
+              <SortButton<ISpeakersSortKeys>
+                onClick={handleSort}
+                sortKey="name"
+                sortState={sort}
+              >
+                <strong>Imię i Nazwisko</strong>
+              </SortButton>
+            </Col>
+            <Col flex="1 1">
+              <SortButton<ISpeakersSortKeys>
+                onClick={handleSort}
+                sortKey="congregation"
+                sortState={sort}
+              >
+                Zbór
+              </SortButton>
+            </Col>
+            <Col flex="1 1">
+              <SortButton<ISpeakersSortKeys>
+                onClick={handleSort}
+                sortKey="lastDate"
+                sortState={sort}
+              >
+                Ostatnie wygłoszenie
+              </SortButton>
+            </Col>
+          </div>
 
-      <hr />
+          <hr />
 
-      {speakers.map((item) => (
-        <div
-          className="row"
-          key={item._id}
-          data-testid="speakers-row"
-          onClick={() => handleRowClick(item._id)}
-        >
-          <Col flex="1 1">
-            <div>
-              <strong>{item.name}</strong>
+          {speakers.map((item) => (
+            <div
+              className="row"
+              key={item._id}
+              data-testid="speakers-row"
+              onClick={() => handleRowClick(item._id)}
+            >
+              <Col flex="1 1">
+                <div>
+                  <strong>{item.name}</strong>
+                </div>
+                <div>
+                  <small>{item.note}</small>
+                </div>
+              </Col>
+
+              <Col flex="1 1">
+                <span data-testid="congregation">{item.congregation}</span>
+              </Col>
+
+              <Col flex="1 1">{item.lastDate}</Col>
             </div>
-            <div>
-              <small>{item.note}</small>
-            </div>
-          </Col>
-
-          <Col flex="1 1">
-            <span data-testid="congregation">{item.congregation}</span>
-          </Col>
-
-          <Col flex="1 1">{item.lastDate}</Col>
-        </div>
-      ))}
+          ))}
+        </>
+      )}
     </section>
   )
 }

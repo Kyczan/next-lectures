@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Formik, Form } from 'formik'
 import { useRouter } from 'next/router'
 import { FiSave } from 'react-icons/fi'
@@ -34,6 +34,7 @@ interface IPlanEdit {
 }
 
 const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
+  const [status, setStatus] = useState(ApiCallStatuses.IDLE)
   const isEdit = !!id
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -67,6 +68,18 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
       dispatch(fetchSpeakers())
     }
   }, [speakersStatus, dispatch])
+
+  useEffect(() => {
+    const statuses = [planStatus, lecturesStatus, speakersStatus]
+
+    if (statuses.includes(ApiCallStatuses.FAILED)) {
+      setStatus(ApiCallStatuses.FAILED)
+    } else if (statuses.includes(ApiCallStatuses.LOADING)) {
+      setStatus(ApiCallStatuses.LOADING)
+    } else if (statuses.every((item) => item === ApiCallStatuses.SUCCEEDED)) {
+      setStatus(ApiCallStatuses.SUCCEEDED)
+    }
+  }, [planStatus, lecturesStatus, speakersStatus])
 
   const initialValues = {
     date: plan?.date || '',
@@ -131,51 +144,58 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
   }, [speakersData])
 
   return (
-    <>
+    <section>
       <div className="inline-wrapper">
         <BackButton href={`/plan/${isEdit ? id : ''}`} />
         <h1>{isEdit ? 'Edycja' : 'Dodawanie'} wydarzenia</h1>
       </div>
-      <article>
-        <Formik
-          enableReinitialize
-          initialValues={initialValues}
-          validate={validate}
-          onSubmit={handleSubmit}
-        >
-          {(formik) => (
-            <Form>
-              <Input label="Data *" name="date" type="date" />
-              <Select
-                label="Wykład"
-                name="lecture"
-                placeholder="Wybierz wykład"
-                options={lecturesOptions}
-              />
-              <Select
-                label="Mówca"
-                name="speaker"
-                placeholder="Wybierz mówcę"
-                options={speakersOptions}
-              />
-              <Input label="Notatka" name="note" type="text" />
-              <div className="inline-wrapper inline-wrapper--end">
-                <button
-                  type="submit"
-                  disabled={formik.isSubmitting || !formik.isValid}
-                  aria-busy={formik.isSubmitting}
-                  className="with-icon"
-                  data-testid="submit-form"
-                >
-                  <FiSave />
-                  Zapisz
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </article>
-    </>
+
+      {status === ApiCallStatuses.LOADING && (
+        <article aria-busy="true"></article>
+      )}
+      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.SUCCEEDED && (
+        <article>
+          <Formik
+            enableReinitialize
+            initialValues={initialValues}
+            validate={validate}
+            onSubmit={handleSubmit}
+          >
+            {(formik) => (
+              <Form>
+                <Input label="Data *" name="date" type="date" />
+                <Select
+                  label="Wykład"
+                  name="lecture"
+                  placeholder="Wybierz wykład"
+                  options={lecturesOptions}
+                />
+                <Select
+                  label="Mówca"
+                  name="speaker"
+                  placeholder="Wybierz mówcę"
+                  options={speakersOptions}
+                />
+                <Input label="Notatka" name="note" type="text" />
+                <div className="inline-wrapper inline-wrapper--end">
+                  <button
+                    type="submit"
+                    disabled={formik.isSubmitting || !formik.isValid}
+                    aria-busy={formik.isSubmitting}
+                    className="with-icon"
+                    data-testid="submit-form"
+                  >
+                    <FiSave />
+                    Zapisz
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </article>
+      )}
+    </section>
   )
 }
 

@@ -56,69 +56,76 @@ const Lectures = (): JSX.Element => {
     <section>
       <div className="inline-wrapper">
         <h1>Wykłady</h1>
-        <Search onChange={handleSearch} />
+        {status === ApiCallStatuses.SUCCEEDED && (
+          <Search onChange={handleSearch} />
+        )}
       </div>
 
-      {status === ApiCallStatuses.LOADING && 'Loading'}
-      <AddButton href="/lectures/add" />
-      <div className="row heading-row">
-        <Col flex="0 0 60px">
-          <SortButton<ILecturesSortKeys>
-            onClick={handleSort}
-            sortKey="number"
-            sortState={sort}
-          >
-            #
-          </SortButton>
-        </Col>
-        <Col flex="2 1">
-          <SortButton<ILecturesSortKeys>
-            onClick={handleSort}
-            sortKey="title"
-            sortState={sort}
-          >
-            <strong>Tytuł</strong>
-          </SortButton>
-        </Col>
-        <Col flex="1 1">
-          <SortButton<ILecturesSortKeys>
-            onClick={handleSort}
-            sortKey="lastDate"
-            sortState={sort}
-          >
-            Ostatnie wygłoszenie
-          </SortButton>
-        </Col>
-      </div>
+      {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
+      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.SUCCEEDED && (
+        <>
+          <AddButton href="/lectures/add" />
+          <div className="row heading-row">
+            <Col flex="0 0 60px">
+              <SortButton<ILecturesSortKeys>
+                onClick={handleSort}
+                sortKey="number"
+                sortState={sort}
+              >
+                #
+              </SortButton>
+            </Col>
+            <Col flex="2 1">
+              <SortButton<ILecturesSortKeys>
+                onClick={handleSort}
+                sortKey="title"
+                sortState={sort}
+              >
+                <strong>Tytuł</strong>
+              </SortButton>
+            </Col>
+            <Col flex="1 1">
+              <SortButton<ILecturesSortKeys>
+                onClick={handleSort}
+                sortKey="lastDate"
+                sortState={sort}
+              >
+                Ostatnie wygłoszenie
+              </SortButton>
+            </Col>
+          </div>
 
-      <hr />
+          <hr />
 
-      {lectures.map((item) => (
-        <div
-          className="row"
-          key={item._id}
-          data-testid="lectures-row"
-          onClick={() => handleRowClick(item._id)}
-        >
-          <Col flex="0 0 60px">{item.number}</Col>
+          {lectures.map((item) => (
+            <div
+              className="row"
+              key={item._id}
+              data-testid="lectures-row"
+              onClick={() => handleRowClick(item._id)}
+            >
+              <Col flex="0 0 60px">{item.number}</Col>
 
-          <Col flex="2 1">
-            <div>
-              <strong data-testid="title">{item.title}</strong>
+              <Col flex="2 1">
+                <div>
+                  <strong data-testid="title">{item.title}</strong>
+                </div>
+                <div>
+                  <small>{item.note}</small>
+                </div>
+              </Col>
+
+              <Col flex="1 1">
+                <div>{item.lastDate}</div>
+                <div>
+                  <small>{item.lastSpeaker}</small>
+                </div>
+              </Col>
             </div>
-            <div>
-              <small>{item.note}</small>
-            </div>
-          </Col>
-
-          <Col flex="1 1">
-            <div>{item.lastDate}</div>
-            <div>
-              <small>{item.lastSpeaker}</small>
-            </div>
-          </Col>
-        </div>
-      ))}
+          ))}
+        </>
+      )}
     </section>
   )
 }

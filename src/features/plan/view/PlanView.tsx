@@ -36,84 +36,92 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
     router.push(`/plan`)
   }
 
-  return plan ? (
-    <>
+  return (
+    <section>
       <div className="inline-wrapper">
         <BackButton href="/plan" />
         <h1>Szczegóły wydarzenia</h1>
       </div>
 
-      <article>
-        <dl>
-          <dt>
-            <small>Data:</small>
-          </dt>
-          <dd>
-            <strong>{formatDate(plan.date)}</strong>
-          </dd>
-          <dt>
-            <small>Wykład:</small>
-          </dt>
-          <dd>{getLecture(plan.lecture)}</dd>
-          <dt>
-            <small>Notatka:</small>
-          </dt>
-          <dd>{plan.note}</dd>
-          <dt>
-            <small>Mówca:</small>
-          </dt>
-          <dd>{plan.speaker?.name}</dd>
-          <dt>
-            <small>Zbór:</small>
-          </dt>
-          <dd>{plan.speaker?.congregation}</dd>
-        </dl>
-
-        <div className="inline-wrapper inline-wrapper--end">
-          <a
-            href="#"
-            role="button"
-            className="secondary with-icon"
-            onClick={() => toggleModal()}
-            data-testid="delete-btn"
-          >
-            <FiTrash />
-            Usuń
-          </a>
-          <Link href={`/plan/${id}/edit`}>
-            <a role="button" className="with-icon" data-testid="edit-btn">
-              <FiEdit />
-              Edytuj
-            </a>
-          </Link>
-        </div>
-      </article>
-
-      <Modal isOpen={isModalOpen} onRequestClose={toggleModal}>
+      {status === ApiCallStatuses.LOADING && (
+        <article aria-busy="true"></article>
+      )}
+      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.SUCCEEDED && plan && (
         <>
-          <header>Usunąć to wydarzenie?</header>
-          <footer className="inline-wrapper inline-wrapper--end">
-            <button
-              className="secondary with-icon"
-              onClick={handleDelete}
-              data-testid="modal-delete-btn"
-            >
-              <FiTrash />
-              Usuń
-            </button>
-            <button
-              onClick={() => toggleModal()}
-              className="with-icon"
-              data-testid="modal-cancel-btn"
-            >
-              <FiSlash />
-              Anuluj
-            </button>
-          </footer>
+          <article>
+            <dl>
+              <dt>
+                <small>Data:</small>
+              </dt>
+              <dd>
+                <strong>{formatDate(plan.date)}</strong>
+              </dd>
+              <dt>
+                <small>Wykład:</small>
+              </dt>
+              <dd>{getLecture(plan.lecture)}</dd>
+              <dt>
+                <small>Notatka:</small>
+              </dt>
+              <dd>{plan.note}</dd>
+              <dt>
+                <small>Mówca:</small>
+              </dt>
+              <dd>{plan.speaker?.name}</dd>
+              <dt>
+                <small>Zbór:</small>
+              </dt>
+              <dd>{plan.speaker?.congregation}</dd>
+            </dl>
+
+            <div className="inline-wrapper inline-wrapper--end">
+              <a
+                href="#"
+                role="button"
+                className="secondary with-icon"
+                onClick={() => toggleModal()}
+                data-testid="delete-btn"
+              >
+                <FiTrash />
+                Usuń
+              </a>
+              <Link href={`/plan/${id}/edit`}>
+                <a role="button" className="with-icon" data-testid="edit-btn">
+                  <FiEdit />
+                  Edytuj
+                </a>
+              </Link>
+            </div>
+          </article>
+
+          <Modal isOpen={isModalOpen} onRequestClose={toggleModal}>
+            <>
+              <header>Usunąć to wydarzenie?</header>
+              <footer className="inline-wrapper inline-wrapper--end">
+                <button
+                  className="secondary with-icon"
+                  onClick={handleDelete}
+                  data-testid="modal-delete-btn"
+                >
+                  <FiTrash />
+                  Usuń
+                </button>
+                <button
+                  onClick={() => toggleModal()}
+                  className="with-icon"
+                  data-testid="modal-cancel-btn"
+                >
+                  <FiSlash />
+                  Anuluj
+                </button>
+              </footer>
+            </>
+          </Modal>
         </>
-      </Modal>
-    </>
-  ) : null
+      )}
+    </section>
+  )
 }
 
 export default PlanView

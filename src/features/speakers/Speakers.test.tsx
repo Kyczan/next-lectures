@@ -63,13 +63,13 @@ describe('<Speakers />', () => {
   it('handles sort', async () => {
     fetchMock.once(JSON.stringify(speakersData))
 
-    const { getByText, findAllByTestId } = render(
+    const { findByText, findAllByTestId } = render(
       <Provider store={store}>
         <Speakers />
       </Provider>
     )
 
-    const sortBtn = getByText('Zbór')
+    const sortBtn = await findByText('Zbór')
 
     // before any sorting
     const [beforeSort] = await findAllByTestId('congregation')

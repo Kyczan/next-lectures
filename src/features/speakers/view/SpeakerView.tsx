@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Modal from '../../../components/modal/Modal'
@@ -40,80 +40,88 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
     router.push(`/speakers`)
   }
 
-  return speaker ? (
-    <>
+  return (
+    <section>
       <div className="inline-wrapper">
         <BackButton href="/speakers" />
         <h1>Szczegóły mówcy</h1>
       </div>
 
-      <article>
-        <dl>
-          <dt>
-            <small>Imię i Nazwisko:</small>
-          </dt>
-          <dd>
-            <strong>{speaker.name}</strong>
-          </dd>
-          <dt>
-            <small>Zbór:</small>
-          </dt>
-          <dd>{speaker.congregation}</dd>
-          <dt>
-            <small>Notatka:</small>
-          </dt>
-          <dd>{speaker.note}</dd>
-          <dt>
-            <small>Ostatnie wygłoszenie:</small>
-          </dt>
-          <dd>{speaker.lastDate}</dd>
-        </dl>
-
-        <div className="inline-wrapper inline-wrapper--end">
-          <a
-            href="#"
-            role="button"
-            className="secondary with-icon"
-            onClick={() => toggleModal()}
-            data-testid="delete-btn"
-          >
-            <FiTrash />
-            Usuń
-          </a>
-          <Link href={`/speakers/${id}/edit`}>
-            <a role="button" className="with-icon" data-testid="edit-btn">
-              <FiEdit />
-              Edytuj
-            </a>
-          </Link>
-        </div>
-      </article>
-
-      <Modal isOpen={isModalOpen} onRequestClose={toggleModal}>
+      {status === ApiCallStatuses.LOADING && (
+        <article aria-busy="true"></article>
+      )}
+      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.SUCCEEDED && speaker && (
         <>
-          <header>Usunąć tego mówcę?</header>
-          <footer className="inline-wrapper inline-wrapper--end">
-            <button
-              className="secondary with-icon"
-              onClick={handleDelete}
-              data-testid="modal-delete-btn"
-            >
-              <FiTrash />
-              Usuń
-            </button>
-            <button
-              onClick={() => toggleModal()}
-              className="with-icon"
-              data-testid="modal-cancel-btn"
-            >
-              <FiSlash />
-              Anuluj
-            </button>
-          </footer>
+          <article>
+            <dl>
+              <dt>
+                <small>Imię i Nazwisko:</small>
+              </dt>
+              <dd>
+                <strong>{speaker.name}</strong>
+              </dd>
+              <dt>
+                <small>Zbór:</small>
+              </dt>
+              <dd>{speaker.congregation}</dd>
+              <dt>
+                <small>Notatka:</small>
+              </dt>
+              <dd>{speaker.note}</dd>
+              <dt>
+                <small>Ostatnie wygłoszenie:</small>
+              </dt>
+              <dd>{speaker.lastDate}</dd>
+            </dl>
+
+            <div className="inline-wrapper inline-wrapper--end">
+              <a
+                href="#"
+                role="button"
+                className="secondary with-icon"
+                onClick={() => toggleModal()}
+                data-testid="delete-btn"
+              >
+                <FiTrash />
+                Usuń
+              </a>
+              <Link href={`/speakers/${id}/edit`}>
+                <a role="button" className="with-icon" data-testid="edit-btn">
+                  <FiEdit />
+                  Edytuj
+                </a>
+              </Link>
+            </div>
+          </article>
+
+          <Modal isOpen={isModalOpen} onRequestClose={toggleModal}>
+            <>
+              <header>Usunąć tego mówcę?</header>
+              <footer className="inline-wrapper inline-wrapper--end">
+                <button
+                  className="secondary with-icon"
+                  onClick={handleDelete}
+                  data-testid="modal-delete-btn"
+                >
+                  <FiTrash />
+                  Usuń
+                </button>
+                <button
+                  onClick={() => toggleModal()}
+                  className="with-icon"
+                  data-testid="modal-cancel-btn"
+                >
+                  <FiSlash />
+                  Anuluj
+                </button>
+              </footer>
+            </>
+          </Modal>
         </>
-      </Modal>
-    </>
-  ) : null
+      )}
+    </section>
+  )
 }
 
 export default SpeakerView

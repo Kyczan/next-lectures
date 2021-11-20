@@ -62,40 +62,47 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
   }
 
   return (
-    <>
+    <section>
       <div className="inline-wrapper">
         <BackButton href={`/speakers/${isEdit ? id : ''}`} />
         <h1>{isEdit ? 'Edycja' : 'Dodawanie'} mówcy</h1>
       </div>
-      <article>
-        <Formik
-          enableReinitialize
-          initialValues={initialValues}
-          validate={validate}
-          onSubmit={handleSubmit}
-        >
-          {(formik) => (
-            <Form>
-              <Input label="Imię i Nazwisko *" name="name" type="text" />
-              <Input label="Zbór" name="congregation" type="text" />
-              <Input label="Notatka" name="note" type="text" />
-              <div className="inline-wrapper inline-wrapper--end">
-                <button
-                  type="submit"
-                  disabled={formik.isSubmitting || !formik.isValid}
-                  aria-busy={formik.isSubmitting}
-                  className="with-icon"
-                  data-testid="submit-form"
-                >
-                  <FiSave />
-                  Zapisz
-                </button>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </article>
-    </>
+
+      {status === ApiCallStatuses.LOADING && (
+        <article aria-busy="true"></article>
+      )}
+      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.SUCCEEDED && (
+        <article>
+          <Formik
+            enableReinitialize
+            initialValues={initialValues}
+            validate={validate}
+            onSubmit={handleSubmit}
+          >
+            {(formik) => (
+              <Form>
+                <Input label="Imię i Nazwisko *" name="name" type="text" />
+                <Input label="Zbór" name="congregation" type="text" />
+                <Input label="Notatka" name="note" type="text" />
+                <div className="inline-wrapper inline-wrapper--end">
+                  <button
+                    type="submit"
+                    disabled={formik.isSubmitting || !formik.isValid}
+                    aria-busy={formik.isSubmitting}
+                    className="with-icon"
+                    data-testid="submit-form"
+                  >
+                    <FiSave />
+                    Zapisz
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </article>
+      )}
+    </section>
   )
 }
 

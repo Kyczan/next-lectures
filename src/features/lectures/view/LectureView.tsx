@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Modal from '../../../components/modal/Modal'
@@ -40,84 +40,92 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
     router.push(`/lectures`)
   }
 
-  return lecture ? (
-    <>
+  return (
+    <section>
       <div className="inline-wrapper">
         <BackButton href="/lectures" />
         <h1>Szczegóły wykładu</h1>
       </div>
 
-      <article>
-        <dl>
-          <dt>
-            <small>Numer:</small>
-          </dt>
-          <dd>{lecture.number}</dd>
-          <dt>
-            <small>Tytuł:</small>
-          </dt>
-          <dd>
-            <strong>{lecture.title}</strong>
-          </dd>
-          <dt>
-            <small>Notatka:</small>
-          </dt>
-          <dd>{lecture.note}</dd>
-          <dt>
-            <small>Ostatnie wygłoszenie:</small>
-          </dt>
-          <dd>{lecture.lastDate}</dd>
-          <dt>
-            <small>Ostatni mówca:</small>
-          </dt>
-          <dd>{lecture.lastSpeaker}</dd>
-        </dl>
-
-        <div className="inline-wrapper inline-wrapper--end">
-          <a
-            href="#"
-            role="button"
-            className="secondary with-icon"
-            onClick={() => toggleModal()}
-            data-testid="delete-btn"
-          >
-            <FiTrash />
-            Usuń
-          </a>
-          <Link href={`/lectures/${id}/edit`}>
-            <a role="button" className="with-icon" data-testid="edit-btn">
-              <FiEdit />
-              Edytuj
-            </a>
-          </Link>
-        </div>
-      </article>
-
-      <Modal isOpen={isModalOpen} onRequestClose={toggleModal}>
+      {status === ApiCallStatuses.LOADING && (
+        <article aria-busy="true"></article>
+      )}
+      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.SUCCEEDED && lecture && (
         <>
-          <header>Usunąć ten wykład?</header>
-          <footer className="inline-wrapper inline-wrapper--end">
-            <button
-              className="secondary with-icon"
-              onClick={handleDelete}
-              data-testid="modal-delete-btn"
-            >
-              <FiTrash />
-              Usuń
-            </button>
-            <button
-              onClick={() => toggleModal()}
-              className="with-icon"
-              data-testid="modal-cancel-btn"
-            >
-              <FiSlash />
-              Anuluj
-            </button>
-          </footer>
+          <article>
+            <dl>
+              <dt>
+                <small>Numer:</small>
+              </dt>
+              <dd>{lecture.number}</dd>
+              <dt>
+                <small>Tytuł:</small>
+              </dt>
+              <dd>
+                <strong>{lecture.title}</strong>
+              </dd>
+              <dt>
+                <small>Notatka:</small>
+              </dt>
+              <dd>{lecture.note}</dd>
+              <dt>
+                <small>Ostatnie wygłoszenie:</small>
+              </dt>
+              <dd>{lecture.lastDate}</dd>
+              <dt>
+                <small>Ostatni mówca:</small>
+              </dt>
+              <dd>{lecture.lastSpeaker}</dd>
+            </dl>
+
+            <div className="inline-wrapper inline-wrapper--end">
+              <a
+                href="#"
+                role="button"
+                className="secondary with-icon"
+                onClick={() => toggleModal()}
+                data-testid="delete-btn"
+              >
+                <FiTrash />
+                Usuń
+              </a>
+              <Link href={`/lectures/${id}/edit`}>
+                <a role="button" className="with-icon" data-testid="edit-btn">
+                  <FiEdit />
+                  Edytuj
+                </a>
+              </Link>
+            </div>
+          </article>
+
+          <Modal isOpen={isModalOpen} onRequestClose={toggleModal}>
+            <>
+              <header>Usunąć ten wykład?</header>
+              <footer className="inline-wrapper inline-wrapper--end">
+                <button
+                  className="secondary with-icon"
+                  onClick={handleDelete}
+                  data-testid="modal-delete-btn"
+                >
+                  <FiTrash />
+                  Usuń
+                </button>
+                <button
+                  onClick={() => toggleModal()}
+                  className="with-icon"
+                  data-testid="modal-cancel-btn"
+                >
+                  <FiSlash />
+                  Anuluj
+                </button>
+              </footer>
+            </>
+          </Modal>
         </>
-      </Modal>
-    </>
-  ) : null
+      )}
+    </section>
+  )
 }
 
 export default LectureView

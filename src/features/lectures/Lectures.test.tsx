@@ -63,13 +63,13 @@ describe('<Lectures />', () => {
   it('handles sort', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
 
-    const { getByText, findAllByTestId } = render(
+    const { findByText, findAllByTestId } = render(
       <Provider store={store}>
         <Lectures />
       </Provider>
     )
 
-    const sortBtn = getByText('Tytuł')
+    const sortBtn = await findByText('Tytuł')
 
     // before any sorting
     const [beforeSort] = await findAllByTestId('title')
