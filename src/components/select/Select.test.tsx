@@ -84,10 +84,14 @@ describe('<Select>', () => {
 
     fireEvent.change(select)
 
+    // I do not why but change function is not triggered
     const option = getByText('name1')
     fireEvent.click(option)
 
     fireEvent.change(select)
+
+    // const deleteBtn = getByTestId('select-delete-btn')
+    // fireEvent.click(deleteBtn)
 
     const saveBtn = getByTestId('submit-form')
     fireEvent.click(saveBtn)

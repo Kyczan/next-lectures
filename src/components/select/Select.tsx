@@ -1,7 +1,7 @@
 import { useField } from 'formik'
 import { useEffect, useState } from 'react'
-
 import SelectSearch from 'react-select-search'
+import { FiDelete } from 'react-icons/fi'
 
 import styles from './Select.module.css'
 
@@ -45,23 +45,39 @@ const Select = ({
     setValue(data)
   }
 
+  const handleReset = () => {
+    setLocalValue(null)
+    setValue(null)
+  }
+
   return (
     <div>
       <label htmlFor={name}>{label}</label>
-      <SelectSearch
-        id={name}
-        className={(key) => styles[key]}
-        options={options}
-        placeholder={placeholder}
-        search
-        filterOptions={handleFilter}
-        onChange={handleChange}
-        value={localValue}
-        renderValue={(valueProps: any) => (
-          <input {...valueProps} {...aria} data-testid="select" />
+      <div className={styles['select-wrapper']}>
+        <SelectSearch
+          id={name}
+          className={(key) => styles[key]}
+          options={options}
+          placeholder={placeholder}
+          search
+          filterOptions={handleFilter}
+          onChange={handleChange}
+          value={localValue}
+          renderValue={(valueProps: any) => (
+            <input {...valueProps} {...aria} data-testid="select" />
+          )}
+          // printOptions="always"
+        />
+        {localValue && (
+          <button
+            className="outline secondary"
+            onClick={handleReset}
+            data-testid="select-delete-btn"
+          >
+            <FiDelete />
+          </button>
         )}
-        // printOptions="always"
-      />
+      </div>
       {touched && error ? (
         <div className={styles.error}>
           <small>{error}</small>
