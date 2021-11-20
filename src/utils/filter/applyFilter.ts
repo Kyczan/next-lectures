@@ -6,9 +6,14 @@ export const applyFilter = <DataType>(
 ): DataType[] => {
   const { search, sort } = filter
 
+  const resolvePath = (object, path) =>
+    path.split('.').reduce((o, p) => o?.[p], object)
+
   const filtered = data.filter((item) =>
     search.keys.some((key) =>
-      item[key]?.toLowerCase()?.includes(search.value.toLowerCase())
+      resolvePath(item, key)
+        ?.toLowerCase()
+        ?.includes(search.value.toLowerCase())
     )
   )
 

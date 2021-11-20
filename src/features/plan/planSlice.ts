@@ -13,7 +13,12 @@ export interface IPlanDataItem {
   note?: string
 }
 
-export type IPlanSearchKeys = 'date' | 'lecture' | 'note' | 'speaker'
+export type IPlanSearchKeys =
+  | 'lecture.number'
+  | 'lecture.title'
+  | 'note'
+  | 'speaker.name'
+  | 'speaker.congregation'
 export type IPlanSortKeys = 'date'
 
 export const fetchPlan = createAsyncThunk('plan/fetch', async () => {
@@ -85,7 +90,13 @@ export const initialState: IState<
   filtered: [],
   filter: {
     search: {
-      keys: ['date', 'lecture', 'note', 'speaker'],
+      keys: [
+        'lecture.number',
+        'lecture.title',
+        'note',
+        'speaker.name',
+        'speaker.congregation',
+      ],
       value: '',
     },
     sort: {

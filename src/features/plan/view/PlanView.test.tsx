@@ -27,6 +27,17 @@ describe('<PlanView />', () => {
     await findByText('Szczegóły wydarzenia')
   })
 
+  it('renders without crash when lecture and speaker is not present', async () => {
+    fetchMock.once(JSON.stringify(planData))
+    const { findByText } = render(
+      <Provider store={store}>
+        <PlanView id={planData[1]._id} />
+      </Provider>
+    )
+
+    await findByText('Szczegóły wydarzenia')
+  })
+
   it('redirects to edit page on Edit btn click', async () => {
     fetchMock.once(JSON.stringify(planData))
     const { findByTestId } = render(

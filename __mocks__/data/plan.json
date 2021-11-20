@@ -2,33 +2,68 @@
   {
     "_id": "a",
     "date": "2021-02-01",
-    "lecture": "111. Cool lecture with some title",
+    "lecture": {
+      "_id": "a",
+      "number": "1",
+      "title": "Super cool lecture with nice title",
+      "lastDate": "2021-02-03",
+      "note": "note",
+      "lastSpeaker": "John Smith"
+    },
     "note": "note",
-    "speaker": "John Smith",
-    "congregation": "Mordor South"
+    "speaker": {
+      "_id": "a",
+      "name": "John Smith",
+      "congregation": "Shire South",
+      "note": null,
+      "lastDate": "2021-01-01"
+    }
   },
   {
     "_id": "b",
     "date": "2021-02-02",
     "lecture": null,
     "note": "only note",
-    "speaker": null,
-    "congregation": null
+    "speaker": null
   },
   {
     "_id": "c",
     "date": "2021-02-03",
-    "lecture": "11. Cool lecture with some even longer title",
+    "lecture": {
+      "_id": "b",
+      "number": "2",
+      "title": "Super cool lecture with nice title 2",
+      "lastDate": "2021-02-03",
+      "note": "note",
+      "lastSpeaker": "John Smith"
+    },
     "note": null,
-    "speaker": "John Smith",
-    "congregation": "Shire"
+    "speaker": {
+      "_id": "a",
+      "name": "John Smith",
+      "congregation": "Shire South",
+      "note": null,
+      "lastDate": "2021-01-01"
+    }
   },
   {
     "_id": "d",
     "date": "2021-02-04",
-    "lecture": "76. Cool lecture with some more title",
+    "lecture": {
+      "_id": "c",
+      "number": "3",
+      "title": "Super cool lecture with nice title 3",
+      "lastDate": "2021-02-03",
+      "note": "note",
+      "lastSpeaker": "John Smith"
+    },
     "note": null,
-    "speaker": "Tom Brzęczyszczyński",
-    "congregation": "North Center of South"
+    "speaker": {
+      "_id": "a",
+      "name": "John Smith",
+      "congregation": "Shire South",
+      "note": null,
+      "lastDate": "2021-01-01"
+    }
   }
 ]

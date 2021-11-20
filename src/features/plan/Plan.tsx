@@ -8,6 +8,12 @@ import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 
+export const getLecture = (lecture) => {
+  if (!lecture || !lecture.number || !lecture.title) return ''
+
+  return `${lecture.number}. ${lecture.title}`
+}
+
 const Plan = (): JSX.Element => {
   const [plan, setPlan] = useState<IPlanDataItem[]>([])
   const router = useRouter()
@@ -77,11 +83,7 @@ const Plan = (): JSX.Element => {
 
           <Col flex="2 1">
             <div>
-              <span>
-                {item.lecture?.number
-                  ? `${item.lecture?.number}. ${item.lecture?.title}`
-                  : ''}
-              </span>
+              <span>{getLecture(item.lecture)}</span>
             </div>
             <div>
               <small>{item.note}</small>

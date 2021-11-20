@@ -6,6 +6,8 @@ import userEvent from '@testing-library/user-event'
 import PlanEdit from './PlanEdit'
 import { makeStore } from '../../../app/store'
 import planData from '../../../../__mocks__/data/plan.json'
+import lecturesData from '../../../../__mocks__/data/lectures.json'
+import speakersData from '../../../../__mocks__/data/speakers.json'
 
 jest.mock('next/dist/client/router', () => require('next-router-mock'))
 
@@ -18,6 +20,8 @@ describe('<PlanEdit />', () => {
 
   it('renders without crash with no props', async () => {
     fetchMock.once(JSON.stringify(planData))
+    fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(speakersData))
     const { findByText } = render(
       <Provider store={store}>
         <PlanEdit />
@@ -29,6 +33,8 @@ describe('<PlanEdit />', () => {
 
   it('renders without crash with id', async () => {
     fetchMock.once(JSON.stringify(planData))
+    fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(speakersData))
     const { findByText } = render(
       <Provider store={store}>
         <PlanEdit id={planData[0]._id} />
@@ -40,6 +46,8 @@ describe('<PlanEdit />', () => {
 
   it('shows errors when form has invalid user input', async () => {
     fetchMock.once(JSON.stringify(planData))
+    fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(speakersData))
     const { findAllByTestId, getByText } = render(
       <Provider store={store}>
         <PlanEdit id={planData[0]._id} />
@@ -58,6 +66,8 @@ describe('<PlanEdit />', () => {
 
   it('handles submit when no id provided', async () => {
     fetchMock.once(JSON.stringify(planData))
+    fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(speakersData))
     const { findAllByTestId, getByTestId } = render(
       <Provider store={store}>
         <PlanEdit />
@@ -83,6 +93,8 @@ describe('<PlanEdit />', () => {
 
   it('handles submit when id provided', async () => {
     fetchMock.once(JSON.stringify(planData))
+    fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(speakersData))
     const { findAllByTestId, getByTestId } = render(
       <Provider store={store}>
         <PlanEdit id={planData[0]._id} />

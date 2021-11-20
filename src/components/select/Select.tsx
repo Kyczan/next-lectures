@@ -19,8 +19,9 @@ const Select = ({
   options,
 }: ISelectProps): JSX.Element => {
   const [field, meta, helpers] = useField(name)
-  const { value } = meta
+  const { value, touched, error } = meta
   const { setValue } = helpers
+  const aria = touched ? { 'aria-invalid': !!error } : {}
   const [localValue, setLocalValue] = useState(value?._id)
 
   useEffect(() => {
@@ -56,8 +57,16 @@ const Select = ({
         filterOptions={handleFilter}
         onChange={handleChange}
         value={localValue}
+        renderValue={(valueProps: any) => (
+          <input {...valueProps} {...aria} data-testid="select" />
+        )}
         // printOptions="always"
       />
+      {touched && error ? (
+        <div className={styles.error}>
+          <small>{error}</small>
+        </div>
+      ) : null}
     </div>
   )
 }

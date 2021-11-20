@@ -75,15 +75,15 @@ describe('<Plan />', () => {
     const beforeSearch = await findAllByTestId('date')
     expect(beforeSearch.length).toBe(planData.length)
     const beforeUtils = within(beforeSearch[0])
-    expect(beforeUtils.getByText('2021-02-04')).toBeInTheDocument()
+    expect(beforeUtils.getByText('4 lutego 2021')).toBeInTheDocument()
 
     const search = getByTestId('search-input') as HTMLInputElement
-    userEvent.type(search, '2021-02-03')
+    userEvent.type(search, '2')
 
     // check first thing after searching
     const afterSearch = await findAllByTestId('date')
     expect(afterSearch.length).toBe(1)
     const afterUtils = within(afterSearch[0])
-    expect(afterUtils.getByText('2021-02-03')).toBeInTheDocument()
+    expect(afterUtils.getByText('3 lutego 2021')).toBeInTheDocument()
   })
 })

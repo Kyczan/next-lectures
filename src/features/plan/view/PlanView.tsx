@@ -8,6 +8,7 @@ import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
 import { fetchPlan, selectPlan, selectPlanById, deletePlan } from '../planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
+import { getLecture } from '../Plan'
 
 interface IPlan {
   id: string
@@ -53,9 +54,7 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
           <dt>
             <small>Wykład:</small>
           </dt>
-          <dd>
-            {plan.lecture?.number}. {plan.lecture?.title}
-          </dd>
+          <dd>{getLecture(plan.lecture)}</dd>
           <dt>
             <small>Notatka:</small>
           </dt>
