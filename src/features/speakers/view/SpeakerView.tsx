@@ -13,6 +13,7 @@ import {
   deleteSpeaker,
 } from '../speakersSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
+import Error from '../../../components/error/Error'
 
 interface ISpeaker {
   id: string
@@ -40,6 +41,10 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
     router.push(`/speakers`)
   }
 
+  const handleRefresh = () => {
+    dispatch(fetchSpeakers())
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -50,7 +55,11 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
       {status === ApiCallStatuses.LOADING && (
         <article aria-busy="true"></article>
       )}
-      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.FAILED && (
+        <article>
+          <Error onRefresh={handleRefresh} />
+        </article>
+      )}
       {status === ApiCallStatuses.SUCCEEDED && speaker && (
         <>
           <article>

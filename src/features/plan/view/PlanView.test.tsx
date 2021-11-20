@@ -38,6 +38,21 @@ describe('<PlanView />', () => {
     await findByText('Szczegóły wydarzenia')
   })
 
+  it('renders when error occurs and handles refresh', async () => {
+    const errorMsg = 'Oops'
+    fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
+    fetchMock.once(JSON.stringify(planData))
+
+    const { findByTestId } = await render(
+      <Provider store={store}>
+        <PlanView id={planData[0]._id} />
+      </Provider>
+    )
+
+    const refreshBtn = await findByTestId('refresh')
+    fireEvent.click(refreshBtn)
+  })
+
   it('redirects to edit page on Edit btn click', async () => {
     fetchMock.once(JSON.stringify(planData))
     const { findByTestId } = render(

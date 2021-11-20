@@ -30,19 +30,25 @@ describe('<Lectures />', () => {
     expect(fetchMock.mock.calls.length).toEqual(1)
   })
 
-  it('renders no rows when error occurs', async () => {
+  it('renders no rows when error occurs and handles refresh', async () => {
     const errorMsg = 'Oops'
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
+    fetchMock.once(JSON.stringify(lecturesData))
 
-    const { queryAllByTestId } = await render(
+    const { queryAllByTestId, findByTestId, findAllByTestId } = await render(
       <Provider store={store}>
         <Lectures />
       </Provider>
     )
 
-    const rows = queryAllByTestId('lectures-row')
+    let rows = queryAllByTestId('lectures-row')
     expect(rows.length).toBe(0)
-    expect(fetchMock.mock.calls.length).toEqual(1)
+
+    const refreshBtn = await findByTestId('refresh')
+    fireEvent.click(refreshBtn)
+
+    rows = await findAllByTestId('lectures-row')
+    expect(rows.length).toBe(lecturesData.length)
   })
 
   it('redirects on row click', async () => {

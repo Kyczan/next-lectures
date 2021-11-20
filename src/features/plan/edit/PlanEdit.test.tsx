@@ -44,6 +44,25 @@ describe('<PlanEdit />', () => {
     await findByText('Edycja wydarzenia')
   })
 
+  it('renders when error occurs and handles refresh', async () => {
+    const errorMsg = 'Oops'
+    fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
+    fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
+    fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
+    fetchMock.once(JSON.stringify(planData))
+    fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(speakersData))
+
+    const { findByTestId } = await render(
+      <Provider store={store}>
+        <PlanEdit id={planData[0]._id} />
+      </Provider>
+    )
+
+    const refreshBtn = await findByTestId('refresh')
+    fireEvent.click(refreshBtn)
+  })
+
   it('shows errors when form has invalid user input', async () => {
     fetchMock.once(JSON.stringify(planData))
     fetchMock.once(JSON.stringify(lecturesData))

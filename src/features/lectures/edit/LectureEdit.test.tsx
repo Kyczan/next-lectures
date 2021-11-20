@@ -38,6 +38,21 @@ describe('<LectureEdit />', () => {
     await findByText('Edycja wykładu')
   })
 
+  it('renders when error occurs and handles refresh', async () => {
+    const errorMsg = 'Oops'
+    fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
+    fetchMock.once(JSON.stringify(lecturesData))
+
+    const { findByTestId } = await render(
+      <Provider store={store}>
+        <LectureEdit id={lecturesData[0]._id} />
+      </Provider>
+    )
+
+    const refreshBtn = await findByTestId('refresh')
+    fireEvent.click(refreshBtn)
+  })
+
   it('shows errors when form has invalid user input', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
     const { findAllByTestId, getByText } = render(

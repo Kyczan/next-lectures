@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { ApiCallStatuses } from '../../app/types'
@@ -16,6 +15,7 @@ import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 import SortButton from '../../components/buttons/sortButton/SortButton'
+import Error from '../../components/error/Error'
 
 const Lectures = (): JSX.Element => {
   const [lectures, setLectures] = useState<ILecturesDataItem[]>([])
@@ -52,6 +52,10 @@ const Lectures = (): JSX.Element => {
     dispatch(setSearch(value))
   }
 
+  const handleRefresh = () => {
+    dispatch(fetchLectures())
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -62,7 +66,7 @@ const Lectures = (): JSX.Element => {
       </div>
 
       {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
-      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.FAILED && <Error onRefresh={handleRefresh} />}
       {status === ApiCallStatuses.SUCCEEDED && (
         <>
           <AddButton href="/lectures/add" />

@@ -8,6 +8,7 @@ import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
 import { fetchPlan, selectPlan, selectPlanById, deletePlan } from '../planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
+import Error from '../../../components/error/Error'
 import { getLecture, formatDate } from '../Plan'
 
 interface IPlan {
@@ -36,6 +37,10 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
     router.push(`/plan`)
   }
 
+  const handleRefresh = () => {
+    dispatch(fetchPlan())
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -46,7 +51,11 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
       {status === ApiCallStatuses.LOADING && (
         <article aria-busy="true"></article>
       )}
-      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.FAILED && (
+        <article>
+          <Error onRefresh={handleRefresh} />
+        </article>
+      )}
       {status === ApiCallStatuses.SUCCEEDED && plan && (
         <>
           <article>

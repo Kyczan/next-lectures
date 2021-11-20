@@ -5,6 +5,7 @@ import { FiSave } from 'react-icons/fi'
 
 import Input from '../../../components/input/Input'
 import BackButton from '../../../components/buttons/backButton/BackButton'
+import Error from '../../../components/error/Error'
 import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import {
@@ -65,6 +66,10 @@ const LectureEdit = ({ id }: ILectureEdit): JSX.Element => {
     }
   }
 
+  const handleRefresh = () => {
+    dispatch(fetchLectures())
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -75,7 +80,11 @@ const LectureEdit = ({ id }: ILectureEdit): JSX.Element => {
       {status === ApiCallStatuses.LOADING && (
         <article aria-busy="true"></article>
       )}
-      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.FAILED && (
+        <article>
+          <Error onRefresh={handleRefresh} />
+        </article>
+      )}
       {status === ApiCallStatuses.SUCCEEDED && (
         <article>
           <Formik

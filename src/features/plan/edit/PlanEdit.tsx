@@ -6,6 +6,7 @@ import { FiSave } from 'react-icons/fi'
 import Input from '../../../components/input/Input'
 import Select from '../../../components/select/Select'
 import BackButton from '../../../components/buttons/backButton/BackButton'
+import Error from '../../../components/error/Error'
 import { ApiCallStatuses, IFilter, SortOrder } from '../../../app/types'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import {
@@ -143,6 +144,12 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
     })
   }, [speakersData])
 
+  const handleRefresh = () => {
+    if (planStatus === ApiCallStatuses.FAILED) dispatch(fetchPlan())
+    if (lecturesStatus === ApiCallStatuses.FAILED) dispatch(fetchLectures())
+    if (speakersStatus === ApiCallStatuses.FAILED) dispatch(fetchSpeakers())
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -153,7 +160,11 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
       {status === ApiCallStatuses.LOADING && (
         <article aria-busy="true"></article>
       )}
-      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.FAILED && (
+        <article>
+          <Error onRefresh={handleRefresh} />
+        </article>
+      )}
       {status === ApiCallStatuses.SUCCEEDED && (
         <article>
           <Formik

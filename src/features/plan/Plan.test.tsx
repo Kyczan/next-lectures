@@ -30,19 +30,25 @@ describe('<Plan />', () => {
     expect(fetchMock.mock.calls.length).toEqual(1)
   })
 
-  it('renders no rows when error occurs', async () => {
+  it('renders no rows when error occurs and handles refresh', async () => {
     const errorMsg = 'Oops'
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
+    fetchMock.once(JSON.stringify(planData))
 
-    const { queryAllByTestId } = await render(
+    const { queryAllByTestId, findByTestId, findAllByTestId } = await render(
       <Provider store={store}>
         <Plan />
       </Provider>
     )
 
-    const rows = queryAllByTestId('plan-row')
+    let rows = queryAllByTestId('plan-row')
     expect(rows.length).toBe(0)
-    expect(fetchMock.mock.calls.length).toEqual(1)
+
+    const refreshBtn = await findByTestId('refresh')
+    fireEvent.click(refreshBtn)
+
+    rows = await findAllByTestId('plan-row')
+    expect(rows.length).toBe(planData.length)
   })
 
   it('redirects on row click', async () => {

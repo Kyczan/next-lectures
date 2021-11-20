@@ -13,6 +13,7 @@ import {
   deleteLecture,
 } from '../lecturesSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
+import Error from '../../../components/error/Error'
 
 interface ILecture {
   id: string
@@ -40,6 +41,10 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
     router.push(`/lectures`)
   }
 
+  const handleRefresh = () => {
+    dispatch(fetchLectures())
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -50,7 +55,11 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
       {status === ApiCallStatuses.LOADING && (
         <article aria-busy="true"></article>
       )}
-      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.FAILED && (
+        <article>
+          <Error onRefresh={handleRefresh} />
+        </article>
+      )}
       {status === ApiCallStatuses.SUCCEEDED && lecture && (
         <>
           <article>

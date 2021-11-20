@@ -7,6 +7,7 @@ import { fetchPlan, selectPlan, setSearch, IPlanDataItem } from './planSlice'
 import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
+import Error from '../../components/error/Error'
 
 export const getLecture = (lecture) => {
   if (!lecture || !lecture.number || !lecture.title) return ''
@@ -51,6 +52,10 @@ const Plan = (): JSX.Element => {
     dispatch(setSearch(value))
   }
 
+  const handleRefresh = () => {
+    dispatch(fetchPlan())
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -61,7 +66,7 @@ const Plan = (): JSX.Element => {
       </div>
 
       {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
-      {status === ApiCallStatuses.FAILED && 'Error'}
+      {status === ApiCallStatuses.FAILED && <Error onRefresh={handleRefresh} />}
       {status === ApiCallStatuses.SUCCEEDED && (
         <>
           <AddButton href="/plan/add" />
