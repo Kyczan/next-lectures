@@ -66,6 +66,7 @@ const Select = ({
           renderValue={(valueProps: any) => (
             <input {...valueProps} {...aria} data-testid="select" />
           )}
+          emptyMessage="Nie znaleziono"
         />
         {localValue && (
           <button
