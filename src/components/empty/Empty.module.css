@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.icon {
+  font-size: 5rem;
+}
+
+.add {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

@@ -16,6 +16,7 @@ import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 import SortButton from '../../components/buttons/sortButton/SortButton'
 import Error from '../../components/error/Error'
+import Empty from '../../components/empty/Empty'
 
 const Speakers = (): JSX.Element => {
   const [speakers, setSpeakers] = useState<ISpeakersDataItem[]>([])
@@ -60,14 +61,17 @@ const Speakers = (): JSX.Element => {
     <section>
       <div className="inline-wrapper">
         <h1>Mówcy</h1>
-        {status === ApiCallStatuses.SUCCEEDED && (
+        {status === ApiCallStatuses.SUCCEEDED && speakers.length > 0 && (
           <Search onChange={handleSearch} />
         )}
       </div>
 
       {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
       {status === ApiCallStatuses.FAILED && <Error onRefresh={handleRefresh} />}
-      {status === ApiCallStatuses.SUCCEEDED && (
+      {status === ApiCallStatuses.SUCCEEDED && speakers.length === 0 && (
+        <Empty href="/speakers/add" />
+      )}
+      {status === ApiCallStatuses.SUCCEEDED && speakers.length > 0 && (
         <>
           <AddButton href="/speakers/add" />
           <div className="row heading-row">

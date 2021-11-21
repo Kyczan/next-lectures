@@ -8,6 +8,7 @@ import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 import Error from '../../components/error/Error'
+import Empty from '../../components/empty/Empty'
 
 export const getLecture = (lecture) => {
   if (!lecture || !lecture.number || !lecture.title) return ''
@@ -26,10 +27,6 @@ const Plan = (): JSX.Element => {
   const router = useRouter()
   const {
     filtered,
-    filter: {
-      sort,
-      sort: { order },
-    },
     fetch: { status },
   } = useAppSelector(selectPlan)
   const dispatch = useAppDispatch()
@@ -60,14 +57,17 @@ const Plan = (): JSX.Element => {
     <section>
       <div className="inline-wrapper">
         <h1>Plan</h1>
-        {status === ApiCallStatuses.SUCCEEDED && (
+        {status === ApiCallStatuses.SUCCEEDED && plan.length > 0 && (
           <Search onChange={handleSearch} />
         )}
       </div>
 
       {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
       {status === ApiCallStatuses.FAILED && <Error onRefresh={handleRefresh} />}
-      {status === ApiCallStatuses.SUCCEEDED && (
+      {status === ApiCallStatuses.SUCCEEDED && plan.length === 0 && (
+        <Empty href="/plan/add" />
+      )}
+      {status === ApiCallStatuses.SUCCEEDED && plan.length > 0 && (
         <>
           <AddButton href="/plan/add" />
           <div className="row heading-row">
