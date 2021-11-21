@@ -63,6 +63,21 @@ describe('<PlanEdit />', () => {
     fireEvent.click(refreshBtn)
   })
 
+  it('renders 404 error when in edit mode and no item found', async () => {
+    fetchMock.once(JSON.stringify(planData))
+    fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(speakersData))
+
+    const { findByText } = await render(
+      <Provider store={store}>
+        <PlanEdit id="invalidId" />
+      </Provider>
+    )
+
+    const page404 = await findByText('404')
+    expect(page404).toBeInTheDocument()
+  })
+
   it('shows errors when form has invalid user input', async () => {
     fetchMock.once(JSON.stringify(planData))
     fetchMock.once(JSON.stringify(lecturesData))

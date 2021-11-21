@@ -13,7 +13,8 @@ import {
   deleteLecture,
 } from '../lecturesSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
-import Error from '../../../components/error/Error'
+import DataError from '../../../components/states/dataError/DataError'
+import Page404 from '../../../components/states/page404/Page404'
 
 interface ILecture {
   id: string
@@ -57,9 +58,10 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
       )}
       {status === ApiCallStatuses.FAILED && (
         <article>
-          <Error onRefresh={handleRefresh} />
+          <DataError onRefresh={handleRefresh} />
         </article>
       )}
+      {status === ApiCallStatuses.SUCCEEDED && !lecture && <Page404 />}
       {status === ApiCallStatuses.SUCCEEDED && lecture && (
         <>
           <article>

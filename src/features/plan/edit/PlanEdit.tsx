@@ -6,7 +6,8 @@ import { FiSave } from 'react-icons/fi'
 import Input from '../../../components/input/Input'
 import Select from '../../../components/select/Select'
 import BackButton from '../../../components/buttons/backButton/BackButton'
-import Error from '../../../components/error/Error'
+import DataError from '../../../components/states/dataError/DataError'
+import Page404 from '../../../components/states/page404/Page404'
 import { ApiCallStatuses, IFilter, SortOrder } from '../../../app/types'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import {
@@ -162,10 +163,11 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
       )}
       {status === ApiCallStatuses.FAILED && (
         <article>
-          <Error onRefresh={handleRefresh} />
+          <DataError onRefresh={handleRefresh} />
         </article>
       )}
-      {status === ApiCallStatuses.SUCCEEDED && (
+      {status === ApiCallStatuses.SUCCEEDED && isEdit && !plan && <Page404 />}
+      {status === ApiCallStatuses.SUCCEEDED && (!isEdit || !!plan) && (
         <article>
           <Formik
             enableReinitialize

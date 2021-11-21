@@ -15,8 +15,8 @@ import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 import SortButton from '../../components/buttons/sortButton/SortButton'
-import Error from '../../components/error/Error'
-import Empty from '../../components/empty/Empty'
+import DataError from '../../components/states/dataError/DataError'
+import DataEmpty from '../../components/states/dataEmpty/DataEmpty'
 
 const Speakers = (): JSX.Element => {
   const [speakers, setSpeakers] = useState<ISpeakersDataItem[]>([])
@@ -67,9 +67,11 @@ const Speakers = (): JSX.Element => {
       </div>
 
       {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
-      {status === ApiCallStatuses.FAILED && <Error onRefresh={handleRefresh} />}
+      {status === ApiCallStatuses.FAILED && (
+        <DataError onRefresh={handleRefresh} />
+      )}
       {status === ApiCallStatuses.SUCCEEDED && speakers.length === 0 && (
-        <Empty href="/speakers/add" />
+        <DataEmpty href="/speakers/add" />
       )}
       {status === ApiCallStatuses.SUCCEEDED && speakers.length > 0 && (
         <>

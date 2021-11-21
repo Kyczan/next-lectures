@@ -1,12 +1,12 @@
 import { FiAlertTriangle, FiRefreshCw } from 'react-icons/fi'
 
-import styles from './Error.module.css'
+import styles from './DataError.module.css'
 
-interface IErrorProps {
+interface IDataErrorProps {
   onRefresh: () => void
 }
 
-const Error = ({ onRefresh }: IErrorProps): JSX.Element => {
+const DataError = ({ onRefresh }: IDataErrorProps): JSX.Element => {
   const handleRefresh = (e) => {
     e.preventDefault()
     onRefresh()
@@ -30,4 +30,4 @@ const Error = ({ onRefresh }: IErrorProps): JSX.Element => {
   )
 }
 
-export default Error
+export default DataError

@@ -53,6 +53,19 @@ describe('<LectureEdit />', () => {
     fireEvent.click(refreshBtn)
   })
 
+  it('renders 404 error when in edit mode and no item found', async () => {
+    fetchMock.once(JSON.stringify(lecturesData))
+
+    const { findByText } = await render(
+      <Provider store={store}>
+        <LectureEdit id="invalidId" />
+      </Provider>
+    )
+
+    const page404 = await findByText('404')
+    expect(page404).toBeInTheDocument()
+  })
+
   it('shows errors when form has invalid user input', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
     const { findAllByTestId, getByText } = render(

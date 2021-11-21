@@ -1,16 +1,16 @@
 import Link from 'next/link'
-import { FiInbox, FiPlus } from 'react-icons/fi'
+import { FiPlus } from 'react-icons/fi'
 import { BsInboxFill } from 'react-icons/bs'
 
-import AddButton from '../buttons/addButton/AddButton'
+import AddButton from '../../buttons/addButton/AddButton'
 
-import styles from './Empty.module.css'
+import styles from './DataEmpty.module.css'
 
-interface IEmptyProps {
+interface IDataEmptyProps {
   href: string
 }
 
-const Empty = ({ href }: IEmptyProps): JSX.Element => {
+const DataEmpty = ({ href }: IDataEmptyProps): JSX.Element => {
   return (
     <>
       <AddButton href={href} />
@@ -29,4 +29,4 @@ const Empty = ({ href }: IEmptyProps): JSX.Element => {
   )
 }
 
-export default Empty
+export default DataEmpty

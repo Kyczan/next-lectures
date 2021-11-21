@@ -5,7 +5,8 @@ import { FiSave } from 'react-icons/fi'
 
 import Input from '../../../components/input/Input'
 import BackButton from '../../../components/buttons/backButton/BackButton'
-import Error from '../../../components/error/Error'
+import DataError from '../../../components/states/dataError/DataError'
+import Page404 from '../../../components/states/page404/Page404'
 import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import {
@@ -78,10 +79,13 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
       )}
       {status === ApiCallStatuses.FAILED && (
         <article>
-          <Error onRefresh={handleRefresh} />
+          <DataError onRefresh={handleRefresh} />
         </article>
       )}
-      {status === ApiCallStatuses.SUCCEEDED && (
+      {status === ApiCallStatuses.SUCCEEDED && isEdit && !speaker && (
+        <Page404 />
+      )}
+      {status === ApiCallStatuses.SUCCEEDED && (!isEdit || !!speaker) && (
         <article>
           <Formik
             enableReinitialize

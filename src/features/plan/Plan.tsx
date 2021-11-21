@@ -7,8 +7,8 @@ import { fetchPlan, selectPlan, setSearch, IPlanDataItem } from './planSlice'
 import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
-import Error from '../../components/error/Error'
-import Empty from '../../components/empty/Empty'
+import DataError from '../../components/states/dataError/DataError'
+import DataEmpty from '../../components/states/dataEmpty/DataEmpty'
 
 export const getLecture = (lecture) => {
   if (!lecture || !lecture.number || !lecture.title) return ''
@@ -63,9 +63,11 @@ const Plan = (): JSX.Element => {
       </div>
 
       {status === ApiCallStatuses.LOADING && <div aria-busy="true"></div>}
-      {status === ApiCallStatuses.FAILED && <Error onRefresh={handleRefresh} />}
+      {status === ApiCallStatuses.FAILED && (
+        <DataError onRefresh={handleRefresh} />
+      )}
       {status === ApiCallStatuses.SUCCEEDED && plan.length === 0 && (
-        <Empty href="/plan/add" />
+        <DataEmpty href="/plan/add" />
       )}
       {status === ApiCallStatuses.SUCCEEDED && plan.length > 0 && (
         <>

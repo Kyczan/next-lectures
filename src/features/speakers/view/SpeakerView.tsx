@@ -13,7 +13,8 @@ import {
   deleteSpeaker,
 } from '../speakersSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
-import Error from '../../../components/error/Error'
+import DataError from '../../../components/states/dataError/DataError'
+import Page404 from '../../../components/states/page404/Page404'
 
 interface ISpeaker {
   id: string
@@ -57,9 +58,10 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
       )}
       {status === ApiCallStatuses.FAILED && (
         <article>
-          <Error onRefresh={handleRefresh} />
+          <DataError onRefresh={handleRefresh} />
         </article>
       )}
+      {status === ApiCallStatuses.SUCCEEDED && !speaker && <Page404 />}
       {status === ApiCallStatuses.SUCCEEDED && speaker && (
         <>
           <article>

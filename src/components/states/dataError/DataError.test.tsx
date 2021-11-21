@@ -1,11 +1,11 @@
 import { render, fireEvent } from '@testing-library/react'
 
-import Error from './Error'
+import DataError from './DataError'
 
-describe('<Error>', () => {
+describe('<DataError>', () => {
   it('renders without crashing', () => {
     const onRefreshMockFn = jest.fn()
-    const { getByTestId } = render(<Error onRefresh={onRefreshMockFn} />)
+    const { getByTestId } = render(<DataError onRefresh={onRefreshMockFn} />)
 
     const btn = getByTestId('refresh')
     fireEvent.click(btn)
