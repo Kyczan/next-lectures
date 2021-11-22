@@ -67,7 +67,7 @@
   color: var(--form-element-color);
 }
 
-.option:hover {
+.option:hover, .option.is-highlighted  {
   background-color: var(--contrast-focus);
 }
 
