@@ -1,0 +1,14 @@
+.congregation {
+  display: flex;
+  align-items: flex-end;
+}
+
+.congregation > div {
+  width: 100%;
+}
+
+.congregation > button {
+  width: auto;
+  height: fit-content;
+  margin-left: 1rem;
+}

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import Modal from '../../../components/modal/Modal'
 import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
 
+import Modal from '../../../components/modal/Modal'
 import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
 import { fetchPlan, selectPlan, selectPlanById, deletePlan } from '../planSlice'

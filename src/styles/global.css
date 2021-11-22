@@ -1,3 +1,7 @@
+article {
+  overflow: visible;
+}
+
 .inline-wrapper {
   display: flex;
   gap: 1rem;
