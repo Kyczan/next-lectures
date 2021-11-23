@@ -1,5 +1,6 @@
 import { Provider } from 'react-redux'
 import router from 'next/router'
+import ReactModal from 'react-modal'
 import { render, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -32,6 +33,17 @@ describe('<SpeakerEdit />', () => {
     const { findByText } = render(
       <Provider store={store}>
         <SpeakerEdit id={speakersData[0]._id} />
+      </Provider>
+    )
+
+    await findByText('Edycja mówcy')
+  })
+
+  it('renders without crash with id and without congregation', async () => {
+    fetchMock.once(JSON.stringify(speakersData))
+    const { findByText } = render(
+      <Provider store={store}>
+        <SpeakerEdit id={speakersData[1]._id} />
       </Provider>
     )
 
@@ -134,6 +146,49 @@ describe('<SpeakerEdit />', () => {
       expect(router).toMatchObject({
         asPath: `/speakers/${speakersData[0]._id}`,
       })
+    })
+  })
+
+  it('opens dialog on click', async () => {
+    fetchMock.once(JSON.stringify(speakersData))
+    const { container, findByTestId, getByText } = render(
+      <Provider store={store}>
+        <SpeakerEdit id={speakersData[0]._id} />
+      </Provider>
+    )
+    ReactModal.setAppElement(container)
+
+    const showModalBtn = await findByTestId('add-congregation-btn')
+
+    fireEvent.click(showModalBtn)
+
+    expect(getByText('Dodaj nowy zbór *')).toBeInTheDocument()
+  })
+
+  it('opens dialog and then adds new congregation', async () => {
+    fetchMock.once(JSON.stringify(speakersData))
+    const { container, findByTestId, findAllByTestId, queryByText } = render(
+      <Provider store={store}>
+        <SpeakerEdit id={speakersData[0]._id} />
+      </Provider>
+    )
+    ReactModal.setAppElement(container)
+
+    const showModalBtn = await findByTestId('add-congregation-btn')
+    fireEvent.click(showModalBtn)
+
+    const inputNames = (await findAllByTestId('input')) as HTMLInputElement[]
+    const congregationInput = inputNames[inputNames.length - 1]
+
+    userEvent.clear(congregationInput)
+    userEvent.type(congregationInput, 'Enterprise')
+    fireEvent.blur(congregationInput)
+
+    const addBtn = await findByTestId('modal-save-congregation-btn')
+    fireEvent.click(addBtn)
+
+    await waitFor(() => {
+      expect(queryByText('Dodaj nowy zbór *')).not.toBeInTheDocument()
     })
   })
 })

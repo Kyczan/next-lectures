@@ -9,7 +9,7 @@
   {
     "_id": "b",
     "name": "John Smithowitz",
-    "congregation": "Gondor",
+    "congregation": null,
     "note": "some note",
     "lastDate": "2022-01-01"
   },

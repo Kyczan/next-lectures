@@ -46,7 +46,7 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
   useEffect(() => {
     if (speaker) {
       setInitCongregation(
-        speaker?.congregation ? { _id: speaker?.congregation } : null
+        speaker.congregation ? { _id: speaker.congregation } : null
       )
     }
   }, [speaker])
@@ -150,6 +150,7 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
                     />
                     <button
                       className="secondary outline"
+                      data-testid="add-congregation-btn"
                       onClick={(e) => {
                         e.preventDefault()
                         toggleModal()

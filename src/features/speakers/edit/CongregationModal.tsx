@@ -38,6 +38,7 @@ const CongregationModal = ({ isOpen, onRequestClose, onSubmit }) => {
               </button>
               <button
                 type="submit"
+                data-testid="modal-save-congregation-btn"
                 disabled={formik.isSubmitting || !formik.isValid}
                 aria-busy={formik.isSubmitting}
                 className="with-icon"
