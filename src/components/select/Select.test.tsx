@@ -4,14 +4,15 @@ import { Formik, Form } from 'formik'
 
 import Select from './Select'
 
-describe('<Select>', () => {
+describe('<Select />', () => {
+  const options = [
+    { name: 'name1', value: 'value1', data: { _id: 'value1' } },
+    { name: 'name2', value: 'value2', data: { _id: 'value2' } },
+  ]
+
   it('renders error message without crashing', async () => {
-    const options = [
-      { name: 'name1', value: 'value1' },
-      { name: 'name2', value: 'value2' },
-    ]
     const initialValues = {
-      title: '',
+      title: null,
     }
     const validate = (values) => {
       type ErrorsType = {
@@ -52,17 +53,13 @@ describe('<Select>', () => {
     })
   })
 
-  it('handles onChange function', async () => {
+  it('handles change function', async () => {
     const handleSubmitMockFn = jest.fn()
-    const options = [
-      { name: 'name1', value: 'value1' },
-      { name: 'name2', value: 'value2' },
-    ]
     const initialValues = {
-      title: '',
+      title: { _id: 'value1' },
     }
 
-    const { getByTestId, findByText, getByText } = render(
+    const { getByTestId, getByText } = render(
       <Formik initialValues={initialValues} onSubmit={handleSubmitMockFn}>
         <Form>
           <Select
@@ -78,20 +75,45 @@ describe('<Select>', () => {
       </Formik>
     )
 
-    const select = getByTestId('select') as HTMLInputElement
+    const select = getByTestId('select')
     fireEvent.click(select)
-    userEvent.type(select, 'name1')
+    userEvent.type(select, 'name')
 
-    fireEvent.change(select)
+    const option = getByText('name2')
+    fireEvent.mouseDown(option)
 
-    // I do not why but change function is not triggered
-    const option = getByText('name1')
-    fireEvent.click(option)
+    const saveBtn = getByTestId('submit-form')
+    fireEvent.click(saveBtn)
 
-    fireEvent.change(select)
+    await waitFor(() => {
+      expect(handleSubmitMockFn).toHaveBeenCalled()
+    })
+  })
 
-    // const deleteBtn = getByTestId('select-delete-btn')
-    // fireEvent.click(deleteBtn)
+  it('handles reset function', async () => {
+    const handleSubmitMockFn = jest.fn()
+    const initialValues = {
+      title: { _id: 'value1' },
+    }
+
+    const { getByTestId } = render(
+      <Formik initialValues={initialValues} onSubmit={handleSubmitMockFn}>
+        <Form>
+          <Select
+            label="Title"
+            name="title"
+            placeholder="text"
+            options={options}
+          />
+          <button type="submit" data-testid="submit-form">
+            Save
+          </button>
+        </Form>
+      </Formik>
+    )
+
+    const deleteBtn = getByTestId('select-delete-btn')
+    fireEvent.click(deleteBtn)
 
     const saveBtn = getByTestId('submit-form')
     fireEvent.click(saveBtn)

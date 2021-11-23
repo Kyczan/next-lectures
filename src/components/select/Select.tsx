@@ -34,7 +34,7 @@ const Select = ({
         return options
       }
       return options.filter((item) =>
-        item.name?.toLowerCase()?.includes(val.toLowerCase())
+        item.name.toLowerCase().includes(val.toLowerCase())
       )
     }
   }
