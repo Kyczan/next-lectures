@@ -1,23 +1,35 @@
-# Redux Toolkit TypeScript Example
+# Next Lectures
 
-This example shows how to integrate Next.js with [Redux Toolkit](https://redux-toolkit.js.org).
+Fullstack TS application to schedule lectures with Google authentication.
 
-The **Redux Toolkit** is a standardized way to write Redux logic (create actions and reducers, setup the store with some default middlewares like redux devtools extension). This example demonstrates each of these features with Next.js
+## Features
 
-## Deploy your own
+- [Next.js](https://nextjs.org/)
+- [NextAuth](https://next-auth.js.org/) 
+- TypeScript
+- React
+- [ReduxToolkit](https://redux-toolkit.js.org/)
+- MongoBD, mongoose
+- unit tested (100% coverage)
+- [PicoCSS](https://picocss.com/) - minimal CSS framework
+- [Formik](https://formik.org/) - for easy form handle
+- [react-select-search](https://github.com/tbleckert/react-select-search) for select with search
+- [React Icons](https://react-icons.github.io/react-icons/)
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
+## How to run locally
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-redux-toolkit-typescript&project-name=with-redux-toolkit&repository-name=with-redux-toolkit)
+1. Clone repo.
+2. Install deps (`npm i`).
+3. Copy `.env.local.example` to `.env.local` (this file should not be versioned).  
+Set up `NEXTAUTH_URL` to your domain (if running locally, set to `http://localhost:3000/`)
+4. You will need a MongoDB (you can try [Atlas](https://www.mongodb.com/atlas) or install one locally).  
+And set up connection string in `.env.local` under `MONGODB_URI` key.
+5. You will need to set up Google OAuth2 to use as auth method.  
+[NextAuth](https://next-auth.js.org/providers/google) docs and [this article](https://dev.to/ndom91/adding-authentication-to-an-existing-serverless-next-js-app-in-no-time-with-nextauth-js-192h) should be helpful.  
+Then set up auth strings in `.env.local` under `GOOGLE_ID`, `GOOGLE_SECRET`, `SECRET` keys.  
+Also specify allowed email under `ALLOWED_EMAIL` (app is created to be used by one person and mail is just hardcoded).
+6. Now app can by run by `npm run dev`.
 
-## How to use
+## Deployment
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-redux-toolkit-typescript with-redux-toolkit-app
-# or
-yarn create next-app --example with-redux-toolkit-typescript with-redux-toolkit-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+You can use [Vercel](https://vercel.com/).
