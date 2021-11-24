@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose'
+import mongoose, { Schema, model, Document } from 'mongoose'
 
 import { LectureSchema } from './Lecture'
 import { SpeakerSchema } from './Speaker'
@@ -13,13 +13,18 @@ interface IPlan {
   congregation?: string
 }
 
-const PlanSchema = new Schema<IPlan>({
-  date: { type: String, required: true },
-  lecture: LectureSchema,
-  speaker: SpeakerSchema,
-  note: String,
-  congregation: String,
-})
+const PlanSchema = new Schema<IPlan>(
+  {
+    date: { type: String, required: true },
+    lecture: LectureSchema,
+    speaker: SpeakerSchema,
+    note: String,
+    congregation: String,
+  },
+  {
+    timestamps: true,
+  }
+)
 
 const planModel = mongoose.models.Plan || model<IPlan>('Plan', PlanSchema)
 
