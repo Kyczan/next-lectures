@@ -3,7 +3,7 @@ import { FaLongArrowAltUp, FaLongArrowAltDown } from 'react-icons/fa'
 
 import { ISort, SortOrder } from '../../../app/types'
 
-import styles from './sortButton.module.css'
+import styles from './SortButton.module.css'
 
 interface ISortButtonProps<T> {
   onClick: (key: T) => void
