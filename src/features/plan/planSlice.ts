@@ -4,6 +4,8 @@ import { ApiCallStatuses, SortOrder, IState } from '../../app/types'
 import { ILecturesDataItem } from '../lectures/lecturesSlice'
 import { ISpeakersDataItem } from '../speakers/speakersSlice'
 import { applyFilter } from '../../utils/filter/applyFilter'
+import { fetchLectures } from '../lectures/lecturesSlice'
+import { fetchSpeakers } from '../speakers/speakersSlice'
 
 export interface IPlanDataItem {
   _id: string
@@ -32,7 +34,7 @@ export const fetchPlan = createAsyncThunk('plan/fetch', async () => {
 
 export const addPlan = createAsyncThunk(
   'plan/add',
-  async (addData: IPlanDataItem) => {
+  async (addData: IPlanDataItem, { dispatch }) => {
     const response = await fetch('/api/plan', {
       method: 'POST',
       headers: {
@@ -40,6 +42,8 @@ export const addPlan = createAsyncThunk(
       },
       body: JSON.stringify(addData),
     })
+    dispatch(fetchLectures())
+    dispatch(fetchSpeakers())
     if (!response.ok) {
       throw response.statusText
     }
@@ -50,7 +54,7 @@ export const addPlan = createAsyncThunk(
 
 export const updatePlan = createAsyncThunk(
   'plan/update',
-  async (updateData: IPlanDataItem) => {
+  async (updateData: IPlanDataItem, { dispatch }) => {
     const { _id, ...body } = updateData
     const response = await fetch(`/api/plan/${_id}`, {
       method: 'PUT',
@@ -59,6 +63,8 @@ export const updatePlan = createAsyncThunk(
       },
       body: JSON.stringify(body),
     })
+    dispatch(fetchLectures())
+    dispatch(fetchSpeakers())
     if (!response.ok) {
       throw response.statusText
     }
@@ -69,11 +75,13 @@ export const updatePlan = createAsyncThunk(
 
 export const deletePlan = createAsyncThunk(
   'plan/delete',
-  async (deleteData: IPlanDataItem) => {
+  async (deleteData: IPlanDataItem, { dispatch }) => {
     const { _id } = deleteData
     const response = await fetch(`/api/plan/${_id}`, {
       method: 'DELETE',
     })
+    dispatch(fetchLectures())
+    dispatch(fetchSpeakers())
     if (!response.ok) {
       throw response.statusText
     }

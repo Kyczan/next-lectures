@@ -9,6 +9,8 @@ import {
   selectPlanById,
 } from './planSlice'
 import planDataImport from '../../../__mocks__/data/plan.json'
+import lecturesData from '../../../__mocks__/data/lectures.json'
+import speakersData from '../../../__mocks__/data/speakers.json'
 
 describe('planSlice', () => {
   const planData: IPlanDataItem[] = planDataImport
@@ -42,19 +44,23 @@ describe('planSlice', () => {
   describe('addPlan', () => {
     it('handles success', async () => {
       fetchMock.once(JSON.stringify(plan))
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(addPlan(plan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(1)
+      expect(fetchMock).toHaveBeenCalledTimes(3)
       expect(appState.plan.data).toEqual([plan])
     })
 
     it('handles bad status response', async () => {
       fetchMock.once(null, { status: 400 })
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(addPlan(plan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(1)
+      expect(fetchMock).toHaveBeenCalledTimes(3)
       expect(appState.plan.add.error).toEqual('Bad Request')
     })
   })
@@ -69,10 +75,12 @@ describe('planSlice', () => {
       await store.dispatch(fetchPlan())
 
       fetchMock.once(JSON.stringify(modifiedPlan))
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(updatePlan(modifiedPlan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(2)
+      expect(fetchMock).toHaveBeenCalledTimes(4)
       expect(appState.plan.data).toEqual([modifiedPlan])
     })
 
@@ -85,19 +93,23 @@ describe('planSlice', () => {
       await store.dispatch(fetchPlan())
 
       fetchMock.once(JSON.stringify(modifiedPlan))
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(updatePlan(modifiedPlan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(2)
+      expect(fetchMock).toHaveBeenCalledTimes(4)
       expect(appState.plan.data).toEqual([plan])
     })
 
     it('handles bad status response', async () => {
       fetchMock.once(null, { status: 400 })
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(updatePlan(plan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(1)
+      expect(fetchMock).toHaveBeenCalledTimes(3)
       expect(appState.plan.update.error).toEqual('Bad Request')
     })
   })
@@ -108,10 +120,12 @@ describe('planSlice', () => {
       await store.dispatch(fetchPlan())
 
       fetchMock.once(JSON.stringify({}))
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(deletePlan(plan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(2)
+      expect(fetchMock).toHaveBeenCalledTimes(4)
       expect(appState.plan.data).toEqual([])
     })
 
@@ -124,19 +138,23 @@ describe('planSlice', () => {
       await store.dispatch(fetchPlan())
 
       fetchMock.once(JSON.stringify({}))
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(deletePlan(modifiedPlan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(2)
+      expect(fetchMock).toHaveBeenCalledTimes(4)
       expect(appState.plan.data).toEqual([plan])
     })
 
     it('handles bad status response', async () => {
       fetchMock.once(null, { status: 400 })
+      fetchMock.once(JSON.stringify(lecturesData))
+      fetchMock.once(JSON.stringify(speakersData))
       await store.dispatch(deletePlan(plan))
       const appState = store.getState()
 
-      expect(fetchMock).toHaveBeenCalledTimes(1)
+      expect(fetchMock).toHaveBeenCalledTimes(3)
       expect(appState.plan.delete.error).toEqual('Bad Request')
     })
   })
