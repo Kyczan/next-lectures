@@ -1,6 +1,8 @@
 import { useEffect, ReactNode } from 'react'
 import { signIn, useSession } from 'next-auth/client'
 
+import styles from './Auth.module.css'
+
 interface IAuth {
   children: ReactNode
 }
@@ -19,9 +21,11 @@ const Auth = ({ children }: IAuth): JSX.Element => {
 
   // Loading
   return (
-    <main className="container">
-      <article aria-busy="true" data-testid="auth-loader"></article>
-    </main>
+    <main
+      className={`container ${styles.loading}`}
+      aria-busy="true"
+      data-testid="auth-loader"
+    ></main>
   )
 }
 
