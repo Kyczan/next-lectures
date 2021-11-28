@@ -27,6 +27,17 @@ describe('<SpeakerView />', () => {
     await findByText('Szczegóły mówcy')
   })
 
+  it('renders without crash when no event details available', async () => {
+    fetchMock.once(JSON.stringify(speakersData))
+    const { findByText } = render(
+      <Provider store={store}>
+        <SpeakerView id={speakersData[1]._id} />
+      </Provider>
+    )
+
+    await findByText('Szczegóły mówcy')
+  })
+
   it('renders when error occurs and handles refresh', async () => {
     const errorMsg = 'Oops'
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))

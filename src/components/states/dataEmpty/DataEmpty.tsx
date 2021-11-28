@@ -19,7 +19,7 @@ const DataEmpty = ({ href }: IDataEmptyProps): JSX.Element => {
           <BsInboxFill className={styles.icon} />
           <div>Niczego tu jeszcze nie ma</div>
           <Link href={href}>
-            <a className={styles.add} data-testid="refresh">
+            <a className={styles.add} data-testid="data-empty-add">
               <FiPlus /> Dodaj
             </a>
           </Link>

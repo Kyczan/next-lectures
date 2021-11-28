@@ -92,4 +92,30 @@ describe('<Plan />', () => {
     const afterUtils = within(afterSearch[0])
     expect(afterUtils.getByText('3 lutego 2021')).toBeInTheDocument()
   })
+
+  it('handles search when nothing found', async () => {
+    fetchMock.once(JSON.stringify(planData))
+
+    const { findByTestId } = render(
+      <Provider store={store}>
+        <Plan />
+      </Provider>
+    )
+
+    const search = (await findByTestId('search-input')) as HTMLInputElement
+    userEvent.type(search, 'non existing value')
+  })
+
+  it('displays empty state when no data and no filter', async () => {
+    fetchMock.once(JSON.stringify([]))
+
+    const { findByTestId } = render(
+      <Provider store={store}>
+        <Plan />
+      </Provider>
+    )
+
+    const emptyAdd = await findByTestId('data-empty-add')
+    expect(emptyAdd).toBeInTheDocument()
+  })
 })

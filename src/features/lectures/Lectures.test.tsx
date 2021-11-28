@@ -131,4 +131,30 @@ describe('<Lectures />', () => {
       afterUtils.getByText('Super cool lecture with nice title 2')
     ).toBeInTheDocument()
   })
+
+  it('handles search when nothing found', async () => {
+    fetchMock.once(JSON.stringify(lecturesData))
+
+    const { findByTestId } = render(
+      <Provider store={store}>
+        <Lectures />
+      </Provider>
+    )
+
+    const search = (await findByTestId('search-input')) as HTMLInputElement
+    userEvent.type(search, 'non existing value')
+  })
+
+  it('displays empty state when no data and no filter', async () => {
+    fetchMock.once(JSON.stringify([]))
+
+    const { findByTestId } = render(
+      <Provider store={store}>
+        <Lectures />
+      </Provider>
+    )
+
+    const emptyAdd = await findByTestId('data-empty-add')
+    expect(emptyAdd).toBeInTheDocument()
+  })
 })

@@ -22,9 +22,11 @@ export const applyFilter = <DataType>(
 
   const asc = sort.order === SortOrder.ASC ? 1 : -1
   filtered.sort((a, b) => {
-    if (!a[sort.key]) return -asc
-    if (!b[sort.key]) return asc
-    return a[sort.key].localeCompare(b[sort.key], 'pl', { numeric: true }) * asc
+    const aItem = resolvePath(a, sort.key)
+    const bItem = resolvePath(b, sort.key)
+    if (!aItem) return -asc
+    if (!bItem) return asc
+    return aItem.localeCompare(bItem, 'pl', { numeric: true }) * asc
   })
 
   return filtered

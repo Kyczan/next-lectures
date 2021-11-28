@@ -12,7 +12,7 @@ const planHandler: NextApiHandler = async (req, res) => {
   switch (method) {
     case 'GET':
       try {
-        const plan = await Plan.find({})
+        const plan = await Plan.find({}).sort({ date: -1 }).lean()
         res.status(200).json(plan)
       } catch (error) {
         res.status(400)

@@ -2,6 +2,7 @@ import type { NextApiHandler } from 'next'
 
 import dbConnect from '../../../utils/db/dbConnect'
 import Speaker from '../../../models/Speaker'
+import Plan from '../../../models/Plan'
 import authMiddleware from '../../../utils/middleware/auth'
 
 const speakersHandler: NextApiHandler = async (req, res) => {
@@ -12,8 +13,19 @@ const speakersHandler: NextApiHandler = async (req, res) => {
   switch (method) {
     case 'GET':
       try {
-        const speakers = await Speaker.find({})
-        res.status(200).json(speakers)
+        const [speakers, plan] = await Promise.all([
+          Speaker.find({}).sort({ name: 1 }).lean(),
+          Plan.find({}).sort({ date: -1 }).lean(),
+        ])
+        const speakersWithPlan = speakers.map((speaker) => {
+          const lastEvent = plan.find(
+            (event) => String(event.speaker?._id) === String(speaker._id)
+          )
+          speaker.lastEvent = lastEvent
+
+          return speaker
+        })
+        res.status(200).json(speakersWithPlan)
       } catch (error) {
         res.status(400)
       }

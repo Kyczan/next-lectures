@@ -6,9 +6,8 @@
       "_id": "a",
       "number": "1",
       "title": "Super cool lecture with nice title",
-      "lastDate": "2021-02-03",
-      "note": "note",
-      "lastSpeaker": "John Smith"
+      "lastEvent": null,
+      "note": "note"
     },
     "note": "note",
     "speaker": {
@@ -16,7 +15,7 @@
       "name": "John Smith",
       "congregation": "Shire South",
       "note": null,
-      "lastDate": "2021-01-01"
+      "lastEvent": null
     }
   },
   {
@@ -33,9 +32,8 @@
       "_id": "b",
       "number": "2",
       "title": "Super cool lecture with nice title 2",
-      "lastDate": "2021-02-03",
-      "note": "note",
-      "lastSpeaker": "John Smith"
+      "lastEvent": null,
+      "note": "note"
     },
     "note": null,
     "speaker": {
@@ -43,7 +41,7 @@
       "name": "John Smith",
       "congregation": "Shire South",
       "note": null,
-      "lastDate": "2021-01-01"
+      "lastEvent": null
     }
   },
   {
@@ -53,9 +51,8 @@
       "_id": "c",
       "number": "3",
       "title": "Super cool lecture with nice title 3",
-      "lastDate": "2021-02-03",
-      "note": "note",
-      "lastSpeaker": "John Smith"
+      "lastEvent": null,
+      "note": "note"
     },
     "note": null,
     "speaker": {
@@ -63,7 +60,7 @@
       "name": "John Smith",
       "congregation": "Shire South",
       "note": null,
-      "lastDate": "2021-01-01"
+      "lastEvent": null
     }
   }
 ]

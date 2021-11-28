@@ -15,6 +15,7 @@ import {
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
+import { formatDate, getLecture } from '../../plan/Plan'
 
 interface ISpeaker {
   id: string
@@ -83,7 +84,11 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
               <dt>
                 <small>Ostatnie wygłoszenie:</small>
               </dt>
-              <dd>{speaker.lastDate}</dd>
+              <dd>{formatDate(speaker.lastEvent?.date)}</dd>
+              <dt>
+                <small>Ostatni wykład:</small>
+              </dt>
+              <dd>{getLecture(speaker.lastEvent?.lecture)}</dd>
             </dl>
 
             <div className="inline-wrapper inline-wrapper--end">

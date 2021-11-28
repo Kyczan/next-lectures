@@ -23,7 +23,11 @@ jest.mock('../../../../utils/middleware/auth', () => {
 
 describe('/api/plan', () => {
   it('handles GET requests with success', async () => {
-    Plan.find = jest.fn().mockResolvedValueOnce(planData)
+    Plan.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(planData),
+      })),
+    }))
     const { req, res } = createMocks({
       method: 'GET',
     })
@@ -35,7 +39,11 @@ describe('/api/plan', () => {
   })
 
   it('handles GET requests with error', async () => {
-    Plan.find = jest.fn().mockRejectedValueOnce('Error')
+    Plan.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockRejectedValueOnce('Error'),
+      })),
+    }))
     const { req, res } = createMocks({
       method: 'GET',
     })

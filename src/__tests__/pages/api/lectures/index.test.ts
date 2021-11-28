@@ -5,7 +5,9 @@ import { createMocks } from 'node-mocks-http'
 
 import lecturesHandler from '../../../../pages/api/lectures/index'
 import Lecture from '../../../../models/Lecture'
+import Plan from '../../../../models/Plan'
 import lecturesData from '../../../../../__mocks__/data/lectures.json'
+import planData from '../../../../../__mocks__/data/plan.json'
 
 jest.mock('../../../../utils/db/dbConnect', () => {
   return {
@@ -23,7 +25,16 @@ jest.mock('../../../../utils/middleware/auth', () => {
 
 describe('/api/lectures', () => {
   it('handles GET requests with success', async () => {
-    Lecture.find = jest.fn().mockResolvedValueOnce(lecturesData)
+    Lecture.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(lecturesData),
+      })),
+    }))
+    Plan.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(planData),
+      })),
+    }))
     const { req, res } = createMocks({
       method: 'GET',
     })
@@ -35,7 +46,16 @@ describe('/api/lectures', () => {
   })
 
   it('handles GET requests with error', async () => {
-    Lecture.find = jest.fn().mockRejectedValueOnce('Error')
+    Lecture.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockRejectedValueOnce('Error'),
+      })),
+    }))
+    Plan.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(planData),
+      })),
+    }))
     const { req, res } = createMocks({
       method: 'GET',
     })

@@ -4,27 +4,45 @@
     "name": "John Smith",
     "congregation": "Shire South",
     "note": null,
-    "lastDate": "2021-01-01"
+    "lastEvent": {
+      "_id": "a",
+      "date": "2021-02-01",
+      "lecture": {
+        "_id": "a",
+        "number": "1",
+        "title": "Super cool lecture with nice title",
+        "lastEvent": null,
+        "note": "note"
+      },
+      "note": "note",
+      "speaker": {
+        "_id": "a",
+        "name": "John Smith",
+        "congregation": "Shire South",
+        "note": null,
+        "lastEvent": null
+      }
+    }
   },
   {
     "_id": "b",
     "name": "John Smithowitz",
     "congregation": null,
     "note": "some note",
-    "lastDate": "2022-01-01"
+    "lastEvent": null
   },
   {
     "_id": "c",
     "name": "Karl Garmichpartenkirchen",
     "congregation": "Mordor",
     "note": null,
-    "lastDate": "2021-01-01"
+    "lastEvent": null
   },
   {
     "_id": "d",
     "name": "Jonathan Cool",
     "congregation": "Rohan",
     "note": null,
-    "lastDate": null
+    "lastEvent": null
   }
 ]

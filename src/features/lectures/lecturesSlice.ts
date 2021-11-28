@@ -2,18 +2,18 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { AppState } from '../../app/store'
 import { ApiCallStatuses, SortOrder, IState } from '../../app/types'
 import { applyFilter } from '../../utils/filter/applyFilter'
+import { IPlanDataItem } from '../plan/planSlice'
 
 export interface ILecturesDataItem {
   _id: string
   number: string
   title: string
   note?: string
-  lastDate?: string
-  lastSpeaker?: string
+  lastEvent?: IPlanDataItem
 }
 
 export type ILecturesSearchKeys = 'number' | 'title' | 'note'
-export type ILecturesSortKeys = 'number' | 'title' | 'lastDate'
+export type ILecturesSortKeys = 'number' | 'title' | 'lastEvent.date'
 
 export const fetchLectures = createAsyncThunk('lectures/fetch', async () => {
   const response = await fetch('/api/lectures')

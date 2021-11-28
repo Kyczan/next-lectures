@@ -15,6 +15,7 @@ import {
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
+import { formatDate } from '../../plan/Plan'
 
 interface ILecture {
   id: string
@@ -83,11 +84,16 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
               <dt>
                 <small>Ostatnie wygłoszenie:</small>
               </dt>
-              <dd>{lecture.lastDate}</dd>
+              <dd>{formatDate(lecture.lastEvent?.date)}</dd>
               <dt>
                 <small>Ostatni mówca:</small>
               </dt>
-              <dd>{lecture.lastSpeaker}</dd>
+              <dd>
+                {lecture.lastEvent?.speaker?.name}
+                {lecture.lastEvent?.speaker?.congregation
+                  ? ` (${lecture.lastEvent.speaker.congregation})`
+                  : ''}
+              </dd>
             </dl>
 
             <div className="inline-wrapper inline-wrapper--end">

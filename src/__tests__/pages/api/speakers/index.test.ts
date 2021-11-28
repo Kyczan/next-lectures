@@ -5,7 +5,9 @@ import { createMocks } from 'node-mocks-http'
 
 import speakersHandler from '../../../../pages/api/speakers/index'
 import Speaker from '../../../../models/Speaker'
+import Plan from '../../../../models/Plan'
 import speakersData from '../../../../../__mocks__/data/speakers.json'
+import planData from '../../../../../__mocks__/data/plan.json'
 
 jest.mock('../../../../utils/db/dbConnect', () => {
   return {
@@ -23,7 +25,17 @@ jest.mock('../../../../utils/middleware/auth', () => {
 
 describe('/api/speakers', () => {
   it('handles GET requests with success', async () => {
-    Speaker.find = jest.fn().mockResolvedValueOnce(speakersData)
+    Speaker.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(speakersData),
+      })),
+    }))
+    Plan.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(planData),
+      })),
+    }))
+
     const { req, res } = createMocks({
       method: 'GET',
     })
@@ -35,7 +47,17 @@ describe('/api/speakers', () => {
   })
 
   it('handles GET requests with error', async () => {
-    Speaker.find = jest.fn().mockRejectedValueOnce('Error')
+    Speaker.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockRejectedValueOnce('Error'),
+      })),
+    }))
+    Plan.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(planData),
+      })),
+    }))
+
     const { req, res } = createMocks({
       method: 'GET',
     })
