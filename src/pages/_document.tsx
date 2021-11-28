@@ -5,6 +5,11 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta
+            name="description"
+            content="Aplikacja do zarządzania wykładami"
+          />
+          <meta name="keywords" content="next app" />
           <link
             rel="icon"
             type="image/png"
