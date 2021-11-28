@@ -27,7 +27,6 @@ interface ISpeakerEdit {
 
 const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
   const [isModalOpen, toggleModal] = useToggle(false)
-  const [initCongregation, setInitCongregation] = useState(null)
   const isEdit = !!id
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -43,17 +42,9 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
     }
   }, [status, dispatch])
 
-  useEffect(() => {
-    if (speaker) {
-      setInitCongregation(
-        speaker.congregation ? { _id: speaker.congregation } : null
-      )
-    }
-  }, [speaker])
-
   const initialValues = {
     name: speaker?.name || '',
-    congregation: initCongregation,
+    congregation: speaker?.congregation ? { _id: speaker.congregation } : null,
     note: speaker?.note || '',
   }
 
@@ -104,13 +95,6 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
     dispatch(fetchSpeakers())
   }
 
-  const handleAddCongregation = ({ congregation }) => {
-    const congregationObj = createCongregationObj(congregation)
-    congregationsOptions.push(congregationObj)
-    setInitCongregation(congregationObj)
-    toggleModal()
-  }
-
   return (
     <section>
       <div className="inline-wrapper">
@@ -138,49 +122,57 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
               validate={validate}
               onSubmit={handleSubmit}
             >
-              {(formik) => (
-                <Form>
-                  <Input label="Imię i Nazwisko *" name="name" type="text" />
-                  <div className={styles.congregation}>
-                    <Select
-                      label="Zbór"
-                      name="congregation"
-                      placeholder="Wybierz zbór"
-                      options={congregationsOptions}
+              {(formik) => {
+                const handleAddCongregation = ({ congregation }) => {
+                  const congregationObj = createCongregationObj(congregation)
+                  congregationsOptions.push(congregationObj)
+                  formik.setFieldValue('congregation', congregationObj)
+                  toggleModal()
+                }
+                return (
+                  <Form>
+                    <Input label="Imię i Nazwisko *" name="name" type="text" />
+                    <div className={styles.congregation}>
+                      <Select
+                        label="Zbór"
+                        name="congregation"
+                        placeholder="Wybierz zbór"
+                        options={congregationsOptions}
+                      />
+                      <button
+                        className="secondary outline"
+                        data-testid="add-congregation-btn"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          toggleModal()
+                        }}
+                      >
+                        <FiPlus />
+                      </button>
+                    </div>
+                    <Input label="Notatka" name="note" type="text" />
+                    <div className="inline-wrapper inline-wrapper--end">
+                      <button
+                        type="submit"
+                        disabled={formik.isSubmitting || !formik.isValid}
+                        aria-busy={formik.isSubmitting}
+                        className="with-icon"
+                        data-testid="submit-form"
+                      >
+                        <FiSave />
+                        Zapisz
+                      </button>
+                    </div>
+                    <CongregationModal
+                      isOpen={isModalOpen}
+                      onRequestClose={toggleModal}
+                      onSubmit={handleAddCongregation}
                     />
-                    <button
-                      className="secondary outline"
-                      data-testid="add-congregation-btn"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        toggleModal()
-                      }}
-                    >
-                      <FiPlus />
-                    </button>
-                  </div>
-                  <Input label="Notatka" name="note" type="text" />
-                  <div className="inline-wrapper inline-wrapper--end">
-                    <button
-                      type="submit"
-                      disabled={formik.isSubmitting || !formik.isValid}
-                      aria-busy={formik.isSubmitting}
-                      className="with-icon"
-                      data-testid="submit-form"
-                    >
-                      <FiSave />
-                      Zapisz
-                    </button>
-                  </div>
-                </Form>
-              )}
+                  </Form>
+                )
+              }}
             </Formik>
           </article>
-          <CongregationModal
-            isOpen={isModalOpen}
-            onRequestClose={toggleModal}
-            onSubmit={handleAddCongregation}
-          />
         </>
       )}
     </section>
