@@ -10,13 +10,7 @@ export default NextAuth({
     }),
   ],
 
-  session: {
-    jwt: true,
-  },
-
-  jwt: {
-    secret: process.env.SECRET,
-  },
+  database: process.env.MONGODB_URI + '?entityPrefix=nextauth_',
 
   secret: process.env.SECRET,
 
