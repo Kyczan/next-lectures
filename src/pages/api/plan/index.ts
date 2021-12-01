@@ -2,11 +2,9 @@ import type { NextApiHandler } from 'next'
 
 import dbConnect from '../../../utils/db/dbConnect'
 import Plan from '../../../models/Plan'
-import authMiddleware from '../../../utils/middleware/auth'
 
 const planHandler: NextApiHandler = async (req, res) => {
   const { method } = req
-  await authMiddleware(req, res)
   await dbConnect()
 
   switch (method) {

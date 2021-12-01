@@ -14,13 +14,6 @@ jest.mock('../../../../utils/db/dbConnect', () => {
   }
 })
 
-jest.mock('../../../../utils/middleware/auth', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(() => {}),
-  }
-})
-
 describe('/api/plan', () => {
   it('handles GET requests with success', async () => {
     Plan.find = jest.fn().mockImplementationOnce(() => ({

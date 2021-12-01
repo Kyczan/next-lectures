@@ -14,13 +14,6 @@ jest.mock('../../../../utils/db/dbConnect', () => {
   }
 })
 
-jest.mock('../../../../utils/middleware/auth', () => {
-  return {
-    __esModule: true,
-    default: jest.fn(() => {}),
-  }
-})
-
 describe('/api/lectures/[id]', () => {
   it('handles PUT requests with success', async () => {
     Lecture.findByIdAndUpdate = jest.fn().mockResolvedValueOnce(lecturesData[0])
