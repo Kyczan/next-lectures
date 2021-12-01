@@ -13,6 +13,14 @@ const lecturesHandler: NextApiHandler = async (req, res) => {
   await dbConnect()
 
   switch (method) {
+    case 'GET':
+      try {
+        const lecture = await Lecture.findById(id)
+        res.status(200).json(lecture)
+      } catch (error) {
+        res.status(400)
+      }
+      break
     case 'PUT':
       try {
         const lecture = await Lecture.findByIdAndUpdate(id, req.body, {

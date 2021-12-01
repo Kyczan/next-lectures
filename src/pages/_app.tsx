@@ -11,16 +11,16 @@ import Auth from '../components/auth/Auth'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <AuthProvider session={pageProps.session}>
-      <Auth>
-        <ReduxProvider store={store}>
-          <Navbar />
-          <main className="container">
-            <Component {...pageProps} />
-          </main>
-        </ReduxProvider>
-      </Auth>
-    </AuthProvider>
+    // <AuthProvider session={pageProps.session}>
+    // <Auth>
+    <ReduxProvider store={store}>
+      <Navbar />
+      <main className="container">
+        <Component {...pageProps} />
+      </main>
+    </ReduxProvider>
+    // </Auth>
+    // </AuthProvider>
   )
 }
 

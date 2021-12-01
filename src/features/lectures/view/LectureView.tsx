@@ -1,20 +1,11 @@
-import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Modal from '../../../components/modal/Modal'
 import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
 
-import { ApiCallStatuses } from '../../../app/types'
-import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
-import {
-  fetchLectures,
-  selectLectures,
-  selectLectureById,
-  deleteLecture,
-} from '../lecturesSlice'
+import { useLectureById, deleteLecture } from '../../../app/hooks/lectures'
+import { useToggle } from '../../../app/hooks'
 import BackButton from '../../../components/buttons/backButton/BackButton'
-import DataError from '../../../components/states/dataError/DataError'
-import Page404 from '../../../components/states/page404/Page404'
 import { formatDate } from '../../plan/Plan'
 
 interface ILecture {
@@ -24,27 +15,13 @@ interface ILecture {
 const LectureView = ({ id }: ILecture): JSX.Element => {
   const [isModalOpen, toggleModal] = useToggle(false)
   const router = useRouter()
-  const dispatch = useAppDispatch()
-  const lecture = useAppSelector(selectLectureById(id))
-  const {
-    fetch: { status },
-  } = useAppSelector(selectLectures)
-
-  useEffect(() => {
-    if (status === ApiCallStatuses.IDLE) {
-      dispatch(fetchLectures())
-    }
-  }, [status, dispatch])
+  const { lecture, isLoading } = useLectureById(id)
 
   const handleDelete = async (e) => {
     e.preventDefault()
-    await dispatch(deleteLecture(lecture))
+    await deleteLecture(lecture)
     toggleModal()
     router.push(`/lectures`)
-  }
-
-  const handleRefresh = () => {
-    dispatch(fetchLectures())
   }
 
   return (
@@ -54,16 +31,8 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
         <h1>Szczegóły wykładu</h1>
       </div>
 
-      {status === ApiCallStatuses.LOADING && (
-        <article aria-busy="true"></article>
-      )}
-      {status === ApiCallStatuses.FAILED && (
-        <article>
-          <DataError onRefresh={handleRefresh} />
-        </article>
-      )}
-      {status === ApiCallStatuses.SUCCEEDED && !lecture && <Page404 />}
-      {status === ApiCallStatuses.SUCCEEDED && lecture && (
+      {isLoading && <article aria-busy="true"></article>}
+      {lecture && (
         <>
           <article>
             <dl>
