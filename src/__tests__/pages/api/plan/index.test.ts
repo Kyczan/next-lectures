@@ -22,6 +22,17 @@ jest.mock('../../../../utils/middleware/auth', () => {
 })
 
 describe('/api/plan', () => {
+  const OLD_ENV = process.env
+
+  beforeEach(() => {
+    jest.resetModules()
+    process.env = { ...OLD_ENV }
+  })
+
+  afterAll(() => {
+    process.env = OLD_ENV
+  })
+
   it('handles GET requests with success', async () => {
     Plan.find = jest.fn().mockImplementationOnce(() => ({
       sort: jest.fn().mockImplementationOnce(() => ({
@@ -30,6 +41,24 @@ describe('/api/plan', () => {
     }))
     const { req, res } = createMocks({
       method: 'GET',
+    })
+
+    await planHandler(req, res)
+
+    expect(res._getStatusCode()).toBe(200)
+    expect(JSON.parse(res._getData())).toEqual(planData)
+  })
+
+  it('handles GET requests with success when API_KEY is provided', async () => {
+    process.env.API_KEY = 'test'
+    Plan.find = jest.fn().mockImplementationOnce(() => ({
+      sort: jest.fn().mockImplementationOnce(() => ({
+        lean: jest.fn().mockResolvedValueOnce(planData),
+      })),
+    }))
+    const { req, res } = createMocks({
+      method: 'GET',
+      query: { api_key: 'test' },
     })
 
     await planHandler(req, res)

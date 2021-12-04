@@ -5,8 +5,14 @@ import Plan from '../../../models/Plan'
 import authMiddleware from '../../../utils/middleware/auth'
 
 const planHandler: NextApiHandler = async (req, res) => {
-  const { method } = req
-  await authMiddleware(req, res)
+  const {
+    query: { api_key },
+    method,
+  } = req
+  // allow to read plan data using api_key
+  if (!api_key || api_key !== process.env.API_KEY) {
+    await authMiddleware(req, res)
+  }
   await dbConnect()
 
   switch (method) {
