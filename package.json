@@ -4,6 +4,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "start:custom": "node app.js",
     "lint": "next lint",
     "type-check": "tsc",
     "test": "jest",
