@@ -1,4 +1,4 @@
-name: Build and test project
+name: CI
 
 on:
   push:
@@ -8,19 +8,28 @@ on:
 
 jobs:
   build:
-    name: Build and test
+    name: Build test and deploy
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
           node-version: '16.x'
+
       - name: Install dependencies
         run: npm ci
+
       - name: Build project
         run: npm run build --if-present
+
       - name: Run tests
         run: npm test
+
+      # deploy only when push to main
+      - name: Deploy
+        if: ${{ github.event_name == 'push' }}
+        run: echo hello
