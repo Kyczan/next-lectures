@@ -40,7 +40,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}/new.build
-          EXCLUDE: "/node_modules/, /coverage/, /.github/, /.git/, /src/"
+          EXCLUDE: "/node_modules/, /coverage/, /.github/, /.git/, /src/, /__mocks__/"
 
       # run command only when push to main
       - name: Run SSH command
