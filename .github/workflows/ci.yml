@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  ci:
     name: Build test and deploy
     runs-on: ubuntu-latest
 
@@ -30,6 +30,14 @@ jobs:
         run: npm test
 
       # deploy only when push to main
-      - name: Deploy
+      - name: Deploy to server
         if: ${{ github.event_name == 'push' }}
-        run: echo hello
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO"
+          SOURCE: "./"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.TARGET }}/new.build
+          EXCLUDE: "/node_modules/, /coverage/, /.github/"
