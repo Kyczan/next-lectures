@@ -40,4 +40,14 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}/new.build
-          EXCLUDE: "/node_modules/, /coverage/, /.github/"
+          EXCLUDE: "/node_modules/, /coverage/, /.github/, /.git/, /src/"
+
+      # run command only when push to main
+      - name: Run SSH command
+        if: ${{ github.event_name == 'push' }}
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          command: cd ${{ secrets.TARGET }} && rm -rf old.build && mv public_nodejs old.build && mv new.build public_nodejs && mkdir new.build && cp env/.env.local public_nodejs && cd public_nodejs && npm ci && devil www restart ${{ secrets.DOMAIN }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
