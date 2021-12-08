@@ -168,7 +168,11 @@ export const slice = createSlice({
         state.update.status = ApiCallStatuses.IDLE
         const id = action.payload._id
         const index = state.data.findIndex((item) => item._id === id)
-        if (index !== -1) state.data[index] = action.payload
+        if (index !== -1)
+          state.data[index] = {
+            ...state.data[index],
+            ...action.payload,
+          }
         state.filtered = applyFilter<ISpeakersDataItem>(
           state.data,
           state.filter
