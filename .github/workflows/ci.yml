@@ -39,7 +39,7 @@ jobs:
           SOURCE: "./"
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.TARGET }}/new.build
+          TARGET: domains/${{ secrets.DOMAIN }}/new.build
           EXCLUDE: "/node_modules/, /coverage/, /.github/, /src/, /.git/, /__mocks__/, "
 
       # run command only when push to main
@@ -47,7 +47,12 @@ jobs:
         if: ${{ github.event_name == 'push' }}
         uses: garygrossgarten/github-action-ssh@release
         with:
-          command: cd ${{ secrets.TARGET }} && ./deploy.sh
+          command: cd domains/${{ secrets.DOMAIN }} && ./deploy.sh
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      # ping only when push to main
+      - name: Ping domain
+        if: ${{ github.event_name == 'push' }}
+        run: curl -L ${{ secrets.DOMAIN }}
