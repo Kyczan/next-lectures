@@ -6,6 +6,7 @@ import Search from './Search'
 describe('<Search>', () => {
   const defaultProps = {
     onChange: () => {},
+    init: '',
   }
 
   it('renders without crashing', () => {

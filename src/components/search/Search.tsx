@@ -5,10 +5,11 @@ import styles from './Search.module.css'
 
 interface ISearchProps {
   onChange: (value: string) => void
+  init: string
 }
 
-const Search = ({ onChange }: ISearchProps): JSX.Element => {
-  const [value, setValue] = useState('')
+const Search = ({ onChange, init }: ISearchProps): JSX.Element => {
+  const [value, setValue] = useState(init)
 
   const handleChange = (e) => {
     setValue(e.target.value)

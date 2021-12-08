@@ -59,7 +59,7 @@ const Plan = (): JSX.Element => {
         <h1>Plan</h1>
         {status === ApiCallStatuses.SUCCEEDED &&
           (filtered.length > 0 || !!searchedValue) && (
-            <Search onChange={handleSearch} />
+            <Search onChange={handleSearch} init={searchedValue} />
           )}
       </div>
 
