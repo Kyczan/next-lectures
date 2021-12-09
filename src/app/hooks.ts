@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, AppState } from './store'
 
@@ -16,4 +16,31 @@ export const useToggle = (initialValue: boolean) => {
   }
 
   return [value, toggle] as const
+}
+
+export const useInfiniteScroll = <T>(data: T[]): T[] => {
+  const increment = 12
+  const [dataLimit, setDataLimit] = useState(increment)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement
+      if (
+        scrollTop + clientHeight >= scrollHeight - 5 &&
+        dataLimit < data.length
+      ) {
+        setDataLimit((d) => d + increment)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [dataLimit, data, increment])
+
+  return data.slice(0, dataLimit)
 }
