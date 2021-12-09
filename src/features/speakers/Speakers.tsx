@@ -2,7 +2,11 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { ApiCallStatuses } from '../../app/types'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
+import {
+  useAppSelector,
+  useAppDispatch,
+  useInfiniteScroll,
+} from '../../app/hooks'
 import {
   fetchSpeakers,
   selectSpeakers,
@@ -36,6 +40,8 @@ const Speakers = (): JSX.Element => {
       dispatch(fetchSpeakers())
     }
   }, [status, dispatch])
+
+  const limitedData = useInfiniteScroll(filtered)
 
   const handleRowClick = (id) => {
     router.push(`/speakers/${id}`)
@@ -106,7 +112,7 @@ const Speakers = (): JSX.Element => {
 
             <hr />
 
-            {filtered.map((item) => (
+            {limitedData.map((item) => (
               <div
                 className="row"
                 key={item._id}

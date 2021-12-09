@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 import { ApiCallStatuses } from '../../app/types'
-import { useAppSelector, useAppDispatch } from '../../app/hooks'
-import { fetchPlan, selectPlan, setSearch, IPlanDataItem } from './planSlice'
+import {
+  useAppSelector,
+  useAppDispatch,
+  useInfiniteScroll,
+} from '../../app/hooks'
+import { fetchPlan, selectPlan, setSearch } from './planSlice'
 import Col from '../../components/col/Col'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
@@ -40,6 +44,8 @@ const Plan = (): JSX.Element => {
       dispatch(fetchPlan())
     }
   }, [status, dispatch])
+
+  const limitedData = useInfiniteScroll(filtered)
 
   const handleRowClick = (id) => {
     router.push(`/plan/${id}`)
@@ -84,7 +90,7 @@ const Plan = (): JSX.Element => {
 
             <hr />
 
-            {filtered.map((item) => (
+            {limitedData.map((item) => (
               <div
                 className="row"
                 key={item._id}
