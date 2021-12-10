@@ -1,0 +1,84 @@
+.row {
+  border-left: var(--border);
+  border-right: var(--border);
+  position: relative;
+}
+
+.row:hover {
+  border-radius: 0 !important;
+}
+
+.row-top {
+  border-top: var(--border);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+}
+
+.row-top:first-child {
+  margin-top: 0.5rem;
+}
+
+.row-top:hover {
+  border-top-left-radius: var(--border-radius) !important;
+  border-top-right-radius: var(--border-radius) !important;
+}
+
+.row-bottom {
+  border-bottom: var(--border);
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+}
+
+.row-bottom:hover {
+  border-bottom-left-radius: var(--border-radius) !important;
+  border-bottom-right-radius: var(--border-radius) !important;
+}
+
+.row-highlighted {
+  background-color: var(--contrast-focus) !important;
+}
+
+.row-highlighted:hover {
+  background-color: rgb(115 130 140 / 32%) !important;
+}
+
+.row-error {
+  background-color: #b71c1c1c !important;
+}
+
+.row-error:hover {
+  background-color: #b71c1c2e !important;
+}
+
+.row-month {
+  display: block;
+  position: absolute;
+  top: -11px;
+  left: 34px;
+  font-weight: bolder;
+  line-height: 1;
+  background-color: var(--background-color);
+  padding: 0 0.25rem;
+}
+
+@media (max-width: 767px) {
+  .row-month {
+    right: 34px;
+    left: unset;
+  }
+
+  .row-month + div {
+    padding-left: 0 !important;
+  }
+
+  .row-top::before {
+    height: calc(100% - 78px);
+    top: 58px;
+  }
+
+  .calendar {
+    margin-bottom: 10px;
+  }
+}

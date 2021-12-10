@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 
 import { ApiCallStatuses } from '../../app/types'
@@ -9,10 +9,13 @@ import {
 } from '../../app/hooks'
 import { fetchPlan, selectPlan, setSearch } from './planSlice'
 import Col from '../../components/col/Col'
+import CalendarCard from '../../components/calendarCard/CalendarCard'
 import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 import DataError from '../../components/states/dataError/DataError'
 import DataEmpty from '../../components/states/dataEmpty/DataEmpty'
+
+import styles from './Plan.module.css'
 
 export const getLecture = (lecture) => {
   if (!lecture || !lecture.number || !lecture.title) return ''
@@ -20,17 +23,20 @@ export const getLecture = (lecture) => {
   return `${lecture.number}. ${lecture.title}`
 }
 
-export const formatDate = (str) => {
+export const formatDate = (str, fullDate = true) => {
   if (!str) return
 
   const date = new Date(str)
-  const options = { year: 'numeric', month: 'long', day: 'numeric' } as const
+  const options = fullDate
+    ? ({ year: 'numeric', month: 'long', day: 'numeric' } as const)
+    : ({ month: 'long', year: 'numeric' } as const)
   return new Intl.DateTimeFormat('pl-PL', options).format(date)
 }
 
 const Plan = (): JSX.Element => {
   const router = useRouter()
   const {
+    data,
     filtered,
     filter: {
       search: { value: searchedValue },
@@ -59,6 +65,32 @@ const Plan = (): JSX.Element => {
     dispatch(fetchPlan())
   }
 
+  const nearestFutureEvent = useMemo(() => {
+    const today = new Date()
+    const futureEvents = data?.filter((item) => new Date(item.date) >= today)
+    futureEvents.sort((a, b) => (a.date > b.date ? 1 : -1))
+    return futureEvents[0]
+  }, [data])
+
+  const isPrevSameMonth = (index) => {
+    if (index === 0) return false
+    if (index === limitedData.length) return false
+    const current = new Date(limitedData[index].date)
+    const previous = new Date(limitedData[index - 1].date)
+    return current.getMonth() === previous.getMonth()
+  }
+
+  const getRowClass = (item, index) => {
+    const topBorder = !isPrevSameMonth(index) ? styles['row-top'] : ''
+    const bottomBorder = !isPrevSameMonth(index + 1) ? styles['row-bottom'] : ''
+
+    const highlightedCls =
+      nearestFutureEvent?._id === item._id ? styles['row-highlighted'] : ''
+    const errorCls =
+      !item.lecture && !item.speaker && !item.note ? styles['row-error'] : ''
+    return `row ${styles.row} ${highlightedCls} ${errorCls} ${topBorder} ${bottomBorder}`
+  }
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -80,30 +112,28 @@ const Plan = (): JSX.Element => {
         (filtered.length > 0 || !!searchedValue) && (
           <>
             <AddButton href="/plan/add" />
-            <div className="row heading-row">
-              <Col flex="1 2">
-                <strong>Data</strong>
-              </Col>
-              <Col flex="2 1">Wykład</Col>
-              <Col flex="1 1">Mówca</Col>
-            </div>
 
-            <hr />
-
-            {limitedData.map((item) => (
+            {limitedData.map((item, index) => (
               <div
-                className="row"
+                className={getRowClass(item, index)}
                 key={item._id}
                 data-testid="plan-row"
                 onClick={() => handleRowClick(item._id)}
               >
-                <Col flex="1 2">
-                  <strong data-testid="date">{formatDate(item.date)}</strong>
+                {!isPrevSameMonth(index) && (
+                  <div className={styles['row-month']}>
+                    {formatDate(item.date, false)}
+                  </div>
+                )}
+                <Col flex="0 0 60px" className={styles.calendar}>
+                  <CalendarCard day={new Date(item.date).getDate()} />
                 </Col>
 
                 <Col flex="2 1">
                   <div>
-                    <span>{getLecture(item.lecture)}</span>
+                    <span data-testid="plan-lecture">
+                      {getLecture(item.lecture)}
+                    </span>
                   </div>
                   <div>
                     <small>{item.note}</small>

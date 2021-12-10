@@ -30,6 +30,33 @@ describe('<Plan />', () => {
     expect(fetchMock.mock.calls.length).toEqual(1)
   })
 
+  it('renders all rows when added row with future date', async () => {
+    const today = new Date()
+    const tomorrow = new Date(today)
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    const data = [
+      ...planData,
+      {
+        _id: 'e',
+        date: tomorrow.toISOString().slice(0, 10),
+        lecture: null,
+        note: '',
+        speaker: null,
+      },
+    ]
+    fetchMock.once(JSON.stringify(data))
+
+    const { findAllByTestId } = render(
+      <Provider store={store}>
+        <Plan />
+      </Provider>
+    )
+
+    const rows = await findAllByTestId('plan-row')
+    expect(rows.length).toBe(data.length)
+    expect(fetchMock.mock.calls.length).toEqual(1)
+  })
+
   it('renders no rows when error occurs and handles refresh', async () => {
     const errorMsg = 'Oops'
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
@@ -78,19 +105,27 @@ describe('<Plan />', () => {
 
     // check first thing before searching
     // data is sorted in DESC order
-    const beforeSearch = await findAllByTestId('date')
+    const beforeSearch = await findAllByTestId('plan-lecture')
     expect(beforeSearch.length).toBe(planData.length)
     const beforeUtils = within(beforeSearch[0])
-    expect(beforeUtils.getByText('4 lutego 2021')).toBeInTheDocument()
+    expect(
+      beforeUtils.getByText(
+        `${planData[3].lecture.number}. ${planData[3].lecture.title}`
+      )
+    ).toBeInTheDocument()
 
     const search = getByTestId('search-input') as HTMLInputElement
     userEvent.type(search, '2')
 
     // check first thing after searching
-    const afterSearch = await findAllByTestId('date')
+    const afterSearch = await findAllByTestId('plan-lecture')
     expect(afterSearch.length).toBe(1)
     const afterUtils = within(afterSearch[0])
-    expect(afterUtils.getByText('3 lutego 2021')).toBeInTheDocument()
+    expect(
+      afterUtils.getByText(
+        `${planData[2].lecture.number}. ${planData[2].lecture.title}`
+      )
+    ).toBeInTheDocument()
   })
 
   it('handles search when nothing found', async () => {

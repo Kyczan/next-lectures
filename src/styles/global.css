@@ -1,3 +1,7 @@
+:root {
+  --border: 1px solid var(--form-element-border-color)
+}
+
 body {
   -webkit-font-smoothing: antialiased;
 }
@@ -35,13 +39,15 @@ article {
 .row {
   display: flex;
   padding: 16px;
+  padding-left: 2rem;
   width: 100%;
   transition: all 200ms ease;
 }
 
 .row:hover:not(.heading-row) {
   cursor: pointer;
-  background-color: var(--contrast-focus);
+  background-color: var(--table-row-stripped-background-color);
+  border-radius: var(--border-radius);
 }
 
 .row > div:not(:last-child) {
@@ -56,6 +62,7 @@ article {
   .row {
     flex-direction: column;
     position: relative;
+    padding-left: 16px;
   }
 
   .row > div {
@@ -76,7 +83,7 @@ article {
   }
 
   .row::before {
-    border-left: 1px solid var(--color);
+    border-left: 1px solid var(--form-element-border-color);
     content: '';
     height: calc(100% - 70px);
     left: 20px;
