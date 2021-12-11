@@ -30,6 +30,7 @@ import {
   ISpeakersSortKeys,
 } from '../../speakers/speakersSlice'
 import { applyFilter } from '../../../utils/filter/applyFilter'
+import { formatSpeaker } from '../../../utils/formatters/formatters'
 
 interface IPlanEdit {
   id?: string
@@ -138,7 +139,7 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
     const filtered = applyFilter(speakersData, filter)
     return filtered.map((item) => {
       return {
-        name: item.name,
+        name: formatSpeaker(item),
         value: item._id,
         data: item,
       }

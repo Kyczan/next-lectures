@@ -20,7 +20,7 @@ import Search from '../../components/search/Search'
 import SortButton from '../../components/buttons/sortButton/SortButton'
 import DataError from '../../components/states/dataError/DataError'
 import DataEmpty from '../../components/states/dataEmpty/DataEmpty'
-import { formatDate } from '../plan/Plan'
+import { formatDate } from '../../utils/formatters/formatters'
 
 const Speakers = (): JSX.Element => {
   const router = useRouter()

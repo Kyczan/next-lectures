@@ -20,7 +20,7 @@ import Search from '../../components/search/Search'
 import SortButton from '../../components/buttons/sortButton/SortButton'
 import DataError from '../../components/states/dataError/DataError'
 import DataEmpty from '../../components/states/dataEmpty/DataEmpty'
-import { formatDate } from '../plan/Plan'
+import { formatDate, formatSpeaker } from '../../utils/formatters/formatters'
 
 const Lectures = (): JSX.Element => {
   const router = useRouter()
@@ -133,12 +133,7 @@ const Lectures = (): JSX.Element => {
                 <Col flex="1 1">
                   <div>{formatDate(item.lastEvent?.date)}</div>
                   <div>
-                    <small>
-                      {item.lastEvent?.speaker?.name}
-                      {item.lastEvent?.speaker?.congregation
-                        ? ` (${item.lastEvent.speaker.congregation})`
-                        : ''}
-                    </small>
+                    <small>{formatSpeaker(item.lastEvent?.speaker)}</small>
                   </div>
                 </Col>
               </div>

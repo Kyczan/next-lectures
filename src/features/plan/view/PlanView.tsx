@@ -10,7 +10,11 @@ import { fetchPlan, selectPlan, selectPlanById, deletePlan } from '../planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
-import { getLecture, formatDate } from '../Plan'
+import {
+  formatLecture,
+  formatDate,
+  formatSpeaker,
+} from '../../../utils/formatters/formatters'
 
 interface IPlan {
   id: string
@@ -63,39 +67,35 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
           <article>
             <dl>
               <dt>
-                <small>Data:</small>
+                <small>Data</small>
               </dt>
               <dd>
                 <strong>{formatDate(plan.date)}</strong>
               </dd>
               <dt>
-                <small>Wykład:</small>
+                <small>Wykład</small>
               </dt>
               <dd>
                 {plan.lecture?._id && (
                   <Link href={`/lectures/${plan.lecture._id}`}>
-                    {getLecture(plan.lecture)}
+                    {formatLecture(plan.lecture)}
                   </Link>
                 )}
               </dd>
               <dt>
-                <small>Notatka:</small>
+                <small>Notatka</small>
               </dt>
               <dd>{plan.note}</dd>
               <dt>
-                <small>Mówca:</small>
+                <small>Mówca</small>
               </dt>
               <dd>
                 {plan.speaker?._id && (
                   <Link href={`/speakers/${plan.speaker._id}`}>
-                    {plan.speaker.name}
+                    {formatSpeaker(plan.speaker)}
                   </Link>
                 )}
               </dd>
-              <dt>
-                <small>Zbór:</small>
-              </dt>
-              <dd>{plan.speaker?.congregation}</dd>
             </dl>
 
             <div className="inline-wrapper inline-wrapper--end">

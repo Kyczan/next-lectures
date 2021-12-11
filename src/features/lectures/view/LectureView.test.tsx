@@ -6,6 +6,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react'
 import LectureView from './LectureView'
 import { makeStore } from '../../../app/store'
 import lecturesData from '../../../../__mocks__/data/lectures.json'
+import planData from '../../../../__mocks__/data/plan.json'
 
 jest.mock('next/dist/client/router', () => require('next-router-mock'))
 
@@ -18,6 +19,7 @@ describe('<LectureView />', () => {
 
   it('renders without crash', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByText } = render(
       <Provider store={store}>
         <LectureView id={lecturesData[0]._id} />
@@ -29,6 +31,7 @@ describe('<LectureView />', () => {
 
   it('renders without crash when no event details available', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByText } = render(
       <Provider store={store}>
         <LectureView id={lecturesData[1]._id} />
@@ -52,6 +55,7 @@ describe('<LectureView />', () => {
     }
 
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByText } = render(
       <Provider store={store}>
         <LectureView id={lecturesData[0]._id} />
@@ -65,6 +69,7 @@ describe('<LectureView />', () => {
     const errorMsg = 'Oops'
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
 
     const { findByTestId } = await render(
       <Provider store={store}>
@@ -78,6 +83,7 @@ describe('<LectureView />', () => {
 
   it('redirects to edit page on Edit btn click', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByTestId } = render(
       <Provider store={store}>
         <LectureView id={lecturesData[0]._id} />
@@ -95,6 +101,7 @@ describe('<LectureView />', () => {
 
   it('opens dialog on click', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, getByText } = render(
       <Provider store={store}>
         <LectureView id={lecturesData[0]._id} />
@@ -111,6 +118,7 @@ describe('<LectureView />', () => {
 
   it('opens dialog and then Delete', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, queryByText } = render(
       <Provider store={store}>
         <LectureView id={lecturesData[0]._id} />
@@ -134,6 +142,7 @@ describe('<LectureView />', () => {
 
   it('opens dialog and then Cancel', async () => {
     fetchMock.once(JSON.stringify(lecturesData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, queryByText } = render(
       <Provider store={store}>
         <LectureView id={lecturesData[0]._id} />

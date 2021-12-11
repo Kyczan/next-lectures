@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Modal from '../../../components/modal/Modal'
@@ -12,16 +12,19 @@ import {
   selectLectureById,
   deleteLecture,
 } from '../lecturesSlice'
+import { fetchPlan, selectPlan, IPlanDataItem } from '../../plan/planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
-import { formatDate } from '../../plan/Plan'
+import History, { HistoryType } from '../../../components/history/History'
+import { formatDate, formatSpeaker } from '../../../utils/formatters/formatters'
 
 interface ILecture {
   id: string
 }
 
 const LectureView = ({ id }: ILecture): JSX.Element => {
+  const [filteredPlan, setFilteredPlan] = useState<IPlanDataItem[]>([])
   const [isModalOpen, toggleModal] = useToggle(false)
   const router = useRouter()
   const dispatch = useAppDispatch()
@@ -29,12 +32,31 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
   const {
     fetch: { status },
   } = useAppSelector(selectLectures)
+  const {
+    data: planData,
+    fetch: { status: planStatus },
+  } = useAppSelector(selectPlan)
 
   useEffect(() => {
     if (status === ApiCallStatuses.IDLE) {
       dispatch(fetchLectures())
     }
   }, [status, dispatch])
+
+  useEffect(() => {
+    if (planStatus === ApiCallStatuses.IDLE) {
+      dispatch(fetchPlan())
+    }
+  }, [planStatus, dispatch])
+
+  useEffect(() => {
+    if (lecture) {
+      const events = planData.filter(
+        (event) => event.lecture?._id === lecture._id
+      )
+      setFilteredPlan(events)
+    }
+  }, [planData, lecture])
 
   const handleDelete = async (e) => {
     e.preventDefault()
@@ -68,21 +90,21 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
           <article>
             <dl>
               <dt>
-                <small>Numer:</small>
+                <small>#</small>
               </dt>
               <dd>{lecture.number}</dd>
               <dt>
-                <small>Tytuł:</small>
+                <small>Tytuł</small>
               </dt>
               <dd>
                 <strong>{lecture.title}</strong>
               </dd>
               <dt>
-                <small>Notatka:</small>
+                <small>Notatka</small>
               </dt>
               <dd>{lecture.note}</dd>
               <dt>
-                <small>Ostatnie wygłoszenie:</small>
+                <small>Data</small>
               </dt>
               <dd>
                 {lecture.lastEvent?._id && (
@@ -92,16 +114,12 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
                 )}
               </dd>
               <dt>
-                <small>Ostatni mówca:</small>
+                <small>Mówca</small>
               </dt>
               <dd>
                 {lecture.lastEvent?.speaker?._id && (
                   <Link href={`/speakers/${lecture.lastEvent.speaker._id}`}>
-                    <a>
-                      {lecture.lastEvent.speaker.name}
-                      {lecture.lastEvent.speaker.congregation &&
-                        ` (${lecture.lastEvent.speaker.congregation})`}
-                    </a>
+                    {formatSpeaker(lecture.lastEvent.speaker)}
                   </Link>
                 )}
               </dd>
@@ -126,6 +144,8 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
               </Link>
             </div>
           </article>
+
+          <History data={filteredPlan} type={HistoryType.SPEAKER} />
 
           <Modal isOpen={isModalOpen} onRequestClose={toggleModal}>
             <>

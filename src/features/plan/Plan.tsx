@@ -14,24 +14,9 @@ import AddButton from '../../components/buttons/addButton/AddButton'
 import Search from '../../components/search/Search'
 import DataError from '../../components/states/dataError/DataError'
 import DataEmpty from '../../components/states/dataEmpty/DataEmpty'
+import { formatLecture, formatDate } from '../../utils/formatters/formatters'
 
 import styles from './Plan.module.css'
-
-export const getLecture = (lecture) => {
-  if (!lecture || !lecture.number || !lecture.title) return ''
-
-  return `${lecture.number}. ${lecture.title}`
-}
-
-export const formatDate = (str, fullDate = true) => {
-  if (!str) return
-
-  const date = new Date(str)
-  const options = fullDate
-    ? ({ year: 'numeric', month: 'long', day: 'numeric' } as const)
-    : ({ month: 'long', year: 'numeric' } as const)
-  return new Intl.DateTimeFormat('pl-PL', options).format(date)
-}
 
 const Plan = (): JSX.Element => {
   const router = useRouter()
@@ -132,7 +117,7 @@ const Plan = (): JSX.Element => {
                 <Col flex="2 1">
                   <div>
                     <span data-testid="plan-lecture">
-                      {getLecture(item.lecture)}
+                      {formatLecture(item.lecture)}
                     </span>
                   </div>
                   <div>

@@ -6,6 +6,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react'
 import SpeakerView from './SpeakerView'
 import { makeStore } from '../../../app/store'
 import speakersData from '../../../../__mocks__/data/speakers.json'
+import planData from '../../../../__mocks__/data/plan.json'
 
 jest.mock('next/dist/client/router', () => require('next-router-mock'))
 
@@ -18,6 +19,7 @@ describe('<SpeakerView />', () => {
 
   it('renders without crash', async () => {
     fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByText } = render(
       <Provider store={store}>
         <SpeakerView id={speakersData[0]._id} />
@@ -29,6 +31,7 @@ describe('<SpeakerView />', () => {
 
   it('renders without crash when no event details available', async () => {
     fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByText } = render(
       <Provider store={store}>
         <SpeakerView id={speakersData[1]._id} />
@@ -42,6 +45,7 @@ describe('<SpeakerView />', () => {
     const errorMsg = 'Oops'
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))
     fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
 
     const { findByTestId } = await render(
       <Provider store={store}>
@@ -55,6 +59,7 @@ describe('<SpeakerView />', () => {
 
   it('redirects to edit page on Edit btn click', async () => {
     fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { findByTestId } = render(
       <Provider store={store}>
         <SpeakerView id={speakersData[0]._id} />
@@ -72,6 +77,7 @@ describe('<SpeakerView />', () => {
 
   it('opens dialog on click', async () => {
     fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, getByText } = render(
       <Provider store={store}>
         <SpeakerView id={speakersData[0]._id} />
@@ -88,6 +94,7 @@ describe('<SpeakerView />', () => {
 
   it('opens dialog and then Delete', async () => {
     fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, queryByText } = render(
       <Provider store={store}>
         <SpeakerView id={speakersData[0]._id} />
@@ -111,6 +118,7 @@ describe('<SpeakerView />', () => {
 
   it('opens dialog and then Cancel', async () => {
     fetchMock.once(JSON.stringify(speakersData))
+    fetchMock.once(JSON.stringify(planData))
     const { container, findByTestId, queryByText } = render(
       <Provider store={store}>
         <SpeakerView id={speakersData[0]._id} />
