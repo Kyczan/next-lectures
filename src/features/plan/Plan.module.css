@@ -61,6 +61,7 @@
   line-height: 1;
   background-color: var(--background-color);
   padding: 0 0.25rem;
+  border-radius: var(--border-radius);
 }
 
 @media (max-width: 767px) {
