@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Modal from '../../../components/modal/Modal'
@@ -16,6 +16,7 @@ import { fetchPlan, selectPlan, IPlanDataItem } from '../../plan/planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
+import ItemDetails from '../../../components/itemDetails/ItemDetails'
 import History, { HistoryType } from '../../../components/history/History'
 import { formatDate, formatSpeaker } from '../../../utils/formatters/formatters'
 
@@ -69,6 +70,40 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
     dispatch(fetchLectures())
   }
 
+  const getItemDetails = useMemo(() => {
+    if (!lecture) return
+    return [
+      {
+        name: '#',
+        value: lecture.number,
+      },
+      {
+        name: 'Tytuł',
+        value: <strong>{lecture.title}</strong>,
+      },
+      {
+        name: 'Notatka',
+        value: lecture.note,
+      },
+      {
+        name: 'Data',
+        value: lecture.lastEvent?._id && (
+          <Link href={`/plan/${lecture.lastEvent._id}`}>
+            {formatDate(lecture.lastEvent.date)}
+          </Link>
+        ),
+      },
+      {
+        name: 'Mówca',
+        value: lecture.lastEvent?.speaker?._id && (
+          <Link href={`/speakers/${lecture.lastEvent.speaker._id}`}>
+            {formatSpeaker(lecture.lastEvent.speaker)}
+          </Link>
+        ),
+      },
+    ]
+  }, [lecture])
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -88,42 +123,7 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
       {status === ApiCallStatuses.SUCCEEDED && lecture && (
         <>
           <article>
-            <dl>
-              <dt>
-                <small>#</small>
-              </dt>
-              <dd>{lecture.number}</dd>
-              <dt>
-                <small>Tytuł</small>
-              </dt>
-              <dd>
-                <strong>{lecture.title}</strong>
-              </dd>
-              <dt>
-                <small>Notatka</small>
-              </dt>
-              <dd>{lecture.note}</dd>
-              <dt>
-                <small>Data</small>
-              </dt>
-              <dd>
-                {lecture.lastEvent?._id && (
-                  <Link href={`/plan/${lecture.lastEvent._id}`}>
-                    {formatDate(lecture.lastEvent.date)}
-                  </Link>
-                )}
-              </dd>
-              <dt>
-                <small>Mówca</small>
-              </dt>
-              <dd>
-                {lecture.lastEvent?.speaker?._id && (
-                  <Link href={`/speakers/${lecture.lastEvent.speaker._id}`}>
-                    {formatSpeaker(lecture.lastEvent.speaker)}
-                  </Link>
-                )}
-              </dd>
-            </dl>
+            <ItemDetails data={getItemDetails} />
 
             <div className="inline-wrapper inline-wrapper--end">
               <a

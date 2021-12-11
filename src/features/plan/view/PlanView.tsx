@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
@@ -10,6 +10,7 @@ import { fetchPlan, selectPlan, selectPlanById, deletePlan } from '../planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
+import ItemDetails from '../../../components/itemDetails/ItemDetails'
 import {
   formatLecture,
   formatDate,
@@ -46,6 +47,36 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
     dispatch(fetchPlan())
   }
 
+  const getItemDetails = useMemo(() => {
+    if (!plan) return
+    return [
+      {
+        name: 'Data',
+        value: <strong>{formatDate(plan.date)}</strong>,
+      },
+      {
+        name: 'Wykład',
+        value: plan.lecture?._id && (
+          <Link href={`/lectures/${plan.lecture._id}`}>
+            {formatLecture(plan.lecture)}
+          </Link>
+        ),
+      },
+      {
+        name: 'Notatka',
+        value: plan.note,
+      },
+      {
+        name: 'Mówca',
+        value: plan.speaker?._id && (
+          <Link href={`/speakers/${plan.speaker._id}`}>
+            {formatSpeaker(plan.speaker)}
+          </Link>
+        ),
+      },
+    ]
+  }, [plan])
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -65,38 +96,7 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
       {status === ApiCallStatuses.SUCCEEDED && plan && (
         <>
           <article>
-            <dl>
-              <dt>
-                <small>Data</small>
-              </dt>
-              <dd>
-                <strong>{formatDate(plan.date)}</strong>
-              </dd>
-              <dt>
-                <small>Wykład</small>
-              </dt>
-              <dd>
-                {plan.lecture?._id && (
-                  <Link href={`/lectures/${plan.lecture._id}`}>
-                    {formatLecture(plan.lecture)}
-                  </Link>
-                )}
-              </dd>
-              <dt>
-                <small>Notatka</small>
-              </dt>
-              <dd>{plan.note}</dd>
-              <dt>
-                <small>Mówca</small>
-              </dt>
-              <dd>
-                {plan.speaker?._id && (
-                  <Link href={`/speakers/${plan.speaker._id}`}>
-                    {formatSpeaker(plan.speaker)}
-                  </Link>
-                )}
-              </dd>
-            </dl>
+            <ItemDetails data={getItemDetails} />
 
             <div className="inline-wrapper inline-wrapper--end">
               <a

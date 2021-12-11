@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Modal from '../../../components/modal/Modal'
 import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
-import { BsDash } from 'react-icons/bs'
 
 import { ApiCallStatuses } from '../../../app/types'
 import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
@@ -17,6 +16,7 @@ import { fetchPlan, selectPlan, IPlanDataItem } from '../../plan/planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
+import ItemDetails from '../../../components/itemDetails/ItemDetails'
 import History, { HistoryType } from '../../../components/history/History'
 import { formatLecture, formatDate } from '../../../utils/formatters/formatters'
 
@@ -70,6 +70,40 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
     dispatch(fetchSpeakers())
   }
 
+  const getItemDetails = useMemo(() => {
+    if (!speaker) return
+    return [
+      {
+        name: 'Imię i Nazwisko',
+        value: <strong>{speaker.name}</strong>,
+      },
+      {
+        name: 'Zbór',
+        value: speaker.congregation,
+      },
+      {
+        name: 'Notatka',
+        value: speaker.note,
+      },
+      {
+        name: 'Data',
+        value: speaker.lastEvent?._id && (
+          <Link href={`/plan/${speaker.lastEvent._id}`}>
+            {formatDate(speaker.lastEvent.date)}
+          </Link>
+        ),
+      },
+      {
+        name: 'Wykład',
+        value: speaker.lastEvent?.lecture?._id && (
+          <Link href={`/lectures/${speaker.lastEvent.lecture._id}`}>
+            {formatLecture(speaker.lastEvent.lecture)}
+          </Link>
+        ),
+      },
+    ]
+  }, [speaker])
+
   return (
     <section>
       <div className="inline-wrapper">
@@ -89,42 +123,7 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
       {status === ApiCallStatuses.SUCCEEDED && speaker && (
         <>
           <article>
-            <dl>
-              <dt>
-                <small>Imię i Nazwisko</small>
-              </dt>
-              <dd>
-                <strong>{speaker.name}</strong>
-              </dd>
-              <dt>
-                <small>Zbór</small>
-              </dt>
-              <dd>{speaker.congregation}</dd>
-              <dt>
-                <small>Notatka</small>
-              </dt>
-              <dd>{speaker.note}</dd>
-              <dt>
-                <small>Data</small>
-              </dt>
-              <dd>
-                {speaker.lastEvent?._id && (
-                  <Link href={`/plan/${speaker.lastEvent._id}`}>
-                    {formatDate(speaker.lastEvent.date)}
-                  </Link>
-                )}
-              </dd>
-              <dt>
-                <small>Wykład</small>
-              </dt>
-              <dd>
-                {speaker.lastEvent?.lecture?._id && (
-                  <Link href={`/lectures/${speaker.lastEvent.lecture._id}`}>
-                    {formatLecture(speaker.lastEvent.lecture)}
-                  </Link>
-                )}
-              </dd>
-            </dl>
+            <ItemDetails data={getItemDetails} />
 
             <div className="inline-wrapper inline-wrapper--end">
               <a

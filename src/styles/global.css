@@ -91,20 +91,3 @@ article {
     top: 50px;
   }
 }
-
-dl {
-  display: grid;
-  grid-template-columns: auto 1fr;
-}
-
-dt {
-  text-align: right;
-  color: var(--muted-color);
-  margin-bottom: 10px;
-}
-
-dd {
-  margin-left: 0;
-  margin-bottom: 10px;
-  padding-left: 1rem;
-}

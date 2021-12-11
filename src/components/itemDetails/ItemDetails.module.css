@@ -1,0 +1,20 @@
+.list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.wrapper {
+  display: contents;
+}
+
+.term {
+  text-align: right;
+  color: var(--muted-color);
+  margin-bottom: 10px;
+}
+
+.def {
+  margin-left: 0;
+  margin-bottom: 10px;
+  padding-left: 1rem;
+}
