@@ -38,6 +38,29 @@ describe('<LectureView />', () => {
     await findByText('Szczegóły wykładu')
   })
 
+  it('renders without crash when speaker has no congregation', async () => {
+    const data = [...lecturesData]
+    data[0] = {
+      ...lecturesData[0],
+      lastEvent: {
+        ...lecturesData[0].lastEvent,
+        speaker: {
+          ...lecturesData[0].lastEvent.speaker,
+          congregation: '',
+        },
+      },
+    }
+
+    fetchMock.once(JSON.stringify(lecturesData))
+    const { findByText } = render(
+      <Provider store={store}>
+        <LectureView id={lecturesData[0]._id} />
+      </Provider>
+    )
+
+    await findByText('Szczegóły wykładu')
+  })
+
   it('renders when error occurs and handles refresh', async () => {
     const errorMsg = 'Oops'
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(errorMsg)))

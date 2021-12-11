@@ -84,11 +84,23 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
               <dt>
                 <small>Ostatnie wygłoszenie:</small>
               </dt>
-              <dd>{formatDate(speaker.lastEvent?.date)}</dd>
+              <dd>
+                {speaker.lastEvent?._id && (
+                  <Link href={`/plan/${speaker.lastEvent._id}`}>
+                    {formatDate(speaker.lastEvent.date)}
+                  </Link>
+                )}
+              </dd>
               <dt>
                 <small>Ostatni wykład:</small>
               </dt>
-              <dd>{getLecture(speaker.lastEvent?.lecture)}</dd>
+              <dd>
+                {speaker.lastEvent?.lecture?._id && (
+                  <Link href={`/lectures/${speaker.lastEvent.lecture._id}`}>
+                    {getLecture(speaker.lastEvent.lecture)}
+                  </Link>
+                )}
+              </dd>
             </dl>
 
             <div className="inline-wrapper inline-wrapper--end">

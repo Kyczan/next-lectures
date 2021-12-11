@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
@@ -71,7 +71,13 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
               <dt>
                 <small>Wykład:</small>
               </dt>
-              <dd>{getLecture(plan.lecture)}</dd>
+              <dd>
+                {plan.lecture?._id && (
+                  <Link href={`/lectures/${plan.lecture._id}`}>
+                    {getLecture(plan.lecture)}
+                  </Link>
+                )}
+              </dd>
               <dt>
                 <small>Notatka:</small>
               </dt>
@@ -79,7 +85,13 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
               <dt>
                 <small>Mówca:</small>
               </dt>
-              <dd>{plan.speaker?.name}</dd>
+              <dd>
+                {plan.speaker?._id && (
+                  <Link href={`/speakers/${plan.speaker._id}`}>
+                    {plan.speaker.name}
+                  </Link>
+                )}
+              </dd>
               <dt>
                 <small>Zbór:</small>
               </dt>
