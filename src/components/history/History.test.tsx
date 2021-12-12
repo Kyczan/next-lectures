@@ -25,4 +25,14 @@ describe('<History>', () => {
 
     expect(getByText(formatDate(planData[0].date))).toBeInTheDocument()
   })
+
+  it('renders nothing when empty data passed', () => {
+    const props = {
+      ...defaultProps,
+      data: [],
+    }
+    const { container } = render(<History {...props} />)
+
+    expect(container).toMatchInlineSnapshot(`<div />`)
+  })
 })

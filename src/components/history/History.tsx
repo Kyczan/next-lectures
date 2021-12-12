@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { BsDash } from 'react-icons/bs'
+import { BsDash, BsFileEarmark } from 'react-icons/bs'
 
 import { IPlanDataItem } from '../../features/plan/planSlice'
 import {
@@ -20,6 +20,8 @@ interface IHistoryProps {
 
 const History = ({ data, type }: IHistoryProps): JSX.Element => {
   const format = type === HistoryType.LECTURE ? formatLecture : formatSpeaker
+
+  if (!data.length) return null
 
   return (
     <>
