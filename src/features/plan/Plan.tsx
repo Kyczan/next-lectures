@@ -52,6 +52,7 @@ const Plan = (): JSX.Element => {
 
   const nearestFutureEvent = useMemo(() => {
     const today = new Date()
+    today.setHours(0, 0, 0, 0)
     const futureEvents = data.filter((item) => new Date(item.date) >= today)
     futureEvents.sort((a, b) => (a.date > b.date ? 1 : -1))
     return futureEvents[0]
