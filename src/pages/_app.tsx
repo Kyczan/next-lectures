@@ -8,6 +8,7 @@ import type { AppProps } from 'next/app'
 import store from '../app/store'
 import Navbar from '../features/navbar/Navbar'
 import Auth from '../components/auth/Auth'
+import Toast from '../components/toast/Toast'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
@@ -17,6 +18,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           <Navbar />
           <main className="container">
             <Component {...pageProps} />
+            <Toast />
           </main>
         </ReduxProvider>
       </Auth>

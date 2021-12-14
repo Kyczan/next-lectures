@@ -1,5 +1,7 @@
 :root {
-  --border: 1px solid var(--form-element-border-color)
+  --border: 1px solid var(--form-element-border-color);
+  --invalid-color: rgba(183, 28, 28, 0.5);
+  --valid-color: rgba(46, 125, 50, 0.5);
 }
 
 body {
@@ -8,6 +10,19 @@ body {
 
 article {
   overflow: visible;
+}
+
+.icon-button {
+  padding: 0;
+  margin: 0;
+  width: auto;
+  border: none;
+  background: transparent;
+  color: var(--color);
+}
+
+.error-text {
+  color: var(--form-element-invalid-border-color);
 }
 
 .inline-wrapper {

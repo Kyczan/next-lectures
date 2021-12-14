@@ -99,16 +99,14 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
             <ItemDetails data={getItemDetails} />
 
             <div className="inline-wrapper inline-wrapper--end">
-              <a
-                href="#"
-                role="button"
+              <button
                 className="secondary with-icon"
                 onClick={() => toggleModal()}
                 data-testid="delete-btn"
               >
                 <FiTrash />
                 Usuń
-              </a>
+              </button>
               <Link href={`/plan/${id}/edit`}>
                 <a role="button" className="with-icon" data-testid="edit-btn">
                   <FiEdit />

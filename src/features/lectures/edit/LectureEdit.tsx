@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Formik, Form } from 'formik'
-import { useRouter } from 'next/router'
 import { FiSave } from 'react-icons/fi'
 
 import Input from '../../../components/input/Input'
@@ -8,13 +7,19 @@ import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
 import { ApiCallStatuses } from '../../../app/types'
-import { useAppSelector, useAppDispatch } from '../../../app/hooks'
+import {
+  useAppSelector,
+  useAppDispatch,
+  useMsgOnSuccessAndFailure,
+} from '../../../app/hooks'
 import {
   fetchLectures,
   updateLecture,
   addLecture,
   selectLectures,
   selectLectureById,
+  resetAddStatus,
+  resetUpdateStatus,
 } from '../lecturesSlice'
 
 interface ILectureEdit {
@@ -23,11 +28,12 @@ interface ILectureEdit {
 
 const LectureEdit = ({ id }: ILectureEdit): JSX.Element => {
   const isEdit = !!id
-  const router = useRouter()
   const dispatch = useAppDispatch()
   const lecture = useAppSelector(selectLectureById(id))
   const {
     fetch: { status },
+    add: { status: addStatus },
+    update: { status: updateStatus },
   } = useAppSelector(selectLectures)
 
   useEffect(() => {
@@ -35,6 +41,24 @@ const LectureEdit = ({ id }: ILectureEdit): JSX.Element => {
       dispatch(fetchLectures())
     }
   }, [status, dispatch])
+
+  // handle add
+  useMsgOnSuccessAndFailure(
+    addStatus,
+    resetAddStatus,
+    'Dodano wykład',
+    'Błąd podczas dodawania',
+    '/lectures'
+  )
+
+  // handle update
+  useMsgOnSuccessAndFailure(
+    updateStatus,
+    resetUpdateStatus,
+    'Zaktualizowano wykład',
+    'Błąd podczas zapisywania',
+    `/lectures/${id}`
+  )
 
   const initialValues = {
     number: lecture?.number || '',
@@ -57,14 +81,13 @@ const LectureEdit = ({ id }: ILectureEdit): JSX.Element => {
     return errors
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     if (isEdit) {
       await dispatch(updateLecture({ _id: id, ...values }))
-      router.push(`/lectures/${id}`)
     } else {
       await dispatch(addLecture(values))
-      router.push('/lectures')
     }
+    setSubmitting(false)
   }
 
   const handleRefresh = () => {
