@@ -138,6 +138,15 @@ export const slice = createSlice({
       state.filter.search.value = action.payload
       state.filtered = applyFilter<IPlanDataItem>(state.data, state.filter)
     },
+    resetAddStatus(state) {
+      state.add = initialState.add
+    },
+    resetUpdateStatus(state) {
+      state.update = initialState.update
+    },
+    resetDeleteStatus(state) {
+      state.delete = initialState.delete
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -160,7 +169,7 @@ export const slice = createSlice({
         state.add.status = ApiCallStatuses.LOADING
       })
       .addCase(addPlan.fulfilled, (state, action) => {
-        state.add.status = ApiCallStatuses.IDLE
+        state.add.status = ApiCallStatuses.SUCCEEDED
         state.data.push(action.payload)
         state.filtered = applyFilter<IPlanDataItem>(state.data, state.filter)
       })
@@ -174,7 +183,7 @@ export const slice = createSlice({
         state.update.status = ApiCallStatuses.LOADING
       })
       .addCase(updatePlan.fulfilled, (state, action) => {
-        state.update.status = ApiCallStatuses.IDLE
+        state.update.status = ApiCallStatuses.SUCCEEDED
         const id = action.payload._id
         const index = state.data.findIndex((item) => item._id === id)
         if (index !== -1) state.data[index] = action.payload
@@ -190,7 +199,7 @@ export const slice = createSlice({
         state.delete.status = ApiCallStatuses.LOADING
       })
       .addCase(deletePlan.fulfilled, (state, action) => {
-        state.delete.status = ApiCallStatuses.IDLE
+        state.delete.status = ApiCallStatuses.SUCCEEDED
         const id = action.payload
         const index = state.data.findIndex((item) => item._id === id)
         if (index !== -1) state.data.splice(index, 1)
@@ -214,6 +223,11 @@ export const selectPlanById =
 
 const { actions, reducer } = slice
 
-export const { setSearch } = actions
+export const {
+  setSearch,
+  resetAddStatus,
+  resetUpdateStatus,
+  resetDeleteStatus,
+} = actions
 
 export default reducer

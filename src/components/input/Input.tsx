@@ -1,7 +1,5 @@
 import { useField } from 'formik'
 
-import styles from './Input.module.css'
-
 interface IInputProps {
   label: string
   name: string
@@ -16,7 +14,7 @@ const Input = (props: IInputProps): JSX.Element => {
       <label htmlFor={props.name}>{props.label}</label>
       <input {...field} {...props} {...aria} data-testid="input" />
       {meta.touched && meta.error ? (
-        <small className={styles.error}>{meta.error}</small>
+        <small className="error-text">{meta.error}</small>
       ) : null}
     </div>
   )

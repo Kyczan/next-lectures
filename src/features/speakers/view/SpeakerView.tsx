@@ -1,16 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import Modal from '../../../components/modal/Modal'
 import { FiEdit, FiTrash, FiSlash } from 'react-icons/fi'
 
 import { ApiCallStatuses } from '../../../app/types'
-import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
+import {
+  useAppSelector,
+  useAppDispatch,
+  useToggle,
+  useMsgOnSuccessAndFailure,
+} from '../../../app/hooks'
 import {
   fetchSpeakers,
   selectSpeakers,
   selectSpeakerById,
   deleteSpeaker,
+  resetDeleteStatus,
 } from '../speakersSlice'
 import { fetchPlan, selectPlan, IPlanDataItem } from '../../plan/planSlice'
 import BackButton from '../../../components/buttons/backButton/BackButton'
@@ -27,11 +32,11 @@ interface ISpeaker {
 const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
   const [filteredPlan, setFilteredPlan] = useState<IPlanDataItem[]>([])
   const [isModalOpen, toggleModal] = useToggle(false)
-  const router = useRouter()
   const dispatch = useAppDispatch()
   const speaker = useAppSelector(selectSpeakerById(id))
   const {
     fetch: { status },
+    delete: { status: deleteStatus },
   } = useAppSelector(selectSpeakers)
   const {
     data: planData,
@@ -59,11 +64,19 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
     }
   }, [planData, speaker])
 
+  // handle delete item
+  const onceDeleted = useMsgOnSuccessAndFailure(
+    deleteStatus,
+    resetDeleteStatus,
+    'Usunięto mówcę',
+    'Błąd podczas usuwania',
+    '/speakers'
+  )
+
   const handleDelete = async (e) => {
     e.preventDefault()
     await dispatch(deleteSpeaker(speaker))
     toggleModal()
-    router.push(`/speakers`)
   }
 
   const handleRefresh = () => {
@@ -119,23 +132,23 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
           <DataError onRefresh={handleRefresh} />
         </article>
       )}
-      {status === ApiCallStatuses.SUCCEEDED && !speaker && <Page404 />}
+      {status === ApiCallStatuses.SUCCEEDED && !speaker && !onceDeleted && (
+        <Page404 />
+      )}
       {status === ApiCallStatuses.SUCCEEDED && speaker && (
         <>
           <article>
             <ItemDetails data={getItemDetails} />
 
             <div className="inline-wrapper inline-wrapper--end">
-              <a
-                href="#"
-                role="button"
+              <button
                 className="secondary with-icon"
                 onClick={() => toggleModal()}
                 data-testid="delete-btn"
               >
                 <FiTrash />
                 Usuń
-              </a>
+              </button>
               <Link href={`/speakers/${id}/edit`}>
                 <a role="button" className="with-icon" data-testid="edit-btn">
                   <FiEdit />
@@ -155,6 +168,8 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
                   className="secondary with-icon"
                   onClick={handleDelete}
                   data-testid="modal-delete-btn"
+                  aria-busy={deleteStatus === ApiCallStatuses.LOADING}
+                  disabled={deleteStatus === ApiCallStatuses.LOADING}
                 >
                   <FiTrash />
                   Usuń
@@ -163,6 +178,7 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
                   onClick={() => toggleModal()}
                   className="with-icon"
                   data-testid="modal-cancel-btn"
+                  disabled={deleteStatus === ApiCallStatuses.LOADING}
                 >
                   <FiSlash />
                   Anuluj

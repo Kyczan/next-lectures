@@ -1,6 +1,6 @@
 a.button {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: var(--spacing);
+  right: var(--spacing);
   z-index: 5;
 }

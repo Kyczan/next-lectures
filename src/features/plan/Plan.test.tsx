@@ -34,25 +34,27 @@ describe('<Plan />', () => {
     const today = new Date()
     const tomorrow = new Date(today)
     tomorrow.setDate(tomorrow.getDate() + 1)
+    const nextTomorrow = new Date(tomorrow)
+    nextTomorrow.setDate(nextTomorrow.getDate() + 1)
     const data = [
       ...planData,
       {
         _id: 'e',
-        date: today.toISOString().slice(0, 10),
-        lecture: null,
-        note: '',
-        speaker: null,
-      },
-      {
-        _id: 'f',
         date: tomorrow.toISOString().slice(0, 10),
         lecture: null,
         note: '',
         speaker: null,
       },
       {
+        _id: 'f',
+        date: nextTomorrow.toISOString().slice(0, 10),
+        lecture: null,
+        note: '',
+        speaker: null,
+      },
+      {
         _id: 'g',
-        date: today.toISOString().slice(0, 10),
+        date: tomorrow.toISOString().slice(0, 10),
         lecture: null,
         note: '',
         speaker: null,

@@ -3,6 +3,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import lecturesReducer from '../features/lectures/lecturesSlice'
 import speakersReducer from '../features/speakers/speakersSlice'
 import planReducer from '../features/plan/planSlice'
+import toastReducer from '../components/toast/toastSlice'
 
 export function makeStore() {
   return configureStore({
@@ -10,6 +11,7 @@ export function makeStore() {
       lectures: lecturesReducer,
       speakers: speakersReducer,
       plan: planReducer,
+      toast: toastReducer,
     },
   })
 }
