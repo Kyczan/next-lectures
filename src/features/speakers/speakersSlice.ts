@@ -123,6 +123,15 @@ export const slice = createSlice({
       state.filter.sort.order = action.payload.order
       state.filtered = applyFilter<ISpeakersDataItem>(state.data, state.filter)
     },
+    resetAddStatus(state) {
+      state.add = initialState.add
+    },
+    resetUpdateStatus(state) {
+      state.update = initialState.update
+    },
+    resetDeleteStatus(state) {
+      state.delete = initialState.delete
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -148,7 +157,7 @@ export const slice = createSlice({
         state.add.status = ApiCallStatuses.LOADING
       })
       .addCase(addSpeaker.fulfilled, (state, action) => {
-        state.add.status = ApiCallStatuses.IDLE
+        state.add.status = ApiCallStatuses.SUCCEEDED
         state.data.push(action.payload)
         state.filtered = applyFilter<ISpeakersDataItem>(
           state.data,
@@ -165,7 +174,7 @@ export const slice = createSlice({
         state.update.status = ApiCallStatuses.LOADING
       })
       .addCase(updateSpeaker.fulfilled, (state, action) => {
-        state.update.status = ApiCallStatuses.IDLE
+        state.update.status = ApiCallStatuses.SUCCEEDED
         const id = action.payload._id
         const index = state.data.findIndex((item) => item._id === id)
         if (index !== -1)
@@ -188,7 +197,7 @@ export const slice = createSlice({
         state.delete.status = ApiCallStatuses.LOADING
       })
       .addCase(deleteSpeaker.fulfilled, (state, action) => {
-        state.delete.status = ApiCallStatuses.IDLE
+        state.delete.status = ApiCallStatuses.SUCCEEDED
         const id = action.payload
         const index = state.data.findIndex((item) => item._id === id)
         if (index !== -1) state.data.splice(index, 1)
@@ -216,6 +225,12 @@ export const selectSpeakerById =
 
 const { actions, reducer } = slice
 
-export const { setSearch, setSort } = actions
+export const {
+  setSearch,
+  setSort,
+  resetAddStatus,
+  resetUpdateStatus,
+  resetDeleteStatus,
+} = actions
 
 export default reducer

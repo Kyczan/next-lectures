@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Formik, Form } from 'formik'
-import { useRouter } from 'next/router'
 import { FiSave } from 'react-icons/fi'
 
 import Input from '../../../components/input/Input'
@@ -9,13 +8,19 @@ import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
 import { ApiCallStatuses, IFilter, SortOrder } from '../../../app/types'
-import { useAppSelector, useAppDispatch } from '../../../app/hooks'
+import {
+  useAppSelector,
+  useAppDispatch,
+  useMsgOnSuccessAndFailure,
+} from '../../../app/hooks'
 import {
   fetchPlan,
   updatePlan,
   addPlan,
   selectPlan,
   selectPlanById,
+  resetAddStatus,
+  resetUpdateStatus,
 } from '../planSlice'
 import {
   fetchLectures,
@@ -39,11 +44,12 @@ interface IPlanEdit {
 const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
   const [status, setStatus] = useState(ApiCallStatuses.IDLE)
   const isEdit = !!id
-  const router = useRouter()
   const dispatch = useAppDispatch()
   const plan = useAppSelector(selectPlanById(id))
   const {
     fetch: { status: planStatus },
+    add: { status: addStatus },
+    update: { status: updateStatus },
   } = useAppSelector(selectPlan)
   const {
     data: lecturesData,
@@ -84,6 +90,24 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
     }
   }, [planStatus, lecturesStatus, speakersStatus])
 
+  // handle add
+  useMsgOnSuccessAndFailure(
+    addStatus,
+    resetAddStatus,
+    'Dodano wydarzenie',
+    'Błąd podczas dodawania',
+    '/plan'
+  )
+
+  // handle update
+  useMsgOnSuccessAndFailure(
+    updateStatus,
+    resetUpdateStatus,
+    'Zaktualizowano wydarzenie',
+    'Błąd podczas zapisywania',
+    `/plan/${id}`
+  )
+
   const initialValues = {
     date: plan?.date || '',
     lecture: plan?.lecture || null,
@@ -102,14 +126,13 @@ const PlanEdit = ({ id }: IPlanEdit): JSX.Element => {
     return errors
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     if (isEdit) {
       await dispatch(updatePlan({ _id: id, ...values }))
-      router.push(`/plan/${id}`)
     } else {
       await dispatch(addPlan(values))
-      router.push('/plan')
     }
+    setSubmitting(false)
   }
 
   const lecturesOptions = useMemo(() => {

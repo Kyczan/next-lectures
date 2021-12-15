@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Formik, Form } from 'formik'
-import { useRouter } from 'next/router'
 import { FiSave, FiPlus } from 'react-icons/fi'
 
 import Input from '../../../components/input/Input'
@@ -10,13 +9,20 @@ import BackButton from '../../../components/buttons/backButton/BackButton'
 import DataError from '../../../components/states/dataError/DataError'
 import Page404 from '../../../components/states/page404/Page404'
 import { ApiCallStatuses } from '../../../app/types'
-import { useAppSelector, useAppDispatch, useToggle } from '../../../app/hooks'
+import {
+  useAppSelector,
+  useAppDispatch,
+  useToggle,
+  useMsgOnSuccessAndFailure,
+} from '../../../app/hooks'
 import {
   fetchSpeakers,
   updateSpeaker,
   addSpeaker,
   selectSpeakers,
   selectSpeakerById,
+  resetAddStatus,
+  resetUpdateStatus,
 } from '../speakersSlice'
 
 import styles from './SpeakerEdit.module.css'
@@ -28,12 +34,13 @@ interface ISpeakerEdit {
 const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
   const [isModalOpen, toggleModal] = useToggle(false)
   const isEdit = !!id
-  const router = useRouter()
   const dispatch = useAppDispatch()
   const speaker = useAppSelector(selectSpeakerById(id))
   const {
     data,
     fetch: { status },
+    add: { status: addStatus },
+    update: { status: updateStatus },
   } = useAppSelector(selectSpeakers)
 
   useEffect(() => {
@@ -41,6 +48,24 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
       dispatch(fetchSpeakers())
     }
   }, [status, dispatch])
+
+  // handle add
+  useMsgOnSuccessAndFailure(
+    addStatus,
+    resetAddStatus,
+    'Dodano mówcę',
+    'Błąd podczas dodawania',
+    '/speakers'
+  )
+
+  // handle update
+  useMsgOnSuccessAndFailure(
+    updateStatus,
+    resetUpdateStatus,
+    'Zaktualizowano mówcę',
+    'Błąd podczas zapisywania',
+    `/speakers/${id}`
+  )
 
   const initialValues = {
     name: speaker?.name || '',
@@ -59,14 +84,13 @@ const SpeakerEdit = ({ id }: ISpeakerEdit): JSX.Element => {
     return errors
   }
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     if (isEdit) {
       await dispatch(updateSpeaker({ _id: id, ...values }))
-      router.push(`/speakers/${id}`)
     } else {
       await dispatch(addSpeaker(values))
-      router.push('/speakers')
     }
+    setSubmitting(false)
   }
 
   const sorter = (a, b) => {
