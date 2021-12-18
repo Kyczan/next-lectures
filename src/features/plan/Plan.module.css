@@ -52,6 +52,16 @@
   background-color: #b71c1c2e !important;
 }
 
+.warning-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.warning {
+  color: var(--invalid-color);
+  margin-left: calc(var(--font-size) * -1);
+}
+
 .row-month {
   display: block;
   position: absolute;

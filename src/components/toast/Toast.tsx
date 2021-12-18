@@ -37,7 +37,7 @@ const Toast = () => {
     <div className={styles.container}>
       <div className={`${styles.toast} ${styles[`toast-${toast.type}`]}`}>
         {types[toast.type]}
-        <div className={styles.desc}>{toast.message}</div>
+        <div>{toast.message}</div>
         <button
           className={`icon-button ${styles.close}`}
           onClick={handleDelete}

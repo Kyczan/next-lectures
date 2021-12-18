@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
+import { BsExclamationLg } from 'react-icons/bs'
 
 import { ApiCallStatuses } from '../../app/types'
 import {
@@ -66,14 +67,17 @@ const Plan = (): JSX.Element => {
     return current.getMonth() === previous.getMonth()
   }
 
+  const isErrorRow = (item) => {
+    return !item.lecture && !item.speaker && !item.note
+  }
+
   const getRowClass = (item, index) => {
     const topBorder = !isPrevSameMonth(index) ? styles['row-top'] : ''
     const bottomBorder = !isPrevSameMonth(index + 1) ? styles['row-bottom'] : ''
 
     const highlightedCls =
       nearestFutureEvent?._id === item._id ? styles['row-highlighted'] : ''
-    const errorCls =
-      !item.lecture && !item.speaker && !item.note ? styles['row-error'] : ''
+    const errorCls = isErrorRow(item) ? styles['row-error'] : ''
     return `row ${styles.row} ${highlightedCls} ${errorCls} ${topBorder} ${bottomBorder}`
   }
 
@@ -112,7 +116,12 @@ const Plan = (): JSX.Element => {
                   </div>
                 )}
                 <Col flex="0 0 60px" className={styles.calendar}>
-                  <CalendarCard day={new Date(item.date).getDate()} />
+                  <div className={styles['warning-wrapper']}>
+                    {isErrorRow(item) && (
+                      <BsExclamationLg className={styles.warning} />
+                    )}
+                    <CalendarCard day={new Date(item.date).getDate()} />
+                  </div>
                 </Col>
 
                 <Col flex="2 1">

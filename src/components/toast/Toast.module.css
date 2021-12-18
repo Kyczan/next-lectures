@@ -16,6 +16,7 @@
   gap: 0.5rem;
   padding: var(--form-element-spacing-vertical) var(--form-element-spacing-horizontal);
   border-radius: var(--border-radius);
+  color: var(--primary-inverse);
 }
 
 .toast-error {

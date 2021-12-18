@@ -18,7 +18,6 @@ article {
   width: auto;
   border: none;
   background: transparent;
-  color: var(--color);
 }
 
 .error-text {
@@ -70,7 +69,7 @@ article {
 }
 
 .row > div > div:not(:first-child){
-  font-weight: 200;
+  font-weight: 300;
 }
 
 @media (max-width: 767px) {
