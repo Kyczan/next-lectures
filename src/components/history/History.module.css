@@ -1,0 +1,54 @@
+.container {
+  display: grid;
+  grid-template-columns: auto auto auto 1fr;
+  column-gap: 0.5rem;
+  align-items: center;
+}
+
+.row {
+  display: contents;
+}
+
+.mark {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+.date {
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+.dash {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+
+.detail {
+  grid-column-start: 4;
+  grid-column-end: 5;
+}
+
+@media (max-width: 767px) {
+  .container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+
+  .mark {
+    margin-top: 0.5rem;
+  }
+
+  .date {
+    margin-top: 0.5rem;
+  }
+  
+  .dash {
+    display: none;
+  }
+  
+  .detail {
+    grid-column-start: 2;
+    grid-column-end: 3;
+  }
+}
