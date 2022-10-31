@@ -93,26 +93,26 @@ const LectureView = ({ id }: ILecture): JSX.Element => {
       {
         name: 'Tytuł',
         value: <strong>{lecture.title}</strong>,
+        copy: lecture.title,
       },
       {
         name: 'Notatka',
         value: lecture.note,
+        copy: lecture.note,
       },
       {
         name: 'Data',
-        value: lecture.lastEvent?._id && (
-          <Link href={`/plan/${lecture.lastEvent._id}`}>
-            {formatDate(lecture.lastEvent.date)}
-          </Link>
-        ),
+        value: lecture.lastEvent?._id && formatDate(lecture.lastEvent.date),
+        href: lecture.lastEvent?._id && `/plan/${lecture.lastEvent._id}`,
       },
       {
         name: 'Mówca',
-        value: lecture.lastEvent?.speaker?._id && (
-          <Link href={`/speakers/${lecture.lastEvent.speaker._id}`}>
-            {formatSpeaker(lecture.lastEvent.speaker)}
-          </Link>
-        ),
+        value:
+          lecture.lastEvent?.speaker?._id &&
+          formatSpeaker(lecture.lastEvent.speaker),
+        href:
+          lecture.lastEvent?.speaker?._id &&
+          `/speakers/${lecture.lastEvent.speaker._id}`,
       },
     ]
   }, [lecture])

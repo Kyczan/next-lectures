@@ -71,26 +71,24 @@ const PlanView = ({ id }: IPlan): JSX.Element => {
       {
         name: 'Data',
         value: <strong>{formatDate(plan.date)}</strong>,
+        copy: formatDate(plan.date),
       },
       {
         name: 'Wykład',
-        value: plan.lecture?._id && (
-          <Link href={`/lectures/${plan.lecture._id}`}>
-            {formatLecture(plan.lecture)}
-          </Link>
-        ),
+        value: plan.lecture?._id && formatLecture(plan.lecture),
+        href: plan.lecture?._id && `/lectures/${plan.lecture._id}`,
+        copy: plan.lecture?._id && formatLecture(plan.lecture),
       },
       {
         name: 'Notatka',
         value: plan.note,
+        copy: plan.note,
       },
       {
         name: 'Mówca',
-        value: plan.speaker?._id && (
-          <Link href={`/speakers/${plan.speaker._id}`}>
-            {formatSpeaker(plan.speaker)}
-          </Link>
-        ),
+        value: plan.speaker?._id && formatSpeaker(plan.speaker),
+        href: plan.speaker?._id && `/speakers/${plan.speaker._id}`,
+        copy: plan.speaker?._id && formatSpeaker(plan.speaker),
       },
     ]
   }, [plan])

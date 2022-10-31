@@ -89,30 +89,31 @@ const SpeakerView = ({ id }: ISpeaker): JSX.Element => {
       {
         name: 'Imię i Nazwisko',
         value: <strong>{speaker.name}</strong>,
+        copy: speaker.name,
       },
       {
         name: 'Zbór',
         value: speaker.congregation,
+        copy: speaker.congregation,
       },
       {
         name: 'Notatka',
         value: speaker.note,
+        copy: speaker.note,
       },
       {
         name: 'Data',
-        value: speaker.lastEvent?._id && (
-          <Link href={`/plan/${speaker.lastEvent._id}`}>
-            {formatDate(speaker.lastEvent.date)}
-          </Link>
-        ),
+        value: speaker.lastEvent?._id && formatDate(speaker.lastEvent.date),
+        href: speaker.lastEvent?._id && `/plan/${speaker.lastEvent._id}`,
       },
       {
         name: 'Wykład',
-        value: speaker.lastEvent?.lecture?._id && (
-          <Link href={`/lectures/${speaker.lastEvent.lecture._id}`}>
-            {formatLecture(speaker.lastEvent.lecture)}
-          </Link>
-        ),
+        value:
+          speaker.lastEvent?.lecture?._id &&
+          formatLecture(speaker.lastEvent.lecture),
+        href:
+          speaker.lastEvent?.lecture?._id &&
+          `/lectures/${speaker.lastEvent.lecture._id}`,
       },
     ]
   }, [speaker])
