@@ -15,6 +15,7 @@ const speakerHandler: NextApiHandler = async (req, res) => {
   switch (method) {
     case 'PUT':
       try {
+        // @ts-ignore
         const speaker = await Speaker.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,

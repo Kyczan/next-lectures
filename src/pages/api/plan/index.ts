@@ -18,6 +18,7 @@ const planHandler: NextApiHandler = async (req, res) => {
   switch (method) {
     case 'GET':
       try {
+        // @ts-ignore
         const plan = await Plan.find({}).sort({ date: -1 }).lean()
         res.status(200).json(plan)
       } catch (error) {
@@ -26,6 +27,7 @@ const planHandler: NextApiHandler = async (req, res) => {
       break
     case 'POST':
       try {
+        // @ts-ignore
         const plan = await Plan.create(req.body)
         res.status(201).json(plan)
       } catch (error) {

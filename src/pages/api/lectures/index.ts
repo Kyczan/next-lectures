@@ -14,7 +14,9 @@ const lecturesHandler: NextApiHandler = async (req, res) => {
     case 'GET':
       try {
         const [lectures, plan] = await Promise.all([
+          // @ts-ignore
           Lecture.find({}).sort({ number: 1 }).lean(),
+          // @ts-ignore
           Plan.find({}).sort({ date: -1 }).lean(),
         ])
         const lecturesWithPlan = lectures.map((lecture) => {
@@ -33,6 +35,7 @@ const lecturesHandler: NextApiHandler = async (req, res) => {
       break
     case 'POST':
       try {
+        // @ts-ignore
         const lecture = await Lecture.create(req.body)
         res.status(201).json(lecture)
       } catch (error) {

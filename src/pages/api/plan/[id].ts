@@ -15,6 +15,7 @@ const planHandler: NextApiHandler = async (req, res) => {
   switch (method) {
     case 'PUT':
       try {
+        // @ts-ignore
         const plan = await Plan.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,

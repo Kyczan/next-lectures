@@ -15,6 +15,7 @@ const lecturesHandler: NextApiHandler = async (req, res) => {
   switch (method) {
     case 'PUT':
       try {
+        // @ts-ignore
         const lecture = await Lecture.findByIdAndUpdate(id, req.body, {
           new: true,
           runValidators: true,

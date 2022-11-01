@@ -14,7 +14,9 @@ const speakersHandler: NextApiHandler = async (req, res) => {
     case 'GET':
       try {
         const [speakers, plan] = await Promise.all([
+          // @ts-ignore
           Speaker.find({}).sort({ name: 1 }).lean(),
+          // @ts-ignore
           Plan.find({}).sort({ date: -1 }).lean(),
         ])
         const speakersWithPlan = speakers.map((speaker) => {
@@ -32,6 +34,7 @@ const speakersHandler: NextApiHandler = async (req, res) => {
       break
     case 'POST':
       try {
+        // @ts-ignore
         const speaker = await Speaker.create(req.body)
         res.status(201).json(speaker)
       } catch (error) {
